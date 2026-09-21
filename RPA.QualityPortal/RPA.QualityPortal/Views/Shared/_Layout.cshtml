@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, width=device-width, initial-scale=1.0">
+        <title>Quality Check Portal</title>
+        @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/jqueryui")
+        @Scripts.Render("~/bundles/jqueryval")
+        @Styles.Render("~/Content/css")
+        @Styles.Render("~/Content/JQueryUI/css")
+        @RenderSection("scripts", required: false)
+    </head>
+
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="container">
+
+                    <div class="navbar-header">
+                        @Html.ActionLink("Quality Check Portal", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                    </div>
+
+                    @{
+                        switch ((string)ViewBag.CheckType.ToString())
+                        {
+                            case "Home":
+                                break;
+
+                            case "Outbound":
+
+                                @Html.Partial("_OutboundNav")
+                                break;
+
+                            case "BankAccount":
+
+                                @Html.Partial("_BankAccountNav")
+                                break;
+                        }
+                    }
+
+                </div>
+            </div>
+        </div>
+
+        <div class="container body-content">
+            @RenderBody()
+        </div>
+    </body>
+</html>

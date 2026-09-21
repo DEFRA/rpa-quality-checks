@@ -1,0 +1,32 @@
+﻿
+
+@{
+    ViewBag.CheckType = "Outbound";
+}
+
+<div class="jumbotron">
+    <h1>Outbound Correspondence QC & Recheck MI</h1>
+    <p>Quality Checking for Outbound Correspondence MI</p>
+</div>
+
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#overview" data-toggle="tab" aria-expanded="false">MI Overview</a></li>
+    <li><a href="#answer" data-toggle="tab" aria-expanded="false">Answer MI - All Staff</a></li>
+</ul>
+<div id="tab-content" class="tab-content">
+    <div class="partial-view-container fade active in tab-pane" id="overview">
+        @{
+            <br />
+            Html.RenderAction("_OutboundCorrespondenceMI", "OutboundCorrespondenceMI", new { back = ViewBag.Back });
+        }
+    </div>
+    @if ((User.IsInRole("Quality Checks: OC Admin")) || (User.IsInRole("Quality Checks: OC Team Manager")))
+    {
+        <div class="partial-view-container tab-pane fade" id="answer">
+            @{
+                <br />
+                Html.RenderAction("_AnswerMI", "OutboundCorrespondenceMI");
+            }
+        </div>
+     }
+    </div>

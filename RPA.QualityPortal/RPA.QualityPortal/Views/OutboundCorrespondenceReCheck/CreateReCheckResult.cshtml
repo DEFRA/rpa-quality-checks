@@ -1,0 +1,117 @@
+﻿@model RPA.QualityPortal.Models.CheckTypes.OutboundCorrespondenceReCheck
+
+@{
+    ViewBag.CheckType = "Outbound";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="jumbotron">
+    <h1>Complete Quality Check</h1>
+    <h3>Complete Outbound Correspondence ReCheck</h3>
+</div>
+
+@using (Html.BeginForm("CreateReCheckResult", "OutboundCorrespondenceReCheck", new { CheckId = ViewBag.CheckId }, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.CheckId)
+    @Html.HiddenFor(model => model.PersonName)
+    @Html.HiddenFor(model => model.QCCompletedByName)
+    @Html.HiddenFor(model => model.DateQCCompleted)
+    @Html.HiddenFor(model => model.OutboundCorrespondenceId)
+    @Html.HiddenFor(model => model.CheckTypeId)
+
+
+    <div class="form-horizontal">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Outbound Correspondence - QC ReCheck Result</div>
+            <div class="panel-body">
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.ReCheckCompletedBy)</span>
+                    <div class="col-md-10">
+                        <input type="hidden" id="NameId" name="NameId" value="" />
+                        @Html.EditorFor(model => model.ReCheckCompletedBy, new { htmlAttributes = new { @class = "form-control form-control-length", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.ReCheckCompletedBy, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.Label("Date ReCheck Completed")</span>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.DateQCCompleted, "{0:dd/MM/yyyy}", htmlAttributes: new { @Value = "  " + @DateTime.Now.ToString("dd/MMMM/yyyy"), @readonly = "readonly", @disabled = "disabled", @type = "datetime", @class = "form-control form-control-length" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2"><b>QC ReCheck Result</b></span>
+
+                    <div class="col-md-10" style="padding-top:6px; padding-left:15px">@ViewBag.ReCheckResult</div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.ReCheckComments, htmlAttributes: new { @class = "form-label" })</span>
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.ReCheckComments, new { @class = "form-control", rows = 6 })
+                    </div>
+                </div>
+
+
+                @if (ViewBag.ReCheckResult == "Not Approved")
+                {
+                    <div class="form-group">
+                        <span class="control-label col-md-2">@Html.LabelFor(model => model.FurtherReCheckRequired, htmlAttributes: new { @class = "form-label" })</span>
+                        <div class="col-md-10">
+                            <div class="multiple-choice">
+                                @Html.RadioButtonFor(model => model.FurtherReCheckRequired, "True")@Html.Label("Yes")
+                            </div>
+                            <div class="multiple-choice">
+                                @Html.RadioButtonFor(model => model.FurtherReCheckRequired, "False")@Html.Label("No")
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @if (ViewBag.Email == true)
+                {
+                    <div class="form-group">
+
+                        <span class="control-label col-md-2">@Html.LabelFor(model => model.EmailNotifications, htmlAttributes: new { @class = "form-label" })</span>
+                        <div class="col-md-10">
+                            <div class="multiple-choice">
+                                @Html.RadioButtonFor(model => model.EmailNotifications, "True", htmlAttributes: new { @name = "EmailSendYes", @checked = "checked" })@Html.Label("Yes")
+                            </div>
+                            <div class="multiple-choice">
+                                @Html.RadioButtonFor(model => model.EmailNotifications, "False", htmlAttributes: new { @name = "EmailSendNo" })@Html.Label("No")
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group">
+
+                        <span class="control-label col-md-2">@Html.LabelFor(model => model.EmailNotifications, htmlAttributes: new { @class = "form-label" })</span>
+                        <div class="col-md-10">
+                            <div style="padding-top:7px">Email Notifications are switched off</div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save and Submit Quality ReCheck" class="button" />
+    </div>
+
+
+}
+
+<div class="form-group">
+    <a href="@Url.Action("CreateReCheckQuestions","OutboundCorrespondenceReCheck", new { CheckId = Model.OutboundCorrespondenceId })" class="link-back">Back</a>
+</div>
+

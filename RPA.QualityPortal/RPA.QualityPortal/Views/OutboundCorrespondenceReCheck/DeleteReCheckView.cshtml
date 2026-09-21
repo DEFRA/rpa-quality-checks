@@ -1,0 +1,344 @@
+﻿@model RPA.QualityPortal.ViewModels.DetailsReCheck
+
+@{
+    ViewBag.Title = "DeleteReCheckView";
+    ViewBag.CheckType = "Outbound";
+}
+
+@using (Html.BeginForm("DeleteReCheck", "OutboundCorrespondenceReCheck", new { CheckId = Model.OutboundCorrespondence.CheckId }, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <h2>Delete</h2>
+
+    <h3>Are you sure you want to delete this ReCheck?</h3>
+
+
+    <div class="form-group">
+        <input type="submit" value="Confirm Delete" class="button" />
+    </div>
+
+    <hr />
+
+}
+
+<h2>ReCheck Details</h2>
+<div class="form-horizontal">
+    <div class="panel panel-primary">
+        <div class="panel-heading">Quality Check Details - Outbound Correspondence ReCheck</div>
+        <div class="panel-body">
+            @Html.HiddenFor(model => model.OutboundCorrespondenceReCheck.CheckId)
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.OutboundCorrespondence.Scheme.Text)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.OutboundCorrespondence.Scheme.Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.OutboundCorrespondence.BusinessArea.Text)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.OutboundCorrespondence.BusinessArea.Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.OutboundCorrespondence.CorrespondenceType.Text)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.OutboundCorrespondence.CorrespondenceType.Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.OutboundCorrespondence.TemplateReference)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.OutboundCorrespondence.TemplateReference, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.OutboundCorrespondence.UniqueId)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.OutboundCorrespondence.UniqueIdentifierPrefix.Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                    @Html.TextBoxFor(model => model.OutboundCorrespondence.UniqueId, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.OutboundCorrespondence.CRMRef)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.OutboundCorrespondence.CRMRefPrefix.Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                    @Html.TextBoxFor(model => model.OutboundCorrespondence.CRMRef, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.OutboundCorrespondence.SBI)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.OutboundCorrespondence.SBI, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.OutboundCorrespondence.PersonName)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.OutboundCorrespondence.PersonName, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.OutboundCorrespondence.ManagerName)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.OutboundCorrespondence.ManagerName, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.OutboundCorrespondence.HEO)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.OutboundCorrespondence.HEO, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.OutboundCorrespondence.SEO)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.OutboundCorrespondence.SEO, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.OutboundCorrespondence.QCCompletedByName)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.OutboundCorrespondence.QCCompletedByName, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="control-label col-md-2">
+
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.OutboundCorrespondence.DateQCCompleted, "{0:dd/MM/yyyy}", htmlAttributes: new { @class = "form-control", @readonly = "readonly", @disabled = "disabled", @type = "datetime", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+        </div>
+    </div>
+    @*Questions*@
+    <div class="panel panel-primary">
+        <div class="panel-heading">Correspondence ReCheck Response</div>
+        <div class="panel-body">
+
+            <table class="table">
+                <tr>
+                    <th>
+
+                    </th>
+                    <th>
+                        Question
+                    </th>
+                    <th style="text-align:center">
+                        Answer
+                    </th>
+                    <th style="text-align:center">
+                        ReCheck Answer
+                    </th>
+                </tr>
+
+                @for (int i = 0; i < Model.Answers.Count(); i++)
+                {
+                    int order;
+
+                    { order = i + 1; }
+
+                    <tr>
+                        <td>
+                            @order
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => modelItem.Answers[i].Question.Text)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(modelItem => modelItem.Answers[i].Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:100px; font-size:15px;" })
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(modelItem => modelItem.ReCheckAnswers[i].Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:100px; font-size:15px;" })
+                        </td>
+                    </tr>
+
+                }
+
+            </table>
+        </div>
+    </div>
+    @*Result*@
+    <div class="panel panel-primary">
+        <div class="panel-heading">Results</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.QCResult)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.QCResult, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.OutboundCorrespondence.FailReason.Text)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.OutboundCorrespondence.FailReason.Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.OutboundCorrespondence.InitialReCheckDecision)
+                </span>
+                <div class="col-md-10" style="margin-top:10px">
+                    @Html.DisplayFor(model => model.OutboundCorrespondence.InitialReCheckDecision)
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.OutboundCorrespondence.ExcludeQCResult)
+                </span>
+                <div class="col-md-10" style="margin-top:10px">
+                    @Html.DisplayFor(model => model.OutboundCorrespondence.ExcludeQCResult)
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.OutboundCorrespondence.Comments)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.OutboundCorrespondence.Comments, new { @readonly = "readonly", @class = "form-control", @rows = 6 })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.Challenge == true)
+    {
+        <div>
+            @{
+                Html.RenderAction("_ChallengeView", "OutboundCorrespondence", new { CheckId = Model.OutboundCorrespondence.CheckId });
+            }
+        </div>
+    }
+
+    @*ReCheck Results*@
+    <div class="panel panel-primary">
+        <div class="panel-heading">ReCheck Results</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.ReCheckResult)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.ReCheckResult, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.OutboundCorrespondenceReCheck.ReCheckCompletedBy)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.OutboundCorrespondenceReCheck.ReCheckCompletedBy, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    Date ReCheck Completed
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.OutboundCorrespondence.DateQCCompleted, "{0:dd/MM/yyyy}", htmlAttributes: new { @class = "form-control", @readonly = "readonly", @disabled = "disabled", @type = "datetime", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.OutboundCorrespondenceReCheck.ReCheckComments)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.OutboundCorrespondenceReCheck.ReCheckComments, new { @readonly = "readonly", @class = "form-control", @rows = 6 })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Amendment Reason*@
+    @if (Model.CheckAmendmentReason != null)
+    {
+        <div class="panel panel-primary">
+            <div class="panel-heading">Amendment Reason</div>
+            <div class="panel-body">
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">
+                        @Html.DisplayNameFor(model => model.CheckAmendmentReason.AmendmentReason.Text)
+                    </span>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.CheckAmendmentReason.AmendmentReason.Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">
+                        @Html.DisplayNameFor(model => model.CheckAmendmentReason.AmendmentReasonComments)
+                    </span>
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.CheckAmendmentReason.AmendmentReasonComments, new { @readonly = "readonly", @class = "form-control", @rows = 6 })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
+
+    @*Amendment Reason*@
+    @if (Model.ReCheckAmendmentReason != null)
+    {
+        <div class="panel panel-primary">
+            <div class="panel-heading">ReCheck Amendment Reason</div>
+            <div class="panel-body">
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">
+                        @Html.DisplayNameFor(model => model.ReCheckAmendmentReason.AmendmentReason.Text)
+                    </span>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.ReCheckAmendmentReason.AmendmentReason.Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">
+                        @Html.DisplayNameFor(model => model.ReCheckAmendmentReason.AmendmentReasonComments)
+                    </span>
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.ReCheckAmendmentReason.AmendmentReasonComments, new { @readonly = "readonly", @class = "form-control", @rows = 6 })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
+</div>
+<p>
+
+    @Html.ActionLink("Back to Index", "Index", controllerName: "OutboundCorrespondence") |
+    @Html.ActionLink("Back to Details", "Details", "OutboundCorrespondence", new { CheckId = Model.OutboundCorrespondence.CheckId }, null)
+
+</p>

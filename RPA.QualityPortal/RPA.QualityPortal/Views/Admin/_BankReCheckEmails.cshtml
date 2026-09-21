@@ -1,0 +1,127 @@
+﻿@model PagedList<RPA.QualityPortal.ViewModels.BankAccountOverview>
+
+@{
+    ViewBag.Title = "_ReCheckEmails";
+    ViewBag.CheckType = "Bank Account";
+}
+
+@using PagedList;
+@using PagedList.Mvc;
+
+@using (Html.BeginForm("_BankReCheckEmails", "Admin", FormMethod.Post))
+{
+
+    @Html.AntiForgeryToken()
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Trigger Notification Emails On per Recheck</div>
+        <div class="panel-body">
+            <div form-group>
+                <input type="checkbox" id="selectAllReCheck" />
+                <label>Check All</label>
+                <input type="submit" value="Save and Send" style="margin-left:800px" class="btn btn-success" />
+            </div>
+
+            <h2>Recheck Notification Emails not sent</h2>
+
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].BankAccount.FRN)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].BankAccount.SBI)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].BankAccount.PersonName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].BankAccount.ManagerName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].BankAccount.QCCompletedByName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].BankAccount.DateQCCreated)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].BankAccount.DateQCCompleted)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].DaysElapsed)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].ReCheckQCResult)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].BankAccount.EmailNotifications)
+                    </th>
+                </tr>
+
+                @for (int i = 0; i < Model.Count; i++)
+                {
+            <tr>
+                @Html.HiddenFor(modelItem => Model[i].BankAccountReCheck.CheckId)
+                @Html.HiddenFor(modelItem => Model[i].BankAccountReCheck.BankAccountId)
+                <td>
+                    @Html.DisplayFor(modelItem => Model[i].BankAccount.FRN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model[i].BankAccount.SBI)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model[i].BankAccount.PersonName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model[i].BankAccount.ManagerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model[i].BankAccount.QCCompletedByName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model[i].BankAccount.DateQCCreated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model[i].BankAccount.DateQCCompleted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model[i].DaysElapsed)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model[i].ReCheckQCResult)
+                </td>
+                @if (ViewBag.Email == true)
+                {
+                    <td id="selectedReCheck">
+                        @Html.CheckBoxFor(modelItem => Model[i].BankAccountReCheck.EmailNotifications)
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        Emails are turned off
+                    </td>
+                }
+            </tr>
+                }
+
+            </table>
+
+            <div>
+                @Html.PagedListPager(Model, page => Url.Action("Email", new { checkType = ViewBag.typeOfCheck, page, pageSize = Model.PageSize }))
+                Showing @(Model.TotalItemCount < Model.FirstItemOnPage ? 0 : Model.FirstItemOnPage) to @Model.LastItemOnPage of @Model.TotalItemCount Bank Rechecks
+            </div>
+
+        </div>
+    </div>
+}
+
+
+
+<script>
+    $('#selectAllReCheck').change(function () {
+        $('#selectedReCheck input[type="checkbox"]').prop('checked', this.checked)
+    });
+</script>
+
+

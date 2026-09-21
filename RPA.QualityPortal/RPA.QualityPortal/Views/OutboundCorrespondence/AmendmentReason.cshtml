@@ -1,0 +1,50 @@
+﻿@model RPA.QualityPortal.Models.CheckAmendmentReason
+
+@{
+    ViewBag.CheckType = "Outbound";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="jumbotron">
+    <h1>Complete Quality Check</h1>
+    <h3>Complete Outbound Correspondence Check</h3>
+</div>
+
+@using (Html.BeginForm("AmendmentReason", "OutboundCorrespondence", FormMethod.Post, new { @id = "AmendmentReason" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.CheckId)
+
+    <div class="form-horizontal">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Amendment Reason</div>
+            <div class="panel-body">
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.AmendmentReason.Text, htmlAttributes: new { @class = "form-label" })</span>
+                    <div class="col-md-10">
+                        @Html.DropDownList("AmendmentReasonId", null, "", htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.AmendmentReason, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.AmendmentReasonComments, htmlAttributes: new { @class = "form-label" })</span>
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.AmendmentReasonComments, new { @class = "form-control", rows = 6 })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Save and Submit Changes" class="button" />
+    </div>
+}
+
+<div class="form-group">
+    <a href="@Url.Action("EditResult","OutboundCorrespondence", new { CheckId = Model.CheckId })" class="link-back">Back</a>
+</div>

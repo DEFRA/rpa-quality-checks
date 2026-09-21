@@ -1,0 +1,104 @@
+﻿@model RPA.QualityPortal.Models.CheckTypes.BankAccountCheck
+
+@{
+    ViewBag.Title = "General Details";
+    ViewBag.CheckType = "Bank Account";
+}
+
+<h2>Details</h2>
+
+<div class="form-horizontal">
+    <div class="panel panel-primary">
+        <div class="panel-heading">Bank Account - General Details</div>
+        <div class="panel-body">
+
+            @Html.HiddenFor(model => model.CheckId)
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.SBI)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.SBI, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.FRN)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.FRN, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BACheckType.Text)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.BACheckType.Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BusinessName)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.BusinessName, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.PersonName)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.PersonName, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.ManagerName)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.ManagerName, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.DateQCCreated)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.DateQCCreated, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.QCCompletedByName)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.QCCompletedByName, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.DateQCCompleted)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.DateQCCompleted, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p>
+    @Html.ActionLink(linkText: "Recheck", actionName: "CreateBankReCheckQuestions", controllerName: "BankAccountReCheck", routeValues: new { CheckId = Model.CheckId }, htmlAttributes: null) |
+    <a href="@Url.Action("Index","BankAccount")" class="link-back">Back</a>
+</p>

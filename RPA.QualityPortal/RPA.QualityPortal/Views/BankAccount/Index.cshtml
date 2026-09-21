@@ -1,0 +1,196 @@
+﻿@model PagedList<RPA.QualityPortal.ViewModels.BankAccountOverview>
+
+@{
+    ViewBag.Title = "Bank Account Quality Checks";
+    ViewBag.CheckType = "BankAccount";
+}
+
+@using PagedList;
+@using PagedList.Mvc;
+
+<div class="jumbotron">
+    <h1>Bank Account QC</h1>
+    <p>Quality Checking for Bank Account</p>
+</div>
+
+@using (Html.BeginForm())
+{
+    <div class=" form-group">
+        <input type="text" class="form-control" id="sRef" name="searchString" />
+    </div>
+
+    <div class="btn-group">
+        <button type="submit" class=" btn btn-success" value="search" name="btnIndexFilter">Search</button>
+        <button type="submit" class=" btn btn-danger" value="reset" name="btnIndexReset">Reset</button>
+    </div>
+
+    if (ViewBag.PageName == "All Quality Checks")
+    {
+        <div class="btn-group">
+            <button type="submit" class="btn" value="coachingPointYes" name="btnCoachingPoint">Coaching Point</button>
+            <button type="submit" class="btn" value="coachingPointNo" name="btnCoachingPoint">No Coaching Point</button>
+        </div>
+    }
+    else if (ViewBag.PageName == "Complete Checks")
+    {
+        <div class="btn-group">
+            <button type="submit" class="btn" value="coachingPointYes" name="btnCoachingPointYes">Coaching Point</button>
+            <button type="submit" class="btn" value="coachingPointNo" name="btnCoachingPointNo">No Coaching Point</button>
+        </div>
+    }
+    else if (ViewBag.PageName == "Outstanding Checks")
+    {
+        <div class="btn-group">
+            <button type="submit" class="btn" value="coachingPointYes" name="btnCoachingPointYes">Coaching Point</button>
+            <button type="submit" class="btn" value="coachingPointNo" name="btnCoachingPointNo">No Coaching Point</button>
+        </div>
+    }
+
+    <div>
+        <h5>Date Range: </h5>
+    </div>
+
+    <div>
+        <input type="text" class="date-picker form-control date-input" typeof="datetime" id="from" name="DateFrom" inputmode="none" style="width:200px; background:white;" placeholder="From" ; />
+        <input type="text" class="date-picker form-control date-input" typeof="datetime" id="to" name="DateTo" inputmode="none" style="width:200px;  background:white" placeholder="To" ; />
+    </div>
+}
+
+@if (User.IsInRole("Quality Checks: BA Admin"))
+{
+    using (Html.BeginForm("Export", "BankAccount"))
+    {
+        <br />
+        <div class="form-group">
+            <input type="submit" value="Export" class="button" />
+        </div>
+    }
+}
+
+<div><h2 style="text-align:center">@ViewBag.PageName</h2><br /></div>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model[0].BankAccount.FRN)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].BankAccount.SBI)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].BankAccount.PersonName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].BankAccount.ManagerName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].BankAccount.QCCompletedByName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].BankAccount.DateQCCreated)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].BankAccount.DateQCCompleted)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].DaysElapsed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].QCResult)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BankAccount.FRN)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BankAccount.SBI)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BankAccount.PersonName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BankAccount.ManagerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BankAccount.QCCompletedByName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BankAccount.DateQCCreated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BankAccount.DateQCCompleted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DaysElapsed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QCResult)
+            </td>
+
+            @if (ViewBag.PageName == "Complete Checks")
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReCheckQCResult)
+                </td>
+            }
+            @if (item.BankAccount.DateQCCompleted == null)
+            {
+            <td>
+                @Html.ActionLink("Open", "CreateGeneral", new { CheckId = item.BankAccount.CheckId })
+            </td>
+            }
+            else
+            {
+                <td></td>
+            }
+            <td>
+                @Html.ActionLink("Details", "Details", new { CheckId = item.BankAccount.CheckId })
+            </td>
+            @if (item.BankAccount.ReCheckRequired == true)
+            {
+                if (User.IsInRole("Quality Checks: BA Admin") || User.IsInRole("Quality Checks: BA Team Leader"))
+                {
+                    <td>
+                        @Html.ActionLink("Recheck", "GeneralDetails", new { CheckId = item.BankAccount.CheckId })
+                    </td>
+                }
+            }
+        </tr>
+    }
+
+</table>
+
+@if (ViewBag.PageName == "All Quality Checks")
+{
+    <div>
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize, searchString = ViewBag.CurrentSearch, dateFrom = ViewBag.DateFrom, dateTo = ViewBag.DateTo }))
+        Showing @(Model.TotalItemCount < Model.FirstItemOnPage ? 0 : Model.FirstItemOnPage) to @Model.LastItemOnPage of @Model.TotalItemCount
+    </div>
+}
+else if (ViewBag.PageName == "Complete Checks")
+{
+    <div>
+        @Html.PagedListPager(Model, page => Url.Action("Complete", new { page, pageSize = Model.PageSize, searchString = ViewBag.CurrentSearch, dateFrom = ViewBag.DateFrom, dateTo = ViewBag.DateTo }))
+        Showing @(Model.TotalItemCount < Model.FirstItemOnPage ? 0 : Model.FirstItemOnPage) to @Model.LastItemOnPage of @Model.TotalItemCount
+    </div>
+}
+else if (ViewBag.PageName == "Outstanding Checks")
+{
+    <div>
+        @Html.PagedListPager(Model, page => Url.Action("Outstanding", new { page, pageSize = Model.PageSize, searchString = ViewBag.CurrentSearch, dateFrom = ViewBag.DateFrom, dateTo = ViewBag.DateTo }))
+        Showing @(Model.TotalItemCount < Model.FirstItemOnPage ? 0 : Model.FirstItemOnPage) to @Model.LastItemOnPage of @Model.TotalItemCount
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var msg = @ViewBag.Locked;
+        if (msg == "1") {
+            alert("Check is currently locked by another user");
+        }
+    });
+</script>

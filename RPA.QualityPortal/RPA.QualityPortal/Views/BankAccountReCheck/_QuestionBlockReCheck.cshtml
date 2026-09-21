@@ -1,0 +1,54 @@
+﻿@model RPA.QualityPortal.ViewModels.QuestionAnswerList
+
+@{
+    string header = (string)ViewData["header"];
+    int from = (int)ViewData["from"];
+    int to = (int)ViewData["to"];
+}
+
+<tr>
+    <th>@header</th>
+    <th><span>Recheck Answer</span></th>
+    <th></th>
+    <th><span>Check Answer</span></th>
+</tr>
+
+@for (int i = from; i < to; i++)
+{
+    <tr>
+        <td>
+            @Html.HiddenFor(model => model.QuestionAnswers[i].CheckQuestion.Order)
+            @Html.HiddenFor(model => model.QuestionAnswers[i].CheckQuestion.Question.QuestionId)
+            @Html.DisplayFor(model => model.QuestionAnswers[i].CheckQuestion.Question.Text)
+            @Html.HiddenFor(model => model.QuestionAnswers[i].CheckQuestion.Question.Text)
+        </td>
+        <td>
+            @Html.DropDownListFor(model => model.QuestionAnswers[i].Answer, new SelectList(ViewBag.AnswerOptions, "Value", "Text", Model.QuestionAnswers[i].Answer), "", new { @class = "form-control", @style = "width: 100px" })
+            @Html.ValidationMessageFor(model => model.QuestionAnswers[i].Answer, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.QuestionAnswers[i].Answer)
+        </td>
+        <td>
+            @{
+                Html.RenderAction("_CheckAnswer", new { CheckId = ViewBag.CheckId, QuestionId = Model.QuestionAnswers[i].CheckQuestion.Question.QuestionId });
+            }
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.Display("Check Comment")
+        </td>
+        <td align="right">
+            @{
+                Html.RenderAction("_CheckComment", new { CheckId = ViewBag.CheckId, QuestionId = Model.QuestionAnswers[i].CheckQuestion.Question.QuestionId });
+            }
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.DisplayNameFor(model => model.QuestionAnswers[i].Comment)
+        </td>
+        <td align="right">
+            @Html.EditorFor(model => model.QuestionAnswers[i].Comment)
+        </td>
+    </tr>
+}

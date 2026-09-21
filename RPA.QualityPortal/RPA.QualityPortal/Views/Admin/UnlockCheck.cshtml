@@ -1,0 +1,205 @@
+﻿@model List<RPA.QualityPortal.ViewModels.LockCheckView>
+
+@if (ViewBag.typeOfCheck == "OutboundCorrespondence")
+{
+    {
+        ViewBag.Title = "Index";
+        ViewBag.CheckType = "Outbound";
+    }
+
+    <div class="jumbotron">
+        <h1>Unlock Recheck Administration</h1>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Trigger Unlocking Rechecks</div>
+        <div class="panel-body">
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.CorrespondenceType.Text)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.UniqueId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.CRMRef)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.SBI)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.PersonName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.ManagerName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.QCCompletedByName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.DateQCCompleted)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].LockCheck.CheckLockedBy)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].LockCheck.Timestamp)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    using (Html.BeginForm("DeleteLock", "Admin", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <tr>
+                            @Html.HiddenFor(modelItem => item.LockCheck.LockCheckId)
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OutboundCorrespondence.CorrespondenceType.Text)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OutboundCorrespondence.UniqueIdentifierFull)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OutboundCorrespondence.CrmReferenceFull)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OutboundCorrespondence.SBI)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OutboundCorrespondence.PersonName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OutboundCorrespondence.ManagerName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OutboundCorrespondence.QCCompletedByName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OutboundCorrespondence.DateQCCompleted)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LockCheck.CheckLockedBy)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LockCheck.Timestamp)
+                            </td>
+                            <td>
+                                <input type="hidden" name="LockCheckId" value="@item.LockCheck.LockCheckId" />
+                                <input type="hidden" name="checkType" value="@ViewBag.typeOfCheck" />
+                                <input type="submit" value="Unlock QC" class="button" />
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+}
+else if(ViewBag.typeOfCheck == "Bank")
+{
+    {
+        ViewBag.Title = "Index";
+        ViewBag.CheckType = "BankAccount";
+    }
+
+
+    <div class="jumbotron">
+        <h1>Unlock Check Administration</h1>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Trigger Unlocking Checks</div>
+        <div class="panel-body">
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].BankAccount.SBI)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].BankAccount.FRN)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].BankAccount.BACheckType.Text)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].BankAccount.BusinessName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].BankAccount.PersonName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].BankAccount.ManagerName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].BankAccount.DateQCCreated)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].BankAccount.DateQCCompleted)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].ReCheck)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].LockCheck.CheckLockedBy)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].LockCheck.Timestamp)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    using (Html.BeginForm("DeleteLock", "Admin", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <tr>
+                            @Html.HiddenFor(modelItem => item.LockCheck.LockCheckId)
+                            <th>
+                                @Html.DisplayFor(modelItem => item.BankAccount.SBI)
+                            </th>
+                            <th>
+                                @Html.DisplayFor(modelItem => item.BankAccount.FRN)
+                            </th>
+                            <th>
+                                @Html.DisplayFor(modelItem => item.BankAccount.BACheckType.Text)
+                            </th>
+                            <th>
+                                @Html.DisplayFor(modelItem => item.BankAccount.BusinessName)
+                            </th>
+                            <th>
+                                @Html.DisplayFor(modelItem => item.BankAccount.PersonName)
+                            </th>
+                            <th>
+                                @Html.DisplayFor(modelItem => item.BankAccount.ManagerName)
+                            </th>
+                            <th>
+                                @Html.DisplayFor(modelItem => item.BankAccount.DateQCCreated)
+                            </th>
+                            <th>
+                                @Html.DisplayFor(modelItem => item.BankAccount.DateQCCompleted)
+                            </th>
+                            <th>
+                                @Html.DisplayFor(modelItem => item.ReCheck)
+                            </th>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LockCheck.CheckLockedBy)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LockCheck.Timestamp)
+                            </td>
+                            <td>
+                                <input type="hidden" name="LockCheckId" value="@item.LockCheck.LockCheckId" />
+                                <input type="hidden" name="checkType" value="@ViewBag.TypeOfCheck" />
+                                <input type="submit" value="Unlock QC" class="button" />
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+}

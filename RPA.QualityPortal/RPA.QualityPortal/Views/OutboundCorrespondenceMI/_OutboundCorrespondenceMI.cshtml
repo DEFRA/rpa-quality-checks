@@ -1,0 +1,426 @@
+﻿@model RPA.QualityPortal.ViewModels.OutboundCorrespondenceVM.MI.OutboundCorrespondenceMI
+
+
+@using (Html.BeginForm("MIIndex", "OutboundCorrespondenceMI", new { back = false }, FormMethod.Post))
+{
+    <div class="form-inline" style="margin-bottom:30px;">
+
+        @if ((User.IsInRole("Quality Checks: OC Admin")) || (User.IsInRole("Quality Checks: OC Team Manager")))
+        {
+            <div class="form-group">
+                <input type="text" class="form-control" id="searchString" name="searchString" style="width:200px" disabled="disabled" placeholder="Type Name Here" />
+            </div>
+            <div class="form-group" id="scheme" style="display:none">
+                @Html.DropDownList("SchemeId", null, "", htmlAttributes: new { @class = "form-control" })
+            </div>
+            <div class="form-group" id="business" style="display:none">
+                @Html.DropDownList("BusinessAreaId", null, "", htmlAttributes: new { @class = "form-control" })
+            </div>
+            <div class="form-group" id="correspondence" style="display:none">
+                @Html.DropDownList("CorrespondenceTypeId", null, "", htmlAttributes: new { @class = "form-control" })
+            </div>
+
+            <select class="form-control" style="width:200px; font-size:15px;" id="searchOption" name="searchOption">
+                <option value="empty" selected disabled>Search Option</option>
+                <option value="QCName">QC Name</option>
+                <option value="LineManager">Line Manager</option>
+                <option value="HEO">HEO</option>
+                <option value="SEO">SEO</option>
+                <option value="QCChecker">Quality Checker</option>
+                <option value="Scheme">Scheme</option>
+                <option value="BusinessArea">Business Area</option>
+                <option value="CorrespondenceType">Correspondence Type</option>
+
+            </select>
+        }
+            <div class="btn-group">
+                <button type="submit" class=" btn btn-success" value="search" name="btnIndexFilter">Search</button>
+                <button type="submit" class=" btn btn-danger" value="reset" name="btnIndexReset">Reset</button>
+            </div>
+
+        <div>
+            <h5>Date Range: </h5>
+
+        </div>
+
+        <div>
+            <input type="text" class="date-picker form-control date-input" typeof="datetime" id="from" name="DateFrom" inputmode="none" style="width:200px; background:white;" placeholder="From" ; />
+            <input type="text" class="date-picker form-control date-input" typeof="datetime" id="to" name="DateTo" inputmode="none" style="width:200px;  background:white" placeholder="To" ; />
+        </div>
+        <p><i>Leave both dates blank to search all records</i></p>
+
+    </div>
+
+}
+
+
+
+@if (ViewBag.Search == "Search")
+{
+    <h3>@Model.SearchType</h3>
+
+    if (Model.DateFrom != null && Model.DateTo != null)
+    {
+        <h4>From: @Model.DateFrom.Value.ToShortDateString()  To: @Model.DateTo.Value.ToShortDateString() </h4>
+    }
+    else if (Model.DateFrom != null)
+    {
+        <h4>From: @Model.DateFrom.Value.ToShortDateString() To: Current Date</h4>
+    }
+    else if (Model.DateTo != null)
+    {
+        <h4>All Records To: @Model.DateTo.Value.ToShortDateString() </h4>
+    }
+
+
+
+}
+
+<h3>QC MI Overview</h3>
+
+<div class="form-horizontal">
+    <div class="panel panel-primary">
+
+        @if (Model.ResultHeader != null)
+        {
+            if (Model.ResultHeader != "Individual")
+            {
+                <div class="panel-heading">Quality Check MI Overview for @Model.ResultHeader</div>
+            }
+            else
+            {
+                <div class="panel-heading">Quality Check MI Overview for @Model.SearchType.Remove(0,9)</div>
+            }
+        }
+        else
+        {
+            <div class="panel-heading">Quality Check MI Overview</div>
+        }
+        <div class="panel-body">
+
+            <table class="table table-condensed table-striped">
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.TotalQcs)</th>
+                    <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.Passed)</th>
+                    <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.PassedPercentage)</th>
+                    <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.PassAdvisory)</th>
+                    <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.PassedAdvisoryPercentage)</th>
+                    <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.Failed)</th>
+                    <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.FailedPercentage)</th>
+                    <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReChecksRequired)</th>
+                    <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReChecksNotRequired)</th>
+                </tr>
+
+                <tr>
+                    <td>@Html.DisplayFor(model => model.OutboundCorrespondenceMIStats.TotalQcs)</td>
+                    <td>@Html.DisplayFor(model => model.OutboundCorrespondenceMIStats.Passed)</td>
+                    <td>@Html.DisplayFor(model => model.OutboundCorrespondenceMIStats.PassedPercentage)</td>
+                    <td>@Html.DisplayFor(model => model.OutboundCorrespondenceMIStats.PassAdvisory)</td>
+                    <td>@Html.DisplayFor(model => model.OutboundCorrespondenceMIStats.PassedAdvisoryPercentage)</td>
+                    <td>@Html.DisplayFor(model => model.OutboundCorrespondenceMIStats.Failed)</td>
+                    <td>@Html.DisplayFor(model => model.OutboundCorrespondenceMIStats.FailedPercentage)</td>
+                    <td>@Html.DisplayFor(model => model.OutboundCorrespondenceMIStats.ReChecksRequired)</td>
+                    <td>@Html.DisplayFor(model => model.OutboundCorrespondenceMIStats.ReChecksNotRequired)</td>
+                    <td>@Html.ActionLink("Details", "MIDetails", new { personName = ViewBag.SearchName })</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="form-inline">
+    @if (Model.ResultHeader != "Individual" && Model.OutboundCorrespondenceMIPersonStatsList != null)
+    {
+
+        <div class="form-horizontal">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Quality Check MI: @Model.ResultHeader</div>
+
+                <div class="panel-body">
+
+                    <table class="table table-condensed table-striped">
+                        <tr>
+                            <th>Name</th>
+                            <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.TotalQcs)</th>
+                            <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.Passed)</th>
+                            <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.PassedPercentage)</th>
+                            <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.PassAdvisory)</th>
+                            <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.PassedAdvisoryPercentage)</th>
+                            <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.Failed)</th>
+                            <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.FailedPercentage)</th>
+                            <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReChecksRequired)</th>
+                            <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReChecksNotRequired)</th>
+                        </tr>
+
+                        @{string personType = ""; }
+
+                        @foreach (var item in Model.OutboundCorrespondenceMIPersonStatsList)
+                        {
+                            <tr>
+                                @if (Model.ResultHeader == " Line Managers under HEO: " + ViewBag.SearchName || Model.ResultHeader == " Line Managers under " + Model.SearchType)
+                                {
+                                    personType = "HEO";
+                                    <td>@Html.DisplayFor(modelItem => item.LineManagerName)</td>
+                                }
+                                else if (Model.ResultHeader == " HEO's under SEO: " + ViewBag.SearchName || Model.ResultHeader == " HEO's under " + Model.SearchType)
+                                {
+                                    personType = "SEO";
+                                    <td>@Html.DisplayFor(modelItem => item.HEOName)</td>
+                                }
+                                else
+                                {
+                                    personType = "Line";
+                                    <td>@Html.DisplayFor(modelItem => item.PersonName)</td>
+                                }
+                                <td>@Html.DisplayFor(modelItem => item.OutboundCorrespondenceMIStats.TotalQcs)</td>
+                                <td>@Html.DisplayFor(modelItem => item.OutboundCorrespondenceMIStats.Passed)</td>
+                                <td>@Html.DisplayFor(modelItem => item.OutboundCorrespondenceMIStats.PassedPercentage)</td>
+                                <td>@Html.DisplayFor(modelItem => item.OutboundCorrespondenceMIStats.PassAdvisory)</td>
+                                <td>@Html.DisplayFor(modelItem => item.OutboundCorrespondenceMIStats.PassedAdvisoryPercentage)</td>
+                                <td>@Html.DisplayFor(modelItem => item.OutboundCorrespondenceMIStats.Failed)</td>
+                                <td>@Html.DisplayFor(modelItem => item.OutboundCorrespondenceMIStats.FailedPercentage)</td>
+                                <td>@Html.DisplayFor(modelItem => item.OutboundCorrespondenceMIStats.ReChecksRequired)</td>
+                                <td>@Html.DisplayFor(modelItem => item.OutboundCorrespondenceMIStats.ReChecksNotRequired)</td>
+
+                                @if (item.OutboundCorrespondenceMIStats.Failed > 0)
+                                {
+                                    if (Model.ResultHeader == " Line Managers under HEO: " + ViewBag.SearchName || Model.ResultHeader == " Line Managers under " + Model.SearchType)
+                                    {
+                                        <td>@Html.ActionLink("Details", "MIDetails", new { personName = item.LineManagerName, personType = personType, detailsClick = true })</td>
+                                    }
+                                    else if (Model.ResultHeader == " HEO's under SEO: " + ViewBag.SearchName || Model.ResultHeader == " HEO's under " + Model.SearchType)
+                                    {
+                                        <td>@Html.ActionLink("Details", "MIDetails", new { personName = item.HEOName, personType = personType, detailsClick = true })</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@Html.ActionLink("Details", "MIDetails", new { personName = item.PersonName, personType = personType, detailsClick = true })</td>
+                                    }
+                                }
+                            </tr>
+                        }
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+    }
+
+
+    <div class="form-horizontal">
+        <div class="panel panel-primary">
+            @if (Model.ResultHeader != null)
+            {
+                if (Model.ResultHeader != "Individual")
+                {
+                    <div class="panel-heading">Recheck MI Overview for @Model.ResultHeader</div>
+                }
+                else
+                {
+                    <div class="panel-heading"> Recheck MI Overview for @Model.SearchType.Remove(0, 9)</div>
+                }
+            }
+            else
+            {
+                <div class="panel-heading">Recheck MI Overview</div>
+            }
+            <div class="panel-body">
+
+                <table class="table table-condensed table-striped">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReChecks)</th>
+                        <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReCheckPassed)</th>
+                        <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReCheckPassedPercentage)</th>
+                        <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReCheckPassAdvisory)</th>
+                        <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReCheckPassedAdvisoryPercentage)</th>
+                        <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReCheckFailed)</th>
+                        <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReCheckFailedPercentage)</th>
+                        <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReCheckOutstandingZeroToFive)</th>
+                        <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReCheckOutstandingSixToTen)</th>
+                        <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReCheckOutstandingGreaterThanTen)</th>
+                        <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReChecksOutstanding)</th>
+
+                    </tr>
+
+                    <tr>
+                        <td>@Html.DisplayFor(model => model.OutboundCorrespondenceMIStats.ReChecks)</td>
+                        <td>@Html.DisplayFor(model => model.OutboundCorrespondenceMIStats.ReCheckPassed)</td>
+                        <td>@Html.DisplayFor(model => model.OutboundCorrespondenceMIStats.ReCheckPassedPercentage)</td>
+                        <td>@Html.DisplayFor(model => model.OutboundCorrespondenceMIStats.ReCheckPassAdvisory)</td>
+                        <td>@Html.DisplayFor(model => model.OutboundCorrespondenceMIStats.ReCheckPassedAdvisoryPercentage)</td>
+                        <td>@Html.DisplayFor(model => model.OutboundCorrespondenceMIStats.ReCheckFailed)</td>
+                        <td>@Html.DisplayFor(model => model.OutboundCorrespondenceMIStats.ReCheckFailedPercentage)</td>
+                        <td>@Html.DisplayFor(model => model.OutboundCorrespondenceMIStats.ReCheckOutstandingZeroToFive)</td>
+                        <td>@Html.DisplayFor(model => model.OutboundCorrespondenceMIStats.ReCheckOutstandingSixToTen)</td>
+                        <td>@Html.DisplayFor(model => model.OutboundCorrespondenceMIStats.ReCheckOutstandingGreaterThanTen)</td>
+                        <td>@Html.DisplayFor(model => model.OutboundCorrespondenceMIStats.ReChecksOutstanding)</td>
+                    </tr>
+
+
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    @if (Model.ResultHeader != "Individual" && Model.OutboundCorrespondenceMIPersonStatsList != null)
+    {
+    <div class="form-horizontal">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Recheck MI: @Model.ResultHeader</div>
+
+            <div class="panel-body">
+
+                <table class="table table-condensed table-striped">
+                    <tr>
+                        <th>Name</th>
+                        <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReChecks)</th>
+                        <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReCheckPassed)</th>
+                        <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReCheckPassedPercentage)</th>
+                        <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReCheckPassAdvisory)</th>
+                        <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReCheckPassedAdvisoryPercentage)</th>
+                        <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReCheckFailed)</th>
+                        <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReCheckFailedPercentage)</th>
+                        <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReCheckOutstandingZeroToFive)</th>
+                        <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReCheckOutstandingSixToTen)</th>
+                        <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReCheckOutstandingGreaterThanTen)</th>
+                        <th>@Html.DisplayNameFor(model => model.OutboundCorrespondenceMIStats.ReChecksOutstanding)</th>
+
+                    </tr>
+                    @foreach (var item in Model.OutboundCorrespondenceMIPersonStatsList)
+                    {
+                        <tr>
+                            @if (Model.ResultHeader == " Line Managers under HEO: " + ViewBag.SearchName || Model.ResultHeader == " Line Managers under " + Model.SearchType)
+                            {
+
+                                <td>@Html.DisplayFor(modelItem => item.LineManagerName)</td>
+                            }
+                            else if (Model.ResultHeader == " HEO's under SEO: " + ViewBag.SearchName || Model.ResultHeader == " HEO's under " + Model.SearchType)
+                            {
+                                <td>@Html.DisplayFor(modelItem => item.HEOName)</td>
+                            }
+                            else
+                            {
+                                <td>@Html.DisplayFor(modelItem => item.PersonName)</td>
+                            }
+                            <td>@Html.DisplayFor(modelItem => item.OutboundCorrespondenceMIStats.ReChecks)</td>
+                            <td>@Html.DisplayFor(modelItem => item.OutboundCorrespondenceMIStats.ReCheckPassed)</td>
+                            <td>@Html.DisplayFor(modelItem => item.OutboundCorrespondenceMIStats.ReCheckPassedPercentage)</td>
+                            <td>@Html.DisplayFor(modelItem => item.OutboundCorrespondenceMIStats.ReCheckPassAdvisory)</td>
+                            <td>@Html.DisplayFor(modelItem => item.OutboundCorrespondenceMIStats.ReCheckPassedAdvisoryPercentage)</td>
+                            <td>@Html.DisplayFor(modelItem => item.OutboundCorrespondenceMIStats.ReCheckFailed)</td>
+                            <td>@Html.DisplayFor(modelItem => item.OutboundCorrespondenceMIStats.ReCheckFailedPercentage)</td>
+                            <td>@Html.DisplayFor(modelItem => item.OutboundCorrespondenceMIStats.ReCheckOutstandingZeroToFive)</td>
+                            <td>@Html.DisplayFor(modelItem => item.OutboundCorrespondenceMIStats.ReCheckOutstandingSixToTen)</td>
+                            <td>@Html.DisplayFor(modelItem => item.OutboundCorrespondenceMIStats.ReCheckOutstandingGreaterThanTen)</td>
+                            <td>@Html.DisplayFor(modelItem => item.OutboundCorrespondenceMIStats.ReChecksOutstanding)</td>
+                        </tr>
+
+                    }
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+    }
+
+
+</div>
+
+<script>
+
+    $(function () {
+        $(".date-picker").datepicker({
+            dateFormat: 'dd/M/yy',
+            todayBtn: true,
+            autoclose: true
+        });
+    });
+
+    //function to enable search string field once option selected
+    $(function(){
+        $('#searchOption').on('change', function () {
+
+            $("#scheme").hide();
+            $("#business").hide();
+            $('#correspondence').hide();
+            $('#searchString').show();
+
+            if (this.value == "Scheme") {
+                $("#scheme").show();
+                $('#searchString').hide();
+            }
+            else if (this.value == "BusinessArea") {
+                $("#business").show();
+                $('#searchString').hide();
+            }
+            else if (this.value == "CorrespondenceType") {
+                $('#correspondence').show();
+                $('#searchString').hide();
+            }
+            else {
+                $('#searchString').attr('disabled', false);
+            }
+
+        });
+    });
+
+    $(function () {
+
+    //lookup for Name
+
+        $('#searchString').on('keyup change', function () {
+
+            var fieldName = '#searchString';
+            var idName = '#NameId'
+
+            personChecker(fieldName, idName);
+
+        });
+
+            //function to lookup people in people data
+
+    function personChecker(fieldName, idName) {
+
+        $(fieldName).autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    dataType: 'json',
+                    type: 'Get',
+                    url: '@Url.Action("PeopleSearch", "People")',
+                    data: { searchstring: request.term },
+
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return item
+
+                            })
+                        );
+                    }
+                })
+            },
+
+            select: function (event, ui) {
+                $(fieldName).val(ui.item.label);
+                $(idName).val(ui.item.value);
+                return false;
+            },
+                minLength: 1,
+            })
+
+        }
+
+     })
+
+</script>

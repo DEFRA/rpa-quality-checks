@@ -1,0 +1,77 @@
+﻿@model RPA.QualityPortal.ViewModels.QuestionAnswerList
+
+@{
+    ViewBag.CheckType = "Outbound";
+    ViewBag.Title = "CreateQuestions";
+}
+
+<div class="jumbotron">
+    <h1>Complete Quality Check</h1>
+    <h3>Complete Outbound Correspondence Check</h3>
+</div>
+
+@using (Html.BeginForm("EditQuestions", "OutboundCorrespondence", FormMethod.Post, new { @id = "EditQuestions" }))
+
+{
+
+
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.Challenge)
+
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Outbound Correspondence - QC Questions</div>
+        <div class="panel-body">
+
+            <table class="table">
+                <tr>
+                    <th>
+
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.QuestionAnswers[0].CheckQuestion.Question)
+                    </th>
+                    <th style="text-align:center">
+                        @Html.DisplayNameFor(model => model.QuestionAnswers[0].Answer)
+                    </th>
+                    <th></th>
+                </tr>
+
+
+
+                @for (int i = 0; i < Model.QuestionAnswers.Count(); i++)
+                {
+                    @Html.HiddenFor(model => model.QuestionAnswers[i].CheckQuestion.Question.QuestionId)
+
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => model.QuestionAnswers[i].CheckQuestion.Order)
+                            @Html.HiddenFor(model => model.QuestionAnswers[i].CheckQuestion.Order)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.QuestionAnswers[i].CheckQuestion.Question.Text)
+                            @Html.HiddenFor(model => model.QuestionAnswers[i].CheckQuestion.Question.Text)
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(model => model.QuestionAnswers[i].Answer, new SelectList(ViewBag.AnswerOptions, "Value", "Text", Model.QuestionAnswers[i].Answer), "", new { @class = "form-control", @style = "width: 100px" })
+                            @Html.ValidationMessageFor(model => model.QuestionAnswers[i].Answer, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.QuestionAnswers[i].Answer)
+                        </td>
+
+
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Continue" class="button" />
+    </div>
+
+}
+<div class="form-group">
+    <a href="@Url.Action("EditGeneral","OutboundCorrespondence", new { CheckId = ViewBag.CheckId } )" class="link-back">Back</a>
+</div>

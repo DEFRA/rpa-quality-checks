@@ -1,0 +1,70 @@
+﻿@model RPA.QualityPortal.ViewModels.BankAccount.BankAccountDetailsReChecks
+
+@{
+    string header = (string)ViewData["header"];
+    int from = (int)ViewData["from"];
+    int to = (int)ViewData["to"];
+}
+
+<tr>
+    <th>@header</th>
+    <th style="text-align: right;"><span style="padding-right: 25px;">Check Answer</span></th>
+    <th style="text-align: right;"><span style="padding-right: 25px;">First Recheck Answer</span></th>
+    <th style="text-align: right;"><span style="padding-right: 25px;">Second Recheck Answer</span></th>
+    @if (Model.SecondReCheckAnswers.Count > 0)
+    {
+        <th style="text-align: right;"><span style="padding-right: 25px;">Third Recheck Answer</span></th>
+    }
+</tr>
+
+@for (int i = from; i < to; i++)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(model => model.Answers[i].Question.Text)
+        </td>
+        <td align="right">
+            @Html.TextBoxFor(model => model.Answers[i].Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:100px; font-size:15px;" })
+        </td>
+        <td>
+            @Html.TextBoxFor(modelItem => modelItem.FirstReCheckAnswers[i].Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:100px; font-size:15px;" })
+        </td>
+        <td>
+            @Html.TextBoxFor(modelItem => modelItem.SecondReCheckAnswers[i].Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:100px; font-size:15px;" })
+        </td>
+        @if (Model.ThirdReCheckAnswers.Count > 0)
+        {
+            <td>
+                @Html.TextBoxFor(modelItem => modelItem.ThirdReCheckAnswers[i].Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:100px; font-size:15px;" })
+            </td>
+        }
+    </tr>
+    <tr>
+        @{
+            Html.RenderAction("_CheckComment", new { CheckId = Model.BankAccount.CheckId, QuestionId = Model.Answers[i].QuestionId });
+        }
+    </tr>
+    <tr>
+        @{
+            Html.RenderAction("_CheckComment", new { CheckId = Model.FirstBankAccountReCheck.CheckId, QuestionId = Model.Answers[i].QuestionId });
+        }
+    </tr>
+    <tr>
+        @{
+            Html.RenderAction("_CheckComment", new { CheckId = Model.SecondBankAccountReCheck.CheckId, QuestionId = Model.Answers[i].QuestionId });
+        }
+    </tr>
+    if (Model.ThirdReCheckAnswers.Count > 0)
+    {
+        <tr>
+            <td>
+                @Html.Display("Third Recheck Comment")
+            </td>
+            <td align="right">
+                @{
+                    Html.RenderAction("_CheckComment", new { CheckId = Model.ThirdBankAccountReCheck.CheckId, QuestionId = Model.Answers[i].QuestionId });
+                }
+            </td>
+        </tr>
+    }
+}

@@ -1,0 +1,223 @@
+﻿@model RPA.QualityPortal.ViewModels.BankAccountDetails
+
+@{
+    ViewBag.Title = "Bank Account Quality Checks";
+    ViewBag.CheckType = "BankAccount";
+}
+
+<br />
+
+<div class="form-horizontal">
+    <div class="panel panel-primary">
+        <div class="panel-heading">Bank Account - General Details</div>
+        <div class="panel-body">
+
+            @Html.HiddenFor(model => model.BankAccount.CheckId)
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BankAccount.SBI)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.BankAccount.SBI, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BankAccount.FRN)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.BankAccount.FRN, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BankAccount.BACheckType.Text)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.BankAccount.BACheckType.Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BankAccount.BusinessName)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.BankAccount.BusinessName, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BankAccount.PersonName)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.BankAccount.PersonName, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BankAccount.ManagerName)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.BankAccount.ManagerName, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BankAccount.DateQCCreated)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.BankAccount.DateQCCreated, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BankAccount.QCCompletedByName)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.BankAccount.QCCompletedByName, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BankAccount.DateQCCompleted)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.BankAccount.DateQCCompleted, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <span class="control-label col-md-2">@Html.DisplayNameFor(model => model.BankAccount.Overriden)</span>
+                <div class="col-md-10">
+                    @Html.CheckBoxFor(model => model.BankAccount.Overriden, new { @readonly = "readonly", @disabled = "disabled" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Bank Account - Quality Check Questions</div>
+        <div class="panel-body">
+            @if (Model.Answers.Count() != 0)
+            {
+                <table class="table">
+                    @Html.Partial("_AnswerBlock", new ViewDataDictionary(ViewData) { { "from", 0 }, { "to", 3 }, { "header", "Customer Verification Questions" } })
+                    @Html.Partial("_AnswerBlock", new ViewDataDictionary(ViewData) { { "from", 3 }, { "to", 4 }, { "header", "Bank Account Validation" } })
+                    @Html.Partial("_AnswerBlock", new ViewDataDictionary(ViewData) { { "from", 4 }, { "to", 8 }, { "header", "Bank Account details/amendment to bank details" } })
+                    @Html.Partial("_AnswerBlock", new ViewDataDictionary(ViewData) { { "from", 8 }, { "to", 11 }, { "header", "Confirmation" } })
+                </table>
+            }
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Bank Account - Quality Check Result</div>
+        <div class="panel-body">
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.QCResult)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.QCResult, "", new { @readonly = "readonly", @class = "form-control", @style = "width: 300px; font-size: 15px;" })
+                </div>
+            </div>
+
+            @if (Model.QCResult == "Not Approved")
+            {
+                <div class="form-group">
+                    <span class="control-label col-md-2">
+                        @Html.DisplayNameFor(model => model.BankAccount.FailReason.Text)
+                    </span>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.BankAccount.FailReason.Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                    </div>
+                </div>
+            }
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BankAccount.ReCheckRequired)
+                </span>
+                <div class="col-md-10" style="margin-top:10px">
+                    @Html.DisplayFor(model => model.BankAccount.ReCheckRequired)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BankAccount.Comments)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.BankAccount.Comments, new { @readonly = "readonly", @class = "form-control", @rows = 6 })
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*Challenge*@
+@if (Model.Challenge == true)
+{
+    <div>
+        @{
+            Html.RenderAction("_ChallengeView", "BankAccount", new { CheckId = Model.BankAccount.CheckId });
+        }
+    </div>
+}
+
+@*Amendment Reason*@
+@if (Model.CheckAmendmentReason != null)
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">Amendment Reason</div>
+        <div class="panel-body">
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.CheckAmendmentReason.AmendmentReason.Text)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.CheckAmendmentReason.AmendmentReason.Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.CheckAmendmentReason.AmendmentReasonComments)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.CheckAmendmentReason.AmendmentReasonComments, new { @readonly = "readonly", @class = "form-control", @rows = 6 })
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
+<p>
+    @Html.ActionLink("Back to Overview", "Index") |
+
+    @if (Model.QCResult == "Not Approved")
+    {
+        if (User.IsInRole("Quality Checks: BA Admin"))
+        {
+            @Html.ActionLink("Challenge", "Challenge", new { CheckId = Model.BankAccount.CheckId }) <text> | </text>
+        }
+    }
+
+    @if (User.IsInRole("Quality Checks: BA Admin"))
+    {
+        @Html.ActionLink("Edit", "EditGeneral", new { CheckId = Model.BankAccount.CheckId })
+    }
+</p>

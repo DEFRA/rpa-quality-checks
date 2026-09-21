@@ -1,0 +1,13 @@
+﻿<div class="navbar-right" style="padding-top:2px;">
+    <ul class="nav navbar-nav">
+        <li>@Html.ActionLink("Bank Account Homepage", "Index", "BankAccount")</li>
+        <li>@Html.ActionLink("Complete Checks", "Complete", "BankAccount")</li>
+        <li>@Html.ActionLink("Outstanding Checks", "Outstanding", "BankAccount")</li>
+
+        
+        @if (User.IsInRole("Quality Checks: BA Admin"))
+        {
+            <li>@Html.ActionLink("Admin", "Index", "Admin", new { checkType = "Bank" }, "")</li>
+        }
+        </ul>
+</div>

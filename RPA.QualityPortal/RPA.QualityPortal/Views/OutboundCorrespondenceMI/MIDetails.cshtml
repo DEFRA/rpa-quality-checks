@@ -1,0 +1,152 @@
+﻿@model RPA.QualityPortal.ViewModels.OutboundCorrespondenceVM.MI.OutboundCorrespondenceMIDetails
+
+
+@{
+    ViewBag.Title = "MIDetails";
+    ViewBag.CheckType = "Outbound";
+}
+
+<div class="jumbotron">
+    <h1>Outbound Correspondence QC Details</h1>
+    <p>Quality Checking for Outbound Correspondence MI</p>
+</div>
+
+@if (!String.IsNullOrEmpty(Model.SearchType))
+{
+    <h3>QC MI Details for @Model.SearchType</h3>
+
+    if (Model.DateFrom != null && Model.DateTo != null)
+    {
+        <h4>From: @Model.DateFrom.Value.ToShortDateString()  To: @Model.DateTo.Value.ToShortDateString() </h4>
+    }
+    else if (Model.DateFrom != null)
+    {
+        <h4>From: @Model.DateFrom.Value.ToShortDateString() To: Current Date</h4>
+    }
+    else if (Model.DateTo != null)
+    {
+        <h4>All Records To: @Model.DateTo.Value.ToShortDateString() </h4>
+    }
+}
+
+
+<div class="form-horizontal">
+    <div class="panel panel-primary">
+        @if (Model.ResultHeader != null)
+        {
+            <div class="panel-heading">QC Failure Details for @Model.ResultHeader </div>
+        }
+        else
+        {
+            <div class="panel-heading">QC Failure Details</div>
+        }
+        <div class="panel-body">
+            <table class="table table-condensed table-striped">
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Failed)</th>
+                    <th>@Html.DisplayNameFor(model => model.FailedPercentage) </th>
+                </tr>
+
+                <tr>
+                    <td>@Html.DisplayFor(model => model.Failed)</td>
+                    <td>@Html.DisplayFor(model => model.FailedPercentage)</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="panel panel-primary">
+        @if (Model.ResultHeader != null)
+        {
+
+            <div class="panel-heading">QC Failure Details Breakdown for  @Model.ResultHeader</div>
+
+        }
+        else
+        {
+            <div class="panel-heading">QC Failure Details Breakdown</div>
+        }
+        <div class="panel-body">
+            <table class="table table-condensed table-striped">
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.FailReasonCount[0].FailReason)</th>
+                    <th>@Html.DisplayNameFor(model => model.FailReasonCount[0].FailedNumber)</th>
+                    <th>@Html.DisplayNameFor(model => model.FailReasonCount[0].FailedPercentage)</th>
+                </tr>
+                @foreach (var item in Model.FailReasonCount)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.FailReason)</td>
+                        <td>@Html.DisplayFor(modelItem => item.FailedNumber)</td>
+                        <td>@Html.DisplayFor(modelItem => item.FailedPercentage)</td>
+                    </tr>
+                }
+            </table>
+        </div>
+
+    </div>
+
+</div>
+@if (Model.OutboundCorrespondenceMIPersonStatsList != null)
+{
+    <div class="form-horizontal">
+        <div class="panel panel-primary">
+            <div class="panel-heading">QC MI: @Model.ResultHeader</div>
+
+            <div class="panel-body">
+
+                <table class="table table-condensed table-striped">
+                    <tr>
+                        <th>Name</th>
+                        <th>@Html.DisplayNameFor(model => model.Failed)</th>
+                        <th>@Html.DisplayNameFor(model => model.FailedPercentage)</th>
+                    </tr>
+
+
+
+                    @foreach (var item in Model.OutboundCorrespondenceMIPersonStatsList)
+                    {
+                        <tr>
+                            @if (Model.ResultHeader == " Line Managers under " + Model.SearchType)
+                            {
+
+                                <td>@Html.DisplayFor(modelItem => item.LineManagerName)</td>
+                            }
+                            else if (Model.ResultHeader == " HEO's under " + Model.SearchType)
+                            {
+
+                                <td>@Html.DisplayFor(modelItem => item.HEOName)</td>
+                            }
+                            else
+                            {
+
+                                <td>@Html.DisplayFor(modelItem => item.PersonName)</td>
+                            }
+                            <td>@Html.DisplayFor(modelItem => item.OutboundCorrespondenceMIStats.Failed)</td>
+                            <td>@Html.DisplayFor(modelItem => item.OutboundCorrespondenceMIStats.FailedPercentage)</td>
+
+                            @if (Model.ResultHeader == " Line Managers under " + Model.SearchType)
+                            {
+                                <td>@Html.ActionLink("Details", "MIDetails", new { personName = item.LineManagerName, detailsClick = true })</td>
+                            }
+                            else if (Model.ResultHeader == " HEO's under " + Model.SearchType)
+                            {
+                                <td>@Html.ActionLink("Details", "MIDetails", new { personName = item.HEOName, detailsClick = true })</td>
+                            }
+                            else
+                            {
+                                <td>@Html.ActionLink("Details", "MIDetails", new { personName = item.PersonName, detailsClick = true })</td>
+                            }
+                        </tr>
+                    }
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+
+}
+
+<div class="form-group">
+    <a href="@Url.Action("MIIndex","OutboundCorrespondenceMI", new { back = true})" class="link-back">Back</a>
+</div>

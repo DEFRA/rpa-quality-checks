@@ -1,0 +1,82 @@
+﻿@model RPA.QualityPortal.ViewModels.QuestionAnswerList
+
+@{
+    ViewBag.CheckType = "Outbound";
+    ViewBag.Title = "ChallengeQuestions";
+}
+
+<div class="jumbotron">
+    <h1>Complete Quality Check</h1>
+    <h3>Complete Outbound Correspondence Check</h3>
+</div>
+
+@using (Html.BeginForm("ChallengeQuestions", "OutboundCorrespondence", new { CheckId = ViewBag.CheckId }, FormMethod.Post))
+
+{
+
+
+    @Html.AntiForgeryToken()
+
+
+
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Outbound Correspondence - QC Questions (Challenge)</div>
+        <div class="panel-body">
+
+            <table class="table">
+                <tr>
+                    <th>
+
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.QuestionAnswers[0].CheckQuestion.Question)
+                    </th>
+                    <th style="text-align:center">
+                        @Html.DisplayNameFor(model => model.QuestionAnswers[0].Answer)
+                    </th>
+                    <th></th>
+                </tr>
+
+
+
+                @for (int i = 0; i < Model.QuestionAnswers.Count(); i++)
+                {
+                    @Html.HiddenFor(model => model.QuestionAnswers[i].CheckQuestion.Question.QuestionId)
+
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => model.QuestionAnswers[i].CheckQuestion.Order)
+                            @Html.HiddenFor(model => model.QuestionAnswers[i].CheckQuestion.Order)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.QuestionAnswers[i].CheckQuestion.Question.Text)
+                            @Html.HiddenFor(model => model.QuestionAnswers[i].CheckQuestion.Question.Text)
+                        </td>
+                        <td>
+                            @if (ViewBag.Letter == "Letter" && Model.QuestionAnswers[i].CheckQuestion.Order == 2)
+                            {
+                                @Html.DropDownListFor(model => model.QuestionAnswers[i].Answer, new SelectList(ViewBag.AnswerOptions, "Value", "Text", Model.QuestionAnswers[i].Answer), "", new { @class = "form-control", @style = "width: 100px", @disabled = "disabled" })
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(model => model.QuestionAnswers[i].Answer, new SelectList(ViewBag.AnswerOptions, "Value", "Text", Model.QuestionAnswers[i].Answer), "", new { @class = "form-control", @style = "width: 100px" })
+                            }
+                            @Html.ValidationMessageFor(model => model.QuestionAnswers[i].Answer, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.QuestionAnswers[i].Answer)
+                        </td>
+
+
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Continue" class="button" />
+    </div>
+
+}
+

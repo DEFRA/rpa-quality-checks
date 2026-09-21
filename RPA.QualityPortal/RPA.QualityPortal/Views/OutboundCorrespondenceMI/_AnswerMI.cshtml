@@ -1,0 +1,55 @@
+﻿@model List<RPA.QualityPortal.ViewModels.OutboundCorrespondenceVM.MI.AnswerMI>
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Question.Text)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model[0].AnswerYes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].AnswerYesPercent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].AnswerNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].AnswerNoPercent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].AnswerNA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].AnswerNAPercent)
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Question.Text)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AnswerYes)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AnswerYesPercent)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AnswerNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AnswerNoPercent)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AnswerNA)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AnswerNAPercent)
+        </td>
+    </tr>
+        }
+        </table>

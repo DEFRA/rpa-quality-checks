@@ -1,0 +1,155 @@
+﻿@model RPA.QualityPortal.Models.CheckTypes.BankAccountCheck
+
+@{
+    ViewBag.Title = "Bank Account Quality Checks - Create";
+    ViewBag.CheckType = "BankAccount";
+}
+
+<div class="jumbotron">
+    <h1>Bank Account QC</h1>
+    <h3>Create a Bank Account check</h3>
+</div>
+
+@using (Html.BeginForm("CreateGeneral", "BankAccount", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(x => x.CheckId)
+
+    <div class="form-horizontal">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Bank Account - General Details</div>
+            <div class="panel-body">
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.SBI)</span>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.SBI, new { htmlAttributes = new { @class = "form-control form-control-length", @data_val = "true", @data_val_required = "The SBI field is required." } })
+                        @Html.ValidationMessageFor(model => model.SBI, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.FRN)</span>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.FRN, htmlAttributes: new { @class = "form-control form-control-length", @disabled = "disabled", @readonly = "readonly" })
+                        @Html.HiddenFor(model => model.FRN)
+                        @Html.ValidationMessageFor(model => model.FRN, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.Label("Type of Check")</span>
+                    <div class="col-md-10">
+                        @Html.DropDownList("BACheckTypeId", null, "", htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.BACheckTypeId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.BusinessName)</span>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.BusinessName, htmlAttributes: new { @class = "form-control form-control-length", @disabled = "disabled", @readonly = "readonly" })
+                        @Html.HiddenFor(model => model.BusinessName)
+                        @Html.ValidationMessageFor(model => model.BusinessName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.Label("Caller Handler")</span>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.PersonName, htmlAttributes: new { @class = "form-control form-control-length", @disabled = "disabled", @readonly = "readonly" })
+                        @Html.HiddenFor(model => model.PersonName)
+                        @Html.ValidationMessageFor(model => model.PersonName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.ManagerName)</span>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.ManagerName, htmlAttributes: new { @class = "form-control form-control-length", @disabled = "disabled", @readonly = "readonly" })
+                        @Html.HiddenFor(model => model.ManagerName)
+                        @Html.ValidationMessageFor(model => model.ManagerName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.DateQCCreated)</span>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.DateQCCreated, "{0:dd MMMM yyyy}", htmlAttributes: new { @readonly = "readonly", @disabled = "disabled", @type = "datetime", @class = "form-control form-control-length" })
+                        @Html.HiddenFor(model => model.DateQCCreated)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.QCCompletedByName)</span>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.QCCompletedByName, htmlAttributes: new { @class = "form-control form-control-length", @disabled = "disabled", @readonly = "readonly" })
+                        @Html.HiddenFor(model => model.QCCompletedByName)
+                        @Html.ValidationMessageFor(model => model.QCCompletedByName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.DateQCCompleted)</span>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.DateQCCompleted, "{0:dd MMMM yyyy}", htmlAttributes: new { @readonly = "readonly", @disabled = "disabled", @type = "datetime", @class = "form-control form-control-length" })
+                        @Html.HiddenFor(model => model.DateQCCompleted)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.Overriden)</span>
+                    <div class="col-md-10">
+                        @Html.CheckBoxFor(model => model.Overriden)
+                        @Html.HiddenFor(model => model.Overriden)
+                    </div>
+                </div>
+
+                @Html.HiddenFor(model => model.CheckTypeId)
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Continue" class="button" />
+    </div>
+}
+
+<div class="form-group">
+    @Html.ActionLink("Cancel", "Details", new { CheckId = Model.CheckId })
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(function () {
+
+            //lookup for Name
+            $('#Psearch').on('keyup change', function () { personChecker('#Psearch', '#NameId') })
+            //lookup for Manager
+            $('#Msearch').on('keyup change', function () { personChecker('#Msearch', '#NameId') })
+
+            //lookup for people in people data
+            function  personChecker (fieldName, idName) {
+                $(fieldName).autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: '@Url.Action("PeopleSearch", "People")',
+                            data: { searchstring: request.term },
+                            success: function (data) { response($.map(data, function (item) { return item })) }
+                        })
+                    },
+
+                    select: function (_, ui) {
+                        $(fieldName).val(ui.item.label)
+                        $(idName).val(ui.item.label)
+
+                        return false;
+                    },
+
+                    minLength: 1
+                })
+            }
+        })
+    })
+</script>

@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.CheckType = "Outbound";
+}
+
+<div class="jumbotron">
+    <h1>Access Administration</h1>
+    <p>Control access rights for users</p>
+</div>
+
+@using (Html.BeginForm("Access", "Admin", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div>
+        <div class="form-group">
+            <input type="text" class="form-control" id="Psearch" name="name" style="width:200px" placeholder="Type Name Here" />
+        </div>
+
+        <div class="form-group">
+            @Html.DropDownList("access", (IEnumerable<SelectListItem>)ViewBag.AccessRights, "", htmlAttributes: new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Confirm" class="button" />
+        </div>
+
+        <div class="form-group">
+            @ViewBag.Error
+        </div>
+    </div>
+}
+
+<script>
+
+$(document).ready(function () {
+
+    $(function () {
+
+    //lookup for Name
+        $('#Psearch').on('keyup change', function () {
+
+            var fieldName = '#Psearch';
+            var idName = '#name'
+
+            personChecker(fieldName, idName);
+        });
+
+    //function to lookup people in people data
+        function personChecker(fieldName, idName) {
+
+        $(fieldName).autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    dataType: 'json',
+                    type: 'Get',
+                    url: '@Url.Action("PeopleSearch", "People")',
+                    data: { searchstring: request.term },
+
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return item
+                            })
+                        );
+                    }
+                })
+            },
+
+            select: function (event, ui) {
+                $(fieldName).val(ui.item.label);
+                $(idName).val(ui.item.value);
+                return false;
+            },
+                minLength: 1,
+            })
+        }
+     })
+});
+
+</script>

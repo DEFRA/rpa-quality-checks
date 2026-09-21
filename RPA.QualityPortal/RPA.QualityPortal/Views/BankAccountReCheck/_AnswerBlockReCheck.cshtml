@@ -1,0 +1,48 @@
+﻿@model RPA.QualityPortal.ViewModels.BankAccount.BankAccountDetailsReCheck
+
+@{
+    string header = (string)ViewData["header"];
+    int from = (int)ViewData["from"];
+    int to = (int)ViewData["to"];
+}
+
+<tr>
+    <th>@header</th>
+    <th style="text-align: right;"><span style="padding-right: 25px;">Check Answer</span></th>
+    <th style="text-align: right;"><span style="padding-right: 25px;">Recheck Answer</span></th>
+</tr>
+
+@for (int i = from; i < to; i++)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(model => model.Answers[i].Question.Text)
+        </td>
+        <td align="right">
+            @Html.TextBoxFor(model => model.Answers[i].Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:100px; font-size:15px;" })
+        </td>
+        <td align="right">
+            @Html.TextBoxFor(model => model.ReCheckAnswers[i].Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:100px; font-size:15px;" })
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.Display("Check Comment")
+        </td>
+        <td align="right">
+            @{
+                Html.RenderAction("_CheckComment", new { CheckId = Model.BankAccount.CheckId, QuestionId = Model.Answers[i].QuestionId });
+            }
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.Display("Recheck Comment")
+        </td>
+        <td align="right">
+            @{
+                Html.RenderAction("_CheckComment", new { CheckId = Model.BankAccountReCheck.CheckId, QuestionId = Model.Answers[i].QuestionId });
+            }
+        </td>
+    </tr>
+}

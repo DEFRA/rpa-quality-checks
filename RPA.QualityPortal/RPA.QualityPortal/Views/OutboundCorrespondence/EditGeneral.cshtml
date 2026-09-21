@@ -1,0 +1,248 @@
+﻿@model RPA.QualityPortal.Models.CheckTypes.OutboundCorrespondence
+
+@{
+    ViewBag.CheckType = "Outbound";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="jumbotron">
+    <h1>Complete Quality Check</h1>
+    <h3>Complete Outbound Correspondence Check</h3>
+</div>
+
+@using (Html.BeginForm("EditGeneral", "OutboundCorrespondence", FormMethod.Post, new { @id = "EditGeneral" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(x => x.CheckId)
+    @Html.HiddenFor(x => x.FailReasonId)
+    @Html.HiddenFor(x => x.ReCheckRequired)
+    @Html.HiddenFor(x => x.InitialReCheckDecision)
+    @Html.HiddenFor(x => x.ExcludeQCResult)
+    @Html.HiddenFor(x => x.EmailNotifications)
+    @Html.HiddenFor(x => x.Comments)
+
+    <div class="form-horizontal">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Outbound Correspondence - General Details</div>
+            <div class="panel-body">
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.Scheme.Text)</span>
+                    <div class="col-md-10">
+                        @Html.DropDownList("SchemeId", null, "", htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SchemeId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.BusinessArea.Text)</span>
+                    <div class="col-md-10">
+                        @Html.DropDownList("BusinessAreaId", null, "", htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.BusinessAreaId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.CorrespondenceType.Text)</span>
+                    <div class="col-md-10">
+                        @Html.DropDownList("CorrespondenceTypeId", null, "", htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CorrespondenceTypeId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.TemplateReference)</span>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.TemplateReference, new { htmlAttributes = new { @class = "form-control form-control-length" } })
+                        @Html.ValidationMessageFor(model => model.TemplateReference, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.UniqueId)</span>
+                    <div class="col-md-10">
+                        @Html.DropDownList("UniqueIdentifierPrefixId", null, "", htmlAttributes: new { @class = "form-control", @style = "width:90px;" })
+                        @Html.ValidationMessageFor(model => model.UniqueIdentifierPrefixId, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.UniqueId, new { htmlAttributes = new { @class = "form-control form-control-length" } })
+                        @Html.ValidationMessageFor(model => model.UniqueId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.CRMRef)</span>
+
+                    <div class="col-md-10">
+                        @Html.DropDownList("CRMRefPrefixId", null, "", htmlAttributes: new { @class = "form-control", @style = "width:90px;" })
+                        @Html.ValidationMessageFor(model => model.CRMRefPrefixId, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.CRMRef, new { htmlAttributes = new { @class = "form-control form-control-length" } })
+                        @Html.ValidationMessageFor(model => model.CRMRef, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.SBI)</span>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.SBI, new { htmlAttributes = new { @class = "form-control form-control-length" } })
+                        @Html.ValidationMessageFor(model => model.SBI, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.PersonName)</span>
+                    <div class="col-md-10">
+                        <input type="hidden" id="NameId" name="NameId" value="" />
+                        @Html.EditorFor(model => model.PersonName, new { htmlAttributes = new { @class = "form-control form-control-length", @id = "Psearch", @name = "Psearch" } })
+                        @Html.ValidationMessageFor(model => model.PersonName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.ManagerName)</span>
+                    <div class="col-md-10">
+                        <input type="hidden" id="ManagerId" name="ManagerId" value="" />
+                        @Html.EditorFor(model => model.ManagerName, new { htmlAttributes = new { @class = "form-control form-control-length", @id = "Msearch", @name = "Msearch" } })
+                        @Html.ValidationMessageFor(model => model.ManagerName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.HEO)</span>
+                    <div class="col-md-10">
+                        <input type="hidden" id="HEOId" name="HEOId" value="" />
+                        @Html.EditorFor(model => model.HEO, new { htmlAttributes = new { @class = "form-control form-control-length", @id = "Hsearch", @name = "Hsearch" } })
+                        @Html.ValidationMessageFor(model => model.HEO, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.SEO)</span>
+                    <div class="col-md-10">
+                        <input type="hidden" id="SEOId" name="SEOId" value="" />
+                        @Html.EditorFor(model => model.SEO, new { htmlAttributes = new { @class = "form-control form-control-length", @id = "Ssearch", @name = "Ssearch" } })
+                        @Html.ValidationMessageFor(model => model.SEO, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.QCCompletedByName)</span>
+                    <div class="col-md-10">
+                        <input type="hidden" id="QCId" name="QCId" value="" />
+                        @Html.EditorFor(model => model.QCCompletedByName, new { htmlAttributes = new { @class = "form-control form-control-length", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.QCCompletedByName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.DateQCCompleted)</span>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.DateQCCompleted, "{0:dd/MM/yyyy}", htmlAttributes: new { @readonly = "readonly", @disabled = "disabled", @type = "datetime", @class = "form-control form-control-length" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Continue" class="button" />
+    </div>
+}
+
+<div class="form-group">
+    @Html.ActionLink("Cancel", "Details", new { CheckId = Model.CheckId })
+</div>
+
+
+<script>
+
+$(document).ready(function () {
+
+
+    $(function () {
+
+    //lookup for Name
+
+        $('#Psearch').on('keyup change', function () {
+
+            var fieldName = '#Psearch';
+            var idName = '#NameId'
+
+            personChecker(fieldName, idName);
+
+        });
+
+    //lookup for Manager
+
+        $('#Msearch').on('keyup change', function () {
+
+            var fieldName = '#Msearch';
+            var idName = '#ManagerId'
+
+            personChecker(fieldName, idName);
+
+        });
+
+    //lookup for HEO
+
+        $('#Hsearch').on('keyup change', function () {
+
+            var fieldName = '#Hsearch';
+            var idName = '#HEOId'
+
+            personChecker(fieldName, idName);
+
+        });
+
+     //lookup for SEO
+
+        $('#Ssearch').on('keyup change', function () {
+
+            var fieldName = '#Ssearch';
+            var idName = '#SEOId'
+
+            personChecker(fieldName, idName);
+
+        });
+
+
+
+
+
+    //function to lookup people in people data
+
+    function personChecker(fieldName, idName) {
+
+        $(fieldName).autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    dataType: 'json',
+                    type: 'Get',
+                    url: '@Url.Action("PeopleSearch", "People")',
+                    data: { searchstring: request.term },
+
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return item
+
+                            })
+                        );
+                    }
+                })
+            },
+
+            select: function (event, ui) {
+                $(fieldName).val(ui.item.label);
+                $(idName).val(ui.item.value);
+                return false;
+            },
+                minLength: 1,
+            })
+
+        }
+
+     })
+
+});
+
+
+</script>

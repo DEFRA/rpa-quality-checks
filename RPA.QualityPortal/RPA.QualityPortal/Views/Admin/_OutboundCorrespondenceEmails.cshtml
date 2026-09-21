@@ -1,0 +1,118 @@
+﻿@model PagedList<RPA.QualityPortal.ViewModels.OutboundCorrespondenceOverview>
+
+@using PagedList;
+@using PagedList.Mvc;
+
+  
+@using (Html.BeginForm("_OutboundCorrespondenceEmails", "Admin", FormMethod.Post))
+    {
+
+@Html.AntiForgeryToken()
+
+<div class="panel panel-primary">
+    <div class="panel-heading">Trigger Notification Emails On per Check</div>
+    <div class="panel-body">
+        <div form-group>
+            <input type="checkbox" id="selectAll" />
+            <label>Check All</label>
+            <input type="submit" value="Save and Send" style="margin-left:800px" class="btn btn-success" />
+        </div>
+
+        <h2>Check Notification Emails not sent</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.CorrespondenceType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.UniqueId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.CRMRef)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.SBI)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.PersonName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.ManagerName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.QCCompletedByName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.DateQCCompleted)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].QCResult)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.EmailNotifications)
+                </th>
+            </tr>
+
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    @Html.HiddenFor(modelItem => Model[i].OutboundCorrespondence.CheckId)
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].OutboundCorrespondence.CorrespondenceType.Text)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].OutboundCorrespondence.UniqueIdentifierFull)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].OutboundCorrespondence.CrmReferenceFull)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].OutboundCorrespondence.SBI)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].OutboundCorrespondence.PersonName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].OutboundCorrespondence.ManagerName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].OutboundCorrespondence.QCCompletedByName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].OutboundCorrespondence.DateQCCompleted)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].QCResult)
+                    </td>
+                    @if (ViewBag.Email == true)
+                    {
+                        <td id="selected">
+                            @Html.CheckBoxFor(modelItem => Model[i].OutboundCorrespondence.EmailNotifications)
+                        </td>
+
+                    }
+                    else
+                    {
+                        <td>
+                            Emails are turned off
+                        </td>
+                    }
+                </tr>
+            }
+
+        </table>
+
+        <div>
+            @Html.PagedListPager(Model, page => Url.Action("Email", new { checkType = ViewBag.typeOfCheck, page, pageSize = Model.PageSize }))
+            Showing @(Model.TotalItemCount < Model.FirstItemOnPage ? 0 : Model.FirstItemOnPage) to @Model.LastItemOnPage of @Model.TotalItemCount Outbound Correspondences
+        </div>
+
+    </div>
+</div>
+    }
+
+<script>
+        $('#selectAll').change(function () {
+            $('#selected input[type="checkbox"]').prop('checked', this.checked)
+        });
+</script>

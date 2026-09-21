@@ -1,0 +1,110 @@
+﻿@model RPA.QualityPortal.Models.CheckTypes.BankAccountCheck
+
+@{
+    ViewBag.Title = "Bank Account Quality Checks - Create";
+    ViewBag.CheckType = "BankAccount";
+}
+
+<div class="jumbotron">
+    <h1>Bank Account QC</h1>
+    <h3>Create a Bank Account check</h3>
+</div>
+
+@using (Html.BeginForm("CreateResult", "BankAccount", FormMethod.Post, new { @id = "CreateResult" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.CheckId)
+    @Html.HiddenFor(model => model.CheckTypeId)
+    @Html.HiddenFor(model => model.SBI)
+    @Html.HiddenFor(model => model.FRN)
+    @Html.HiddenFor(model => model.BACheckTypeId)
+    @Html.HiddenFor(model => model.BusinessName)
+    @Html.HiddenFor(model => model.PersonName)
+    @Html.HiddenFor(model => model.ManagerName)
+    @Html.HiddenFor(model => model.DateQCCreated)
+    @Html.HiddenFor(model => model.QCCompletedByName)
+    @Html.HiddenFor(model => model.DateQCCompleted)
+
+    <div class="form-horizontal">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Bank Account - Quality Check Questions</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <span class="control-label col-md-2"><b>Quality Check Result</b></span>
+                    <div class="col-md-10">
+                        @Html.DropDownList("Result", null, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.FailReason.Text, new { @class = "form-label" })</span>
+                    <div class="col-md-10">
+                        @Html.DropDownList("FailReasonId", null, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.FailReasonId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.CoachingPoint, htmlAttributes: new { @class = "form-label" })</span>
+                    <div class="col-md-10">
+                        <div class="multiple-choice">@Html.RadioButtonFor(model => model.CoachingPoint, "True", htmlAttributes: new { @name = "CoachingPointYes" })@Html.Label("Yes")</div>
+                        <div class="multiple-choice">@Html.RadioButtonFor(model => model.CoachingPoint, "False", htmlAttributes: new { @name = "CoachingPointNo", @checked = "checked" })@Html.Label("No")     </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.ReCheckRequired, htmlAttributes: new { @class = "form-label" })</span>
+                    <div class="col-md-10">
+                        <div class="multiple-choice">@Html.RadioButtonFor(model => model.ReCheckRequired, "True", htmlAttributes: new { @name = "ReCheckFailTrue" })@Html.Label("Yes")</div>
+                        <div class="multiple-choice">@Html.RadioButtonFor(model => model.ReCheckRequired, "False", htmlAttributes: new { @name = "ReCheckFailFalse", @checked = "checked" })@Html.Label("No")     </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.Comments, new { @class = "form-label" })</span>
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.Comments, new { @class = "form-control", rows = 6 })
+                        @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                @if (ViewBag.Email == true)
+                {
+                    <div class="form-group">
+
+                        <span class="control-label col-md-2">@Html.LabelFor(model => model.EmailNotifications, htmlAttributes: new { @class = "form-label" })</span>
+                        <div class="col-md-10">
+                            <div class="multiple-choice">
+                                @Html.RadioButtonFor(model => model.EmailNotifications, "True", htmlAttributes: new { @name = "EmailSendYes", @checked = "checked" })@Html.Label("Yes")
+                            </div>
+                            <div class="multiple-choice">
+                                @Html.RadioButtonFor(model => model.EmailNotifications, "False", htmlAttributes: new { @name = "EmailSendNo" })@Html.Label("No")
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group">
+
+                        <span class="control-label col-md-2">@Html.LabelFor(model => model.EmailNotifications, htmlAttributes: new { @class = "form-label" })</span>
+                        <div class="col-md-10">
+                            <div style="padding-top:7px">Email Notifications are switched off</div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save and submit Quality Check" class="button" />
+    </div>
+}
+
+<div class="form-group">
+    @Html.ActionLink("Back", "CreateQuestions")
+</div>

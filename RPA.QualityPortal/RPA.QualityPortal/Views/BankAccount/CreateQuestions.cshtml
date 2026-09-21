@@ -1,0 +1,35 @@
+﻿@model RPA.QualityPortal.ViewModels.QuestionAnswerList
+
+@{
+    ViewBag.Title = "Bank Account Quality Checks - Create";
+    ViewBag.CheckType = "BankAccount";
+}
+
+<div class="jumbotron">
+    <h1>Bank Account QC</h1>
+    <h3>Create a Bank Account Check</h3>
+</div>
+
+@using (Html.BeginForm("CreateQuestions", "BankAccount", FormMethod.Post, new { @id = "CreateQuestions" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="panel panel-primary">
+        <div class="panel-heading">Bank Account - Quality Check Questions</div>
+        <div class="panel-body">
+            <table class="table">
+                @Html.Partial("_QuestionBlock", new ViewDataDictionary(ViewData) { { "from", 0 }, { "to", 3 }, { "header", "Customer Verification Questions" } })
+                @Html.Partial("_QuestionBlock", new ViewDataDictionary(ViewData) { { "from", 3 }, { "to", 4 }, { "header", "Bank Account Validation" } })
+                @Html.Partial("_QuestionBlock", new ViewDataDictionary(ViewData) { { "from", 4 }, { "to", 8 }, { "header", "Bank Account details/amendment to bank details" } })
+                @Html.Partial("_QuestionBlock", new ViewDataDictionary(ViewData) { { "from", 8 }, { "to", 11 }, { "header", "Confirmation" } })
+            </table>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Continue" class="button" />
+    </div>
+}
+
+<div class="form-group">
+    @Html.ActionLink("Back", "CreateGeneral", new { CheckId = ViewBag.CheckId })
+</div>

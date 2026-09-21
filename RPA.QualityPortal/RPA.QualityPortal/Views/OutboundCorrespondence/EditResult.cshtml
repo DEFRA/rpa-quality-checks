@@ -1,0 +1,109 @@
+﻿@model RPA.QualityPortal.Models.CheckTypes.OutboundCorrespondence
+
+@{
+    ViewBag.CheckType = "Outbound";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="jumbotron">
+    <h1>Complete Quality Check</h1>
+    <h3>Complete Outbound Correspondence Check</h3>
+</div>
+
+@using (Html.BeginForm("EditResult", "OutboundCorrespondence", FormMethod.Post, new { @id = "EditResult" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(x => x.CheckId)
+    @Html.HiddenFor(model => model.TemplateReference)
+    @Html.HiddenFor(model => model.SBI)
+    @Html.HiddenFor(model => model.CRMRef)
+    @Html.HiddenFor(model => model.ManagerName)
+    @Html.HiddenFor(model => model.HEO)
+    @Html.HiddenFor(model => model.SEO)
+    @Html.HiddenFor(model => model.PersonName)
+    @Html.HiddenFor(model => model.QCCompletedByName)
+    @Html.HiddenFor(model => model.UniqueId)
+
+    <div class="form-horizontal">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Outbound Correspondence - QC Result</div>
+            <div class="panel-body">
+
+                <div class="form-group">
+                    <span class="control-label col-md-2"><b>QC Result</b></span>
+
+                    <div class="col-md-10" style="padding-top:6px; padding-left:15px">@ViewBag.QCResult</div>
+                </div>
+
+                @if (ViewBag.QCResult == "Not Approved")
+                {
+                    <div class="form-group">
+                        <span class="control-label col-md-2">@Html.LabelFor(model => model.FailReason.Text, htmlAttributes: new { @class = "form-label" })</span>
+                        <div class="col-md-10">
+                            @Html.DropDownList("FailReasonID", null, "", htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.FailReason.Text, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <span class="control-label col-md-2">@Html.LabelFor(model => model.ReCheckRequired, htmlAttributes: new { @class = "form-label" })</span>
+                        <div class="col-md-10">
+                            <div class="multiple-choice">
+                                @Html.RadioButtonFor(model => model.ReCheckRequired, "True")@Html.Label("Yes")
+                            </div>
+                            <div class="multiple-choice">
+                                @Html.RadioButtonFor(model => model.ReCheckRequired, "False")@Html.Label("No")
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.InitialReCheckDecision, htmlAttributes: new { @class = "form-label" })</span>
+                    <div class="col-md-10">
+                        <div class="multiple-choice">
+                            @Html.RadioButtonFor(model => model.InitialReCheckDecision, "True")@Html.Label("Yes")
+                        </div>
+                        <div class="multiple-choice">
+                            @Html.RadioButtonFor(model => model.InitialReCheckDecision, "False")@Html.Label("No")
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.ExcludeQCResult, htmlAttributes: new { @class = "form-label" })</span>
+                    <div class="col-md-10">
+                        <div class="multiple-choice">
+                            @Html.RadioButtonFor(model => model.ExcludeQCResult, "True")@Html.Label("Yes")
+                        </div>
+                        <div class="multiple-choice">
+                            @Html.RadioButtonFor(model => model.ExcludeQCResult, "False")@Html.Label("No")
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "form-label" })</span>
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.Comments, new { @class = "form-control", rows = 6 })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Continue" class="button" />
+    </div>
+
+
+}
+<div class="form-group">
+    <a href="@Url.Action("EditQuestions","OutboundCorrespondence")" class="link-back">Back</a>
+</div>

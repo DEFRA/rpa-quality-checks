@@ -1,0 +1,399 @@
+﻿@model RPA.QualityPortal.ViewModels.BankAccount.BankAccountDetailsReChecks
+
+@{
+    ViewBag.Title = "Bank Account ReChecks";
+    ViewBag.CheckType = "BankAccount";
+}
+
+<br />
+
+<div class="form-horizontal">
+    <div class="panel panel-primary">
+        <div class="panel-heading">Bank Account - General Details</div>
+        <div class="panel-body">
+
+            @Html.HiddenFor(model => model.BankAccount.CheckId)
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BankAccount.SBI)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.BankAccount.SBI, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BankAccount.FRN)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.BankAccount.FRN, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BankAccount.BACheckType.Text)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.BankAccount.BACheckType.Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BankAccount.BusinessName)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.BankAccount.BusinessName, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BankAccount.PersonName)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.BankAccount.PersonName, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BankAccount.ManagerName)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.BankAccount.ManagerName, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BankAccount.DateQCCreated)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.BankAccount.DateQCCreated, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BankAccount.QCCompletedByName)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.BankAccount.QCCompletedByName, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BankAccount.DateQCCompleted)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.BankAccount.DateQCCompleted, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Bank Account - Quality Check Questions</div>
+        <div class="panel-body">
+            @if (Model.Answers.Count() != 0)
+            {
+                <table class="table">
+                    @Html.Partial("_AnswerBlockReChecks", new ViewDataDictionary(ViewData) { { "from", 0 }, { "to", 3 }, { "header", "Customer Verification Questions" } })
+                    @Html.Partial("_AnswerBlockReChecks", new ViewDataDictionary(ViewData) { { "from", 3 }, { "to", 4 }, { "header", "Bank Account Validation" } })
+                    @Html.Partial("_AnswerBlockReChecks", new ViewDataDictionary(ViewData) { { "from", 4 }, { "to", 8 }, { "header", "Bank Account details/amendment to bank details" } })
+                    @Html.Partial("_AnswerBlockReChecks", new ViewDataDictionary(ViewData) { { "from", 8 }, { "to", 11 }, { "header", "Confirmation" } })
+                </table>
+            }
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Bank Account - Quality Check Result</div>
+        <div class="panel-body">
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.QCResult)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.QCResult, "", new { @readonly = "readonly", @class = "form-control", @style = "width: 300px; font-size: 15px;" })
+                </div>
+            </div>
+
+            @if (Model.QCResult == "Not Approved")
+            {
+                <div class="form-group">
+                    <span class="control-label col-md-2">
+                        @Html.DisplayNameFor(model => model.BankAccount.FailReason.Text)
+                    </span>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.BankAccount.FailReason.Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                    </div>
+                </div>
+            }
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BankAccount.ReCheckRequired)
+                </span>
+                <div class="col-md-10" style="margin-top:10px">
+                    @Html.DisplayFor(model => model.BankAccount.ReCheckRequired)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="control-label col-md-2">
+                    @Html.DisplayNameFor(model => model.BankAccount.Comments)
+                </span>
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.BankAccount.Comments, new { @readonly = "readonly", @class = "form-control", @rows = 6 })
+                </div>
+            </div>
+
+        </div>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Bank Account - Quality First Recheck Result</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <span class="control-label col-md-2">
+                        @Html.DisplayNameFor(model => model.FirstReCheckResult)
+                    </span>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.FirstReCheckResult, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <span class="control-label col-md-2">
+                        @Html.DisplayNameFor(model => model.FirstBankAccountReCheck.ReCheckCompletedBy)
+                    </span>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.FirstBankAccountReCheck.ReCheckCompletedBy, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <span class="control-label col-md-2">
+                        Date ReCheck Completed
+                    </span>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.FirstBankAccountReCheck.DateQCCompleted, "{0:dd/MM/yyyy}", htmlAttributes: new { @class = "form-control", @readonly = "readonly", @disabled = "disabled", @type = "datetime", @style = "width:300px; font-size:15px;" })
+                    </div>
+                </div>
+                @if (Model.FirstReCheckResult == "Not Approved")
+                {
+                    <div class="form-group">
+                        <span class="control-label col-md-2">
+                            @Html.DisplayNameFor(model => model.FirstBankAccountReCheck.FailReason.Text)
+                        </span>
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.FirstBankAccountReCheck.FailReason.Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                        </div>
+                    </div>
+                }
+                <div class="form-group">
+                    <span class="control-label col-md-2">
+                        @Html.DisplayNameFor(model => model.FirstBankAccountReCheck.ReCheckComments)
+                    </span>
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.FirstBankAccountReCheck.ReCheckComments, new { @readonly = "readonly", @class = "form-control", @rows = 6 })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Bank Account - Quality Second Recheck Result</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <span class="control-label col-md-2">
+                        @Html.DisplayNameFor(model => model.SecondReCheckResult)
+                    </span>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.SecondReCheckResult, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <span class="control-label col-md-2">
+                        @Html.DisplayNameFor(model => model.SecondBankAccountReCheck.ReCheckCompletedBy)
+                    </span>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.SecondBankAccountReCheck.ReCheckCompletedBy, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <span class="control-label col-md-2">
+                        Date ReCheck Completed
+                    </span>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.SecondBankAccountReCheck.DateQCCompleted, "{0:dd/MM/yyyy}", htmlAttributes: new { @class = "form-control", @readonly = "readonly", @disabled = "disabled", @type = "datetime", @style = "width:300px; font-size:15px;" })
+                    </div>
+                </div>
+                @if (Model.SecondReCheckResult == "Not Approved")
+                {
+                    <div class="form-group">
+                        <span class="control-label col-md-2">
+                            @Html.DisplayNameFor(model => model.SecondBankAccountReCheck.FailReason.Text)
+                        </span>
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.SecondBankAccountReCheck.FailReason.Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                        </div>
+                    </div>
+                }
+                <div class="form-group">
+                    <span class="control-label col-md-2">
+                        @Html.DisplayNameFor(model => model.SecondBankAccountReCheck.ReCheckComments)
+                    </span>
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.SecondBankAccountReCheck.ReCheckComments, new { @readonly = "readonly", @class = "form-control", @rows = 6 })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (Model.ThirdBankAccountReCheck != null)
+        {
+            <div class="panel panel-primary">
+                <div class="panel-heading">Bank Account - Quality Third Recheck Result</div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <span class="control-label col-md-2">
+                            @Html.DisplayNameFor(model => model.ThirdReCheckResult)
+                        </span>
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.ThirdReCheckResult, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <span class="control-label col-md-2">
+                            @Html.DisplayNameFor(model => model.ThirdBankAccountReCheck.ReCheckCompletedBy)
+                        </span>
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.ThirdBankAccountReCheck.ReCheckCompletedBy, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <span class="control-label col-md-2">
+                            Date ReCheck Completed
+                        </span>
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.ThirdBankAccountReCheck.DateQCCompleted, "{0:dd/MM/yyyy}", htmlAttributes: new { @class = "form-control", @readonly = "readonly", @disabled = "disabled", @type = "datetime", @style = "width:300px; font-size:15px;" })
+                        </div>
+                    </div>
+                    @if (Model.ThirdReCheckResult == "Not Approved")
+                    {
+                        <div class="form-group">
+                            <span class="control-label col-md-2">
+                                @Html.DisplayNameFor(model => model.ThirdBankAccountReCheck.FailReason.Text)
+                            </span>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => model.ThirdBankAccountReCheck.FailReason.Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                            </div>
+                        </div>
+                    }
+                    <div class="form-group">
+                        <span class="control-label col-md-2">
+                            @Html.DisplayNameFor(model => model.ThirdBankAccountReCheck.ReCheckComments)
+                        </span>
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(model => model.ThirdBankAccountReCheck.ReCheckComments, new { @readonly = "readonly", @class = "form-control", @rows = 6 })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    @*First ReCheck Amendment Reason*@
+    @if (Model.FirstReCheckAmendmentReason != null)
+    {
+        <div class="panel panel-primary">
+            <div class="panel-heading">First ReCheck Amendment Reason</div>
+            <div class="panel-body">
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">
+                        @Html.DisplayNameFor(model => model.FirstReCheckAmendmentReason.AmendmentReason.Text)
+                    </span>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.FirstReCheckAmendmentReason.AmendmentReason.Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">
+                        @Html.DisplayNameFor(model => model.FirstReCheckAmendmentReason.AmendmentReasonComments)
+                    </span>
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.FirstReCheckAmendmentReason.AmendmentReasonComments, new { @readonly = "readonly", @class = "form-control", @rows = 6 })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
+
+    @*Second ReCheck Amendment Reason*@
+    @if (Model.SecondReCheckAmendmentReason != null)
+    {
+        <div class="panel panel-primary">
+            <div class="panel-heading">Second ReCheck Amendment Reason</div>
+            <div class="panel-body">
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">
+                        @Html.DisplayNameFor(model => model.SecondReCheckAmendmentReason.AmendmentReason.Text)
+                    </span>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.SecondReCheckAmendmentReason.AmendmentReason.Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">
+                        @Html.DisplayNameFor(model => model.SecondReCheckAmendmentReason.AmendmentReasonComments)
+                    </span>
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.SecondReCheckAmendmentReason.AmendmentReasonComments, new { @readonly = "readonly", @class = "form-control", @rows = 6 })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
+
+    @*Third ReCheck Amendment Reason*@
+    @if (Model.ThirdReCheckAmendmentReason != null)
+    {
+        <div class="panel panel-primary">
+            <div class="panel-heading">Third ReCheck Amendment Reason</div>
+            <div class="panel-body">
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">
+                        @Html.DisplayNameFor(model => model.ThirdReCheckAmendmentReason.AmendmentReason.Text)
+                    </span>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.ThirdReCheckAmendmentReason.AmendmentReason.Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:300px; font-size:15px;" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">
+                        @Html.DisplayNameFor(model => model.ThirdReCheckAmendmentReason.AmendmentReasonComments)
+                    </span>
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.ThirdReCheckAmendmentReason.AmendmentReasonComments, new { @readonly = "readonly", @class = "form-control", @rows = 6 })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
+</div>
+<p>
+    @Html.ActionLink("Latest Recheck Detals", "BankAccountDetailsReCheck", new { CheckId = Model.BankAccount.CheckId }, null)
+</p>

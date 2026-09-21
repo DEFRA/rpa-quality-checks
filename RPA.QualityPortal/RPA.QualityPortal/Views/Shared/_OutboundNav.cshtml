@@ -1,0 +1,22 @@
+﻿<div class="navbar-right" style="padding-top:2px;">
+    <ul class="nav navbar-nav">
+        <li>@Html.ActionLink("Outbound Correspondence Homepage", "Index", "OutboundCorrespondence")</li>
+        <li>@Html.ActionLink("Complete Checks", "Complete", "OutboundCorrespondence")</li>
+        <li>@Html.ActionLink("Outstanding Checks", "Outstanding", "OutboundCorrespondence")</li>
+
+        @if ((User.IsInRole("Quality Checks: OC Admin")) || (User.IsInRole("Quality Checks: OC Team Manager")))
+        {
+            <li>@Html.ActionLink("Create", "CreateGeneral", "OutboundCorrespondence")</li>
+        }
+
+        <li>@Html.ActionLink("MI", "MIIndex", "OutboundCorrespondenceMI")</li>
+        @*COMMENT OUT WHILE AWAITING UPDATE FROM BUSINESS
+            <li>@Html.ActionLink("Accreditation", "AccreditationIndex", "OutboundCorrespondenceAccreditation")</li>
+        *@
+
+        @if (User.IsInRole("Quality Checks: OC Admin"))
+        {
+            <li>@Html.ActionLink("Admin", "Index", "Admin", new { checkType = "OutboundCorrespondence" }, "")</li>
+        }
+    </ul>
+</div>

@@ -1,0 +1,49 @@
+﻿@if (ViewBag.typeOfCheck == "OutboundCorrespondence")
+{
+    {
+        ViewBag.Title = "Index";
+        ViewBag.CheckType = "Outbound";
+    }
+}
+else if (ViewBag.typeOfCheck == "Bank")
+{
+    {
+        ViewBag.Title = "Index";
+        ViewBag.CheckType = "BankAccount";
+    }
+}
+
+@using PagedList;
+@using PagedList.Mvc;
+
+<div class="jumbotron">
+    <h1>Email Administration</h1>
+    <p>Switching the auto sending of noifications of emails on and off</p>
+</div>
+
+<div>
+    @{Html.RenderAction("_TurnOffEmail", "Admin", new { checkType = ViewBag.typeOfCheck }); }<br />
+</div>
+
+@if (ViewBag.typeOfCheck == "OutboundCorrespondence")
+{
+    <div>
+        @{Html.RenderAction("_OutboundCorrespondenceEmails", "Admin");}
+    </div>
+
+    <div>
+        @{Html.RenderAction("_ReCheckEmails", "Admin");}
+    </div>
+}
+else if (ViewBag.typeOfCheck == "Bank")
+{
+    <div>
+        @{Html.RenderAction("_BankEmails", "Admin");}
+    </div>
+
+    <div>
+        @{Html.RenderAction("_BankReCheckEmails", "Admin");}
+    </div>
+}
+
+

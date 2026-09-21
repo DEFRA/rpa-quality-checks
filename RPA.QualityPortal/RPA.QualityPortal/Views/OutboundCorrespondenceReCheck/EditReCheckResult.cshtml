@@ -1,0 +1,144 @@
+﻿@model RPA.QualityPortal.Models.CheckTypes.OutboundCorrespondenceReCheck
+
+@{
+    ViewBag.CheckType = "Outbound";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="jumbotron">
+    <h1>Complete Quality Check</h1>
+    <h3>Complete Outbound Correspondence ReCheck</h3>
+</div>
+
+@using (Html.BeginForm("EditReCheckResult", "OutboundCorrespondenceReCheck", new { ReCheckId = ViewBag.ReCheckId }, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.CheckId)
+    @Html.HiddenFor(model => model.PersonName)
+    @Html.HiddenFor(model => model.QCCompletedByName)
+    @Html.HiddenFor(model => model.DateQCCompleted)
+    @Html.HiddenFor(model => model.OutboundCorrespondenceId)
+    @Html.HiddenFor(model => model.EmailNotifications)
+
+    <div class="form-horizontal">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Outbound Correspondence - QC ReCheck Result</div>
+            <div class="panel-body">
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.ReCheckCompletedBy)</span>
+                    <div class="col-md-10">
+                        <input type="hidden" id="NameId" name="NameId" value="" />
+                        @Html.EditorFor(model => model.ReCheckCompletedBy, new { htmlAttributes = new { @class = "form-control form-control-length", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.ReCheckCompletedBy, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.Label("Date Recheck Completed")</span>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.DateQCCompleted, "{0:dd/MM/yyyy}", htmlAttributes: new { @Value = "  " + @DateTime.Now.ToString("dd/MMMM/yyyy"), @readonly = "readonly", @disabled = "disabled", @type = "datetime", @class = "form-control form-control-length" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2"><b>QC Recheck Result</b></span>
+
+                    <div class="col-md-10" style="padding-top:6px; padding-left:15px">@ViewBag.ReCheckResult</div>
+                </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-2">@Html.LabelFor(model => model.ReCheckComments, htmlAttributes: new { @class = "form-label" })</span>
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.ReCheckComments, new { @class = "form-control", rows = 6 })
+                    </div>
+                </div>
+
+                @if (ViewBag.ReCheckResult == "Not Approved")
+                {
+                    <div class="form-group">
+                        <span class="control-label col-md-2">@Html.LabelFor(model => model.FurtherReCheckRequired, htmlAttributes: new { @class = "form-label" })</span>
+                        <div class="col-md-10">
+                            <div class="multiple-choice">
+                                @Html.RadioButtonFor(model => model.FurtherReCheckRequired, "True")@Html.Label("Yes")
+                            </div>
+                            <div class="multiple-choice">
+                                @Html.RadioButtonFor(model => model.FurtherReCheckRequired, "False")@Html.Label("No")
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Continue" class="button" />
+    </div>
+
+
+}
+
+<div class="form-group">
+    <a href="@Url.Action("EditReCheckQuestions","OutboundCorrespondenceReCheck", new { ReCheckId = Model.CheckId })" class="link-back">Back</a>
+</div>
+
+<script>
+
+$(document).ready(function () {
+
+
+    $(function () {
+
+    //lookup for Name
+
+        $('#Psearch').on('keyup change', function () {
+
+            var fieldName = '#Psearch';
+            var idName = '#NameId'
+
+            personChecker(fieldName, idName);
+
+        });
+
+
+    //function to lookup people in people data
+
+    function personChecker(fieldName, idName) {
+
+        $(fieldName).autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    dataType: 'json',
+                    type: 'Get',
+                    url: '@Url.Action("PeopleSearch", "People")',
+                    data: { searchstring: request.term },
+
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return item
+
+                            })
+                        );
+                    }
+                })
+            },
+
+            select: function (event, ui) {
+                $(fieldName).val(ui.item.label);
+                $(idName).val(ui.item.value);
+                return false;
+            },
+                minLength: 1,
+            })
+
+        }
+
+     })
+
+});
+
+
+</script>

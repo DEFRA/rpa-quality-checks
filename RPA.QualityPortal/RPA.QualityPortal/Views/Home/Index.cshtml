@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Quality Check Portal";
+}
+
+<h1 class="heading-xlarge">Quality Check Portal</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="column-one-third">
+            <p>
+                The Quality Check Portal is an area which provides access to multiple Quality Check types.
+                To begin please select a Quality Check Type from the list below:
+            </p>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        @if ((User.IsInRole("Quality Checks: OC Admin")) || (User.IsInRole("Quality Checks: OC Team Manager")) || (User.IsInRole("Quality Checks: OC Team Member")))
+        {
+            <div class="col-md-4">
+                <p><img src="~/Content/Images/outbound.png" /></p>
+                <h4 class="heading-small">@Html.ActionLink("Outbound Correspondence", "Index", "OutboundCorrespondence")</h4>
+                <p>Create Quality Checks for Outbound Correspondence, as well as viewing related MI</p>
+            </div>
+        }
+        <div class="col-md-4">
+            <p><img src="~/Content/Images/inbound.png" /></p>
+            @*<h4 class="heading-small">@Html.ActionLink("Inbound Correspondence", "Index", "InboundCorrespondence")</h4>*@
+            <p>Create Quality Checks for Inbound Correspondence, as well as viewing related MI</p>
+        </div>
+        @if ((User.IsInRole("Quality Checks: BA Admin")) || (User.IsInRole("Quality Checks: BA Team Member")))
+        {
+            <div class="col-md-4">
+                <p><img src="~/Content/Images/Money.jpg" /></p>
+                <h4 class="heading-small">@Html.ActionLink("Bank Account", "Index", "BankAccount")</h4>
+                <p>Complete Quality Checks for Bank Account Changes</p>
+            </div>
+        }
+    </div>
+</div>

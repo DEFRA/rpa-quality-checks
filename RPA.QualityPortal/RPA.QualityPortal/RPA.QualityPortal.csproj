@@ -1,0 +1,866 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E1506B61-A7C5-4C9D-B1F1-888D200E3778}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RPA.QualityPortal</RootNamespace>
+    <AssemblyName>RPA.QualityPortal</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort>44359</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>disabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>3.5</TypeScriptToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus, Version=4.5.3.2, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.5.3.2\lib\net40\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="IDT">
+      <HintPath>..\..\..\RPA.QualityPortal\RPA.QualityPortal\Assemblies\IDT.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.EntityFrameworkCore, Version=2.2.6.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.EntityFrameworkCore.2.2.6\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.EntityFrameworkCore.Abstractions, Version=2.2.6.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.EntityFrameworkCore.Abstractions.2.2.6\lib\netstandard2.0\Microsoft.EntityFrameworkCore.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Caching.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Caching.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Caching.Memory, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Caching.Memory.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Caching.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Binder, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Binder.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.2.2.0\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Options.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Options.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="Remotion.Linq, Version=2.2.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Remotion.Linq.2.2.0\lib\net45\Remotion.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable, Version=1.2.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.5.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.4.5.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.5.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Interactive.Async, Version=3.2.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Interactive.Async.3.2.0\lib\net46\System.Interactive.Async.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.1\lib\netstandard2.0\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.4.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Attributes\SBI.cs" />
+    <Compile Include="Controllers\BankAccount\BankAccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\BankAccount\BankAccountReCheckController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OutboundCorrespondence\OutboundCorrespondenceController.cs" />
+    <Compile Include="Controllers\OutboundCorrespondence\OutboundCorrespondenceMIController.cs" />
+    <Compile Include="Controllers\OutboundCorrespondence\OutboundCorrespondenceReCheckController.cs" />
+    <Compile Include="Controllers\PeopleController.cs" />
+    <Compile Include="DAL\IPeopleContext.cs" />
+    <Compile Include="DAL\IQualityContext.cs" />
+    <Compile Include="DAL\QualityContext.cs" />
+    <Compile Include="Factory\HttpContextManager.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\EmailHelper.cs" />
+    <Compile Include="Helpers\IUserHelper.cs" />
+    <Compile Include="Helpers\ListHelper.cs" />
+    <Compile Include="Helpers\UserHelper.cs" />
+    <Compile Include="Migrations\201909231414476_reCheclTidyUp.cs" />
+    <Compile Include="Migrations\201909231414476_reCheclTidyUp.Designer.cs">
+      <DependentUpon>201909231414476_reCheclTidyUp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910041056385_amendmentreason.cs" />
+    <Compile Include="Migrations\201910041056385_amendmentreason.Designer.cs">
+      <DependentUpon>201910041056385_amendmentreason.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910041242264_nullAmendment.cs" />
+    <Compile Include="Migrations\201910041242264_nullAmendment.Designer.cs">
+      <DependentUpon>201910041242264_nullAmendment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909301054021_changes.cs" />
+    <Compile Include="Migrations\201909301054021_changes.Designer.cs">
+      <DependentUpon>201909301054021_changes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910041326282_FailReasonNullable.cs" />
+    <Compile Include="Migrations\201910041326282_FailReasonNullable.Designer.cs">
+      <DependentUpon>201910041326282_FailReasonNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910080905401_merge.cs" />
+    <Compile Include="Migrations\201910080905401_merge.Designer.cs">
+      <DependentUpon>201910080905401_merge.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910150901147_reCheckAmendment.cs" />
+    <Compile Include="Migrations\201910150901147_reCheckAmendment.Designer.cs">
+      <DependentUpon>201910150901147_reCheckAmendment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910161409433_checkAmendmentReason.cs" />
+    <Compile Include="Migrations\201910161409433_checkAmendmentReason.Designer.cs">
+      <DependentUpon>201910161409433_checkAmendmentReason.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910181021595_removeAmendmentDirectLink.cs" />
+    <Compile Include="Migrations\201910181021595_removeAmendmentDirectLink.Designer.cs">
+      <DependentUpon>201910181021595_removeAmendmentDirectLink.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910181306267_removeQCResult.cs" />
+    <Compile Include="Migrations\201910181306267_removeQCResult.Designer.cs">
+      <DependentUpon>201910181306267_removeQCResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910251325134_removeDateCreated.cs" />
+    <Compile Include="Migrations\201910251325134_removeDateCreated.Designer.cs">
+      <DependentUpon>201910251325134_removeDateCreated.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910301216401_initialReCheckDecisionAdded.cs" />
+    <Compile Include="Migrations\201910301216401_initialReCheckDecisionAdded.Designer.cs">
+      <DependentUpon>201910301216401_initialReCheckDecisionAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911261540550_controlAdded.cs" />
+    <Compile Include="Migrations\201911261540550_controlAdded.Designer.cs">
+      <DependentUpon>201911261540550_controlAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911271458093_emailNotification.cs" />
+    <Compile Include="Migrations\201911271458093_emailNotification.Designer.cs">
+      <DependentUpon>201911271458093_emailNotification.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912111442018_setEmailNullable.cs" />
+    <Compile Include="Migrations\201912111442018_setEmailNullable.Designer.cs">
+      <DependentUpon>201912111442018_setEmailNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001071606190_LockReCheck.cs" />
+    <Compile Include="Migrations\202001071606190_LockReCheck.Designer.cs">
+      <DependentUpon>202001071606190_LockReCheck.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002050927581_accreditation.cs" />
+    <Compile Include="Migrations\202002050927581_accreditation.Designer.cs">
+      <DependentUpon>202002050927581_accreditation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002131359535_BankAccountTables.cs" />
+    <Compile Include="Migrations\202002131359535_BankAccountTables.Designer.cs">
+      <DependentUpon>202002131359535_BankAccountTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002211505037_BankAccountTableAdditionalProps.cs" />
+    <Compile Include="Migrations\202002211505037_BankAccountTableAdditionalProps.Designer.cs">
+      <DependentUpon>202002211505037_BankAccountTableAdditionalProps.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002241537518_UpdatedFailReasonTable.cs" />
+    <Compile Include="Migrations\202002241537518_UpdatedFailReasonTable.Designer.cs">
+      <DependentUpon>202002241537518_UpdatedFailReasonTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002251511175_CoachingPointAddedToModel.cs" />
+    <Compile Include="Migrations\202002251511175_CoachingPointAddedToModel.Designer.cs">
+      <DependentUpon>202002251511175_CoachingPointAddedToModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003161036561_bankReCheck.cs" />
+    <Compile Include="Migrations\202003161036561_bankReCheck.Designer.cs">
+      <DependentUpon>202003161036561_bankReCheck.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003181407481_FailReasonBankReCheck.cs" />
+    <Compile Include="Migrations\202003181407481_FailReasonBankReCheck.Designer.cs">
+      <DependentUpon>202003181407481_FailReasonBankReCheck.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003201444469_initialrecheckbank.cs" />
+    <Compile Include="Migrations\202003201444469_initialrecheckbank.Designer.cs">
+      <DependentUpon>202003201444469_initialrecheckbank.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003311346269_BankReCheckModelBuilder.cs" />
+    <Compile Include="Migrations\202003311346269_BankReCheckModelBuilder.Designer.cs">
+      <DependentUpon>202003311346269_BankReCheckModelBuilder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003311411228_DropFailAndCoach.cs" />
+    <Compile Include="Migrations\202003311411228_DropFailAndCoach.Designer.cs">
+      <DependentUpon>202003311411228_DropFailAndCoach.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004061322471_lockcheck.cs" />
+    <Compile Include="Migrations\202004061322471_lockcheck.Designer.cs">
+      <DependentUpon>202004061322471_lockcheck.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004171051152_emailnotificationnotnullable.cs" />
+    <Compile Include="Migrations\202004171051152_emailnotificationnotnullable.Designer.cs">
+      <DependentUpon>202004171051152_emailnotificationnotnullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004221139155_WorkerServiceLogTable.cs" />
+    <Compile Include="Migrations\202004221139155_WorkerServiceLogTable.Designer.cs">
+      <DependentUpon>202004221139155_WorkerServiceLogTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004221332132_MinorModelChanges.cs" />
+    <Compile Include="Migrations\202004221332132_MinorModelChanges.Designer.cs">
+      <DependentUpon>202004221332132_MinorModelChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004231553077_EmailNotificationsDefaultToTrue.cs" />
+    <Compile Include="Migrations\202004231553077_EmailNotificationsDefaultToTrue.Designer.cs">
+      <DependentUpon>202004231553077_EmailNotificationsDefaultToTrue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103050744481_BankComment.cs" />
+    <Compile Include="Migrations\202103050744481_BankComment.Designer.cs">
+      <DependentUpon>202103050744481_BankComment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202107090616177_removeAccredditation.cs" />
+    <Compile Include="Migrations\202107090616177_removeAccredditation.Designer.cs">
+      <DependentUpon>202107090616177_removeAccredditation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202302201523586_AddedBankCheckOverride.cs" />
+    <Compile Include="Migrations\202302201523586_AddedBankCheckOverride.Designer.cs">
+      <DependentUpon>202302201523586_AddedBankCheckOverride.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BankAccountComments.cs" />
+    <Compile Include="Models\BankAccountDropDowns\BACheckType.cs" />
+    <Compile Include="Models\CheckTypes\BankAccountCheck.cs" />
+    <Compile Include="Models\CheckTypes\BankAccountReCheck.cs" />
+    <Compile Include="Models\CheckAmendmentReason.cs" />
+    <Compile Include="Migrations\201910141259333_challengeOutcomeID.cs" />
+    <Compile Include="Migrations\201910141259333_challengeOutcomeID.Designer.cs">
+      <DependentUpon>201910141259333_challengeOutcomeID.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910161411533_removeCheckResultFailReason.cs" />
+    <Compile Include="Migrations\201910161411533_removeCheckResultFailReason.Designer.cs">
+      <DependentUpon>201910161411533_removeCheckResultFailReason.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LockCheck.cs" />
+    <Compile Include="Models\Control.cs" />
+    <Compile Include="Models\Location.cs" />
+    <Compile Include="Models\Manager.cs" />
+    <Compile Include="Migrations\201909061346037_removeCheckResultLink.cs" />
+    <Compile Include="Migrations\201909061346037_removeCheckResultLink.Designer.cs">
+      <DependentUpon>201909061346037_removeCheckResultLink.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909100940561_changeDropDownLinks.cs" />
+    <Compile Include="Migrations\201909100940561_changeDropDownLinks.Designer.cs">
+      <DependentUpon>201909100940561_changeDropDownLinks.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909101453537_removeGuidfromAudit.cs" />
+    <Compile Include="Migrations\201909101453537_removeGuidfromAudit.Designer.cs">
+      <DependentUpon>201909101453537_removeGuidfromAudit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909111123189_RemoveOutboundCorrID.cs" />
+    <Compile Include="Migrations\201909111123189_RemoveOutboundCorrID.Designer.cs">
+      <DependentUpon>201909111123189_RemoveOutboundCorrID.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909121249143_UniqueIDtoString.cs" />
+    <Compile Include="Migrations\201909121249143_UniqueIDtoString.Designer.cs">
+      <DependentUpon>201909121249143_UniqueIDtoString.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Answer.cs" />
+    <Compile Include="Models\Audit.cs" />
+    <Compile Include="Models\Challenge.cs" />
+    <Compile Include="Models\Check.cs" />
+    <Compile Include="Models\CheckQuestion.cs" />
+    <Compile Include="Models\CheckResult.cs" />
+    <Compile Include="Models\CheckType.cs" />
+    <Compile Include="Models\CheckTypes\OutboundCorrespondence.cs" />
+    <Compile Include="Models\CheckTypes\OutboundCorrespondenceReCheck.cs" />
+    <Compile Include="Models\FailReason.cs" />
+    <Compile Include="Models\OutboundCorrespondenceDropDowns\AmendmentReason.cs" />
+    <Compile Include="Models\OutboundCorrespondenceDropDowns\BusinessArea.cs" />
+    <Compile Include="Models\OutboundCorrespondenceDropDowns\ChallengeOutcome.cs" />
+    <Compile Include="Models\OutboundCorrespondenceDropDowns\CorrespondenceType.cs" />
+    <Compile Include="Models\OutboundCorrespondenceDropDowns\CRMRefPrefix.cs" />
+    <Compile Include="Models\OutboundCorrespondenceDropDowns\Scheme.cs" />
+    <Compile Include="Models\OutboundCorrespondenceDropDowns\UniqueIdentifierPrefix.cs" />
+    <Compile Include="Models\Question.cs" />
+    <Compile Include="Models\OutboundCorrespondenceDropDowns\Result.cs" />
+    <Compile Include="DAL\PeopleContext.cs" />
+    <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\WorkerServiceLog.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AccessService.cs" />
+    <Compile Include="Services\BankAccountService.cs" />
+    <Compile Include="Services\IAccessService.cs" />
+    <Compile Include="Services\IBankAccountService.cs" />
+    <Compile Include="Services\ILockService.cs" />
+    <Compile Include="Services\LockService.cs" />
+    <Compile Include="Services\AnswerService.cs" />
+    <Compile Include="Services\IRoleManager.cs" />
+    <Compile Include="Services\RoleManager.cs" />
+    <Compile Include="Services\AuditService.cs" />
+    <Compile Include="Services\EmailService.cs" />
+    <Compile Include="Services\ExportService.cs" />
+    <Compile Include="Services\FilterService.cs" />
+    <Compile Include="Services\IAnswerService.cs" />
+    <Compile Include="Services\IAuditService.cs" />
+    <Compile Include="Services\IExportService.cs" />
+    <Compile Include="Services\IFilterService.cs" />
+    <Compile Include="Services\IMessageService.cs" />
+    <Compile Include="Services\IMIService.cs" />
+    <Compile Include="Services\IOutboundCorrespondenceService.cs" />
+    <Compile Include="Services\IPeopleService.cs" />
+    <Compile Include="Services\ISendService.cs" />
+    <Compile Include="Services\MIService.cs" />
+    <Compile Include="Services\OutboundCorrespondenceService.cs" />
+    <Compile Include="Services\SendService.cs" />
+    <Compile Include="ViewModels\BankAccount\BankAccountDetails.cs" />
+    <Compile Include="ViewModels\BankAccount\BankAccountDetailsReCheck.cs" />
+    <Compile Include="ViewModels\BankAccount\BankAccountDetailsReChecks.cs" />
+    <Compile Include="ViewModels\BankAccount\BankAccountOverview.cs" />
+    <Compile Include="ViewModels\OutboundCorrespondenceVM\Details.cs" />
+    <Compile Include="Services\PeopleService.cs" />
+    <Compile Include="ViewModels\OutboundCorrespondenceVM\DetailsReCheck.cs" />
+    <Compile Include="ViewModels\OutboundCorrespondenceVM\DetailsReChecks.cs" />
+    <Compile Include="ViewModels\LockCheckView.cs" />
+    <Compile Include="ViewModels\OutboundCorrespondenceVM\MI\AnswerMI.cs" />
+    <Compile Include="ViewModels\OutboundCorrespondenceVM\MI\FailReasonCount.cs" />
+    <Compile Include="ViewModels\OutboundCorrespondenceVM\MI\OutboundCorrespondenceMI.cs" />
+    <Compile Include="ViewModels\OutboundCorrespondenceVM\MI\OutboundCorrespondenceMIDetails.cs" />
+    <Compile Include="ViewModels\OutboundCorrespondenceVM\MI\OutboundCorrespondenceMIPersonStats.cs" />
+    <Compile Include="ViewModels\OutboundCorrespondenceVM\MI\OutboundCorrespondenceMIStats.cs" />
+    <Compile Include="ViewModels\OutboundCorrespondenceVM\OutboundCorrespondenceOverview.cs" />
+    <Compile Include="ViewModels\PeopleSearchModel.cs" />
+    <Compile Include="ViewModels\QuestionAnswer.cs" />
+    <Compile Include="ViewModels\QuestionAnswerList.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assemblies\IDT.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\Checking.jpg" />
+    <Content Include="Content\Images\Email.jpg" />
+    <Content Include="Content\Images\inbound.png" />
+    <Content Include="Content\Images\lock.png" />
+    <Content Include="Content\Images\Money.jpg" />
+    <Content Include="Content\Images\outbound.png" />
+    <Content Include="Content\themes\base\accordion.css" />
+    <Content Include="Content\themes\base\all.css" />
+    <Content Include="Content\themes\base\autocomplete.css" />
+    <Content Include="Content\themes\base\base.css" />
+    <Content Include="Content\themes\base\button.css" />
+    <Content Include="Content\themes\base\core.css" />
+    <Content Include="Content\themes\base\datepicker.css" />
+    <Content Include="Content\themes\base\dialog.css" />
+    <Content Include="Content\themes\base\draggable.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_444444_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery-ui.min.css" />
+    <Content Include="Content\themes\base\menu.css" />
+    <Content Include="Content\themes\base\progressbar.css" />
+    <Content Include="Content\themes\base\resizable.css" />
+    <Content Include="Content\themes\base\selectable.css" />
+    <Content Include="Content\themes\base\selectmenu.css" />
+    <Content Include="Content\themes\base\slider.css" />
+    <Content Include="Content\themes\base\sortable.css" />
+    <Content Include="Content\themes\base\spinner.css" />
+    <Content Include="Content\themes\base\tabs.css" />
+    <Content Include="Content\themes\base\theme.css" />
+    <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\esm\popper-utils.js" />
+    <Content Include="Scripts\esm\popper-utils.min.js" />
+    <Content Include="Scripts\esm\popper.js" />
+    <Content Include="Scripts\esm\popper.min.js" />
+    <Content Include="Scripts\esm\popper.min.js.map" />
+    <Content Include="Scripts\esm\popper.js.map" />
+    <Content Include="Scripts\esm\popper-utils.min.js.map" />
+    <Content Include="Scripts\esm\popper-utils.js.map" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Files\Outbound Correspondence Accreditation.xlsx" />
+    <None Include="Scripts\jquery-3.4.1-vsdoc.js" />
+    <Content Include="Scripts\jquery-3.4.1.js" />
+    <Content Include="Scripts\jquery-3.4.1.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.4.1.min.map" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\popper-utils.js" />
+    <Content Include="Scripts\popper-utils.min.js" />
+    <Content Include="Scripts\popper.js" />
+    <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\umd\popper-utils.js" />
+    <Content Include="Scripts\umd\popper-utils.min.js" />
+    <Content Include="Scripts\umd\popper.js" />
+    <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Views\OutboundCorrespondenceMI\_AnswerMI.cshtml" />
+    <Content Include="Views\OutboundCorrespondenceMI\MIIndex.cshtml" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\OutboundCorrespondence\CreateGeneral.cshtml" />
+    <Content Include="Views\OutboundCorrespondence\CreateQuestions.cshtml" />
+    <Content Include="Views\OutboundCorrespondence\CreateResult.cshtml" />
+    <Content Include="Views\OutboundCorrespondence\Index.cshtml" />
+    <Content Include="Scripts\umd\popper.min.js.map" />
+    <Content Include="Scripts\umd\popper.js.map" />
+    <Content Include="Scripts\umd\popper-utils.min.js.map" />
+    <Content Include="Scripts\umd\popper-utils.js.map" />
+    <Content Include="Scripts\README.md" />
+    <Content Include="Scripts\popper.min.js.map" />
+    <Content Include="Scripts\popper.js.map" />
+    <Content Include="Scripts\popper-utils.min.js.map" />
+    <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\OutboundCorrespondence\Details.cshtml" />
+    <Content Include="Views\OutboundCorrespondence\EditResult.cshtml" />
+    <Content Include="Views\OutboundCorrespondence\EditQuestions.cshtml" />
+    <Content Include="Views\OutboundCorrespondence\EditGeneral.cshtml" />
+    <Content Include="Views\OutboundCorrespondenceReCheck\CreateReCheckQuestions.cshtml" />
+    <Content Include="Views\OutboundCorrespondenceReCheck\CreateReCheckResult.cshtml" />
+    <Content Include="Views\OutboundCorrespondenceReCheck\DetailsReCheck.cshtml" />
+    <Content Include="Views\OutboundCorrespondenceMI\_OutboundCorrespondenceMI.cshtml" />
+    <Content Include="Web.Production.config" />
+    <Content Include="Web.SIT.config" />
+    <Content Include="Web.UAT.config" />
+    <Content Include="Views\OutboundCorrespondenceReCheck\EditReCheckQuestions.cshtml" />
+    <Content Include="Views\OutboundCorrespondenceReCheck\EditReCheckResult.cshtml" />
+    <Content Include="Views\OutboundCorrespondence\Challenge.cshtml" />
+    <Content Include="Views\OutboundCorrespondence\_ChallengeView.cshtml" />
+    <Content Include="Views\OutboundCorrespondence\ChallengeQuestions.cshtml" />
+    <Content Include="Views\OutboundCorrespondence\ChallengeResult.cshtml" />
+    <Content Include="Views\OutboundCorrespondence\AmendmentReason.cshtml" />
+    <Content Include="Views\OutboundCorrespondenceReCheck\AmendmentReasonReCheck.cshtml" />
+    <Content Include="Views\OutboundCorrespondence\ChallengeAmendmentReason.cshtml" />
+    <Content Include="Views\OutboundCorrespondence\DeleteView.cshtml" />
+    <Content Include="Views\OutboundCorrespondenceReCheck\DeleteReCheckView.cshtml" />
+    <Content Include="Views\OutboundCorrespondence\_ReCheckResults.cshtml" />
+    <Content Include="Views\OutboundCorrespondenceMI\MIDetails.cshtml" />
+    <Content Include="Views\OutboundCorrespondenceMI\MIDetailsIndividual.cshtml" />
+    <Content Include="Views\OutboundCorrespondenceReCheck\_CheckAnswer.cshtml" />
+    <Content Include="Views\OutboundCorrespondenceReCheck\DetailsReChecks.cshtml" />
+    <Content Include="Views\OutboundCorrespondenceMI\MIDetails.cshtml" />
+    <Content Include="Views\OutboundCorrespondenceMI\MIDetailsIndividual.cshtml" />
+    <Content Include="Views\OutboundCorrespondence\GeneralDetails.cshtml" />
+    <Content Include="Views\Admin\Email.cshtml" />
+    <Content Include="Views\Admin\_TurnOffEmail.cshtml" />
+    <Content Include="Views\Admin\_ReCheckEmails.cshtml" />
+    <Content Include="Views\BankAccount\Index.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\UnlockCheck.cshtml" />
+    <Content Include="Views\Admin\Access.cshtml" />
+    <Content Include="Views\Shared\_OutboundNav.cshtml" />
+    <Content Include="Views\Shared\_BankAccountNav.cshtml" />
+    <Content Include="Views\BankAccount\CreateGeneral.cshtml" />
+    <Content Include="Views\BankAccount\CreateQuestions.cshtml" />
+    <Content Include="Views\BankAccount\_QuestionBlock.cshtml" />
+    <Content Include="Views\BankAccount\CreateResult.cshtml" />
+    <Content Include="Views\BankAccount\Details.cshtml" />
+    <Content Include="Views\BankAccount\_AnswerBlock.cshtml" />
+    <Content Include="Views\BankAccount\_ReCheckResults.cshtml" />
+    <Content Include="Views\BankAccountReCheck\CreateBankReCheckQuestions.cshtml" />
+    <Content Include="Views\BankAccountReCheck\CreateBankReCheckResult.cshtml" />
+    <Content Include="Views\BankAccountReCheck\_AnswerBlockReCheck.cshtml" />
+    <Content Include="Views\BankAccountReCheck\_QuestionBlockReCheck.cshtml" />
+    <Content Include="Views\BankAccountReCheck\BankAccountDetailsReCheck.cshtml" />
+    <Content Include="Views\BankAccountReCheck\BankAccountDetailsReChecks.cshtml" />
+    <Content Include="Views\BankAccountReCheck\_AnswerBlockReChecks.cshtml" />
+    <Content Include="Views\BankAccount\GeneralDetails.cshtml" />
+    <Content Include="Views\BankAccountReCheck\_CheckAnswer.cshtml" />
+    <Content Include="Views\BankAccount\EditGeneral.cshtml" />
+    <Content Include="Views\BankAccount\EditQuestions.cshtml" />
+    <Content Include="Views\BankAccount\EditResult.cshtml" />
+    <Content Include="Views\BankAccount\AmendmentReason.cshtml" />
+    <Content Include="Views\BankAccountReCheck\EditBankReCheckQuestions.cshtml" />
+    <Content Include="Views\BankAccountReCheck\EditBankReCheckResult.cshtml" />
+    <Content Include="Views\BankAccountReCheck\BankAmendmentReasonReCheck.cshtml" />
+    <Content Include="Views\Admin\_OutboundCorrespondenceEmails.cshtml" />
+    <Content Include="Views\Admin\_BankEmails.cshtml" />
+    <Content Include="Views\Admin\_BankReCheckEmails.cshtml" />
+    <Content Include="Views\BankAccount\Challenge.cshtml" />
+    <Content Include="Views\BankAccount\ChallengeAmendmentReason.cshtml" />
+    <Content Include="Views\BankAccount\ChallengeQuestions.cshtml" />
+    <Content Include="Views\BankAccount\ChallengeResult.cshtml" />
+    <Content Include="Views\BankAccount\_ChallengeView.cshtml" />
+    <Content Include="Views\BankAccountReCheck\_CheckComment.cshtml" />
+    <Content Include="Views\BankAccount\_CheckComment.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201909061346037_removeCheckResultLink.resx">
+      <DependentUpon>201909061346037_removeCheckResultLink.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909100940561_changeDropDownLinks.resx">
+      <DependentUpon>201909100940561_changeDropDownLinks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909101453537_removeGuidfromAudit.resx">
+      <DependentUpon>201909101453537_removeGuidfromAudit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909111123189_RemoveOutboundCorrID.resx">
+      <DependentUpon>201909111123189_RemoveOutboundCorrID.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909121249143_UniqueIDtoString.resx">
+      <DependentUpon>201909121249143_UniqueIDtoString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909231414476_reCheclTidyUp.resx">
+      <DependentUpon>201909231414476_reCheclTidyUp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910041056385_amendmentreason.resx">
+      <DependentUpon>201910041056385_amendmentreason.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910041242264_nullAmendment.resx">
+      <DependentUpon>201910041242264_nullAmendment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909301054021_changes.resx">
+      <DependentUpon>201909301054021_changes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910041326282_FailReasonNullable.resx">
+      <DependentUpon>201910041326282_FailReasonNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910080905401_merge.resx">
+      <DependentUpon>201910080905401_merge.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910150901147_reCheckAmendment.resx">
+      <DependentUpon>201910150901147_reCheckAmendment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910161409433_checkAmendmentReason.resx">
+      <DependentUpon>201910161409433_checkAmendmentReason.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910141259333_challengeOutcomeID.resx">
+      <DependentUpon>201910141259333_challengeOutcomeID.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910161411533_removeCheckResultFailReason.resx">
+      <DependentUpon>201910161411533_removeCheckResultFailReason.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910181021595_removeAmendmentDirectLink.resx">
+      <DependentUpon>201910181021595_removeAmendmentDirectLink.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910181306267_removeQCResult.resx">
+      <DependentUpon>201910181306267_removeQCResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910251325134_removeDateCreated.resx">
+      <DependentUpon>201910251325134_removeDateCreated.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910301216401_initialReCheckDecisionAdded.resx">
+      <DependentUpon>201910301216401_initialReCheckDecisionAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911261540550_controlAdded.resx">
+      <DependentUpon>201911261540550_controlAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911271458093_emailNotification.resx">
+      <DependentUpon>201911271458093_emailNotification.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912111442018_setEmailNullable.resx">
+      <DependentUpon>201912111442018_setEmailNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001071606190_LockReCheck.resx">
+      <DependentUpon>202001071606190_LockReCheck.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002050927581_accreditation.resx">
+      <DependentUpon>202002050927581_accreditation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002131359535_BankAccountTables.resx">
+      <DependentUpon>202002131359535_BankAccountTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002211505037_BankAccountTableAdditionalProps.resx">
+      <DependentUpon>202002211505037_BankAccountTableAdditionalProps.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002241537518_UpdatedFailReasonTable.resx">
+      <DependentUpon>202002241537518_UpdatedFailReasonTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002251511175_CoachingPointAddedToModel.resx">
+      <DependentUpon>202002251511175_CoachingPointAddedToModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003161036561_bankReCheck.resx">
+      <DependentUpon>202003161036561_bankReCheck.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003201444469_initialrecheckbank.resx">
+      <DependentUpon>202003201444469_initialrecheckbank.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003181407481_FailReasonBankReCheck.resx">
+      <DependentUpon>202003181407481_FailReasonBankReCheck.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003311346269_BankReCheckModelBuilder.resx">
+      <DependentUpon>202003311346269_BankReCheckModelBuilder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003311411228_DropFailAndCoach.resx">
+      <DependentUpon>202003311411228_DropFailAndCoach.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004061322471_lockcheck.resx">
+      <DependentUpon>202004061322471_lockcheck.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004171051152_emailnotificationnotnullable.resx">
+      <DependentUpon>202004171051152_emailnotificationnotnullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004221139155_WorkerServiceLogTable.resx">
+      <DependentUpon>202004221139155_WorkerServiceLogTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004221332132_MinorModelChanges.resx">
+      <DependentUpon>202004221332132_MinorModelChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004231553077_EmailNotificationsDefaultToTrue.resx">
+      <DependentUpon>202004231553077_EmailNotificationsDefaultToTrue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103050744481_BankComment.resx">
+      <DependentUpon>202103050744481_BankComment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107090616177_removeAccredditation.resx">
+      <DependentUpon>202107090616177_removeAccredditation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202302201523586_AddedBankCheckOverride.resx">
+      <DependentUpon>202302201523586_AddedBankCheckOverride.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SIT|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UAT|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>57885</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>https://localhost:44359/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

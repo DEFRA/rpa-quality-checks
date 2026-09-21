@@ -1,0 +1,29 @@
+﻿@model RPA.QualityPortal.ViewModels.BankAccountDetails
+
+@{
+    string header = (string)ViewData["header"];
+    int from = (int)ViewData["from"];
+    int to = (int)ViewData["to"];
+}
+
+<tr>
+    <th>@header</th>
+    <th style="text-align: right;"><span style="padding-right: 25px;">Answer</span></th>
+</tr>
+
+@for (int i = from; i < to; i++)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(model => model.Answers[i].Question.Text)
+        </td>
+        <td align="right">
+            @Html.TextBoxFor(model => model.Answers[i].Text, "", new { @readonly = "readonly", @class = "form-control", @style = "width:100px; font-size:15px;" })
+        </td>
+    </tr>
+    <tr>
+            @{
+                Html.RenderAction("_CheckComment", new { CheckId = Model.BankAccount.CheckId, QuestionId = Model.Answers[i].QuestionId });
+            }
+    </tr>
+}

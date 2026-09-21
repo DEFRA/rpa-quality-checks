@@ -1,0 +1,126 @@
+﻿@model PagedList<RPA.QualityPortal.ViewModels.OutboundCorrespondenceOverview>
+
+@{
+    ViewBag.Title = "_ReCheckEmails";
+    ViewBag.CheckType = "Outbound";
+}
+
+@using PagedList;
+@using PagedList.Mvc;
+
+@using (Html.BeginForm("_ReCheckEmails", "Admin", FormMethod.Post))
+{
+
+    @Html.AntiForgeryToken()
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Trigger Notification Emails On per Recheck</div>
+        <div class="panel-body">
+            <div form-group>
+                <input type="checkbox" id="selectAllReCheck" />
+                <label>Check All</label>
+                <input type="submit" value="Save and Send" style="margin-left:800px" class="btn btn-success" />
+            </div>
+
+            <h2>Recheck Notification Emails not sent</h2>
+
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.CorrespondenceType)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.UniqueId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.CRMRef)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.SBI)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.PersonName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.ManagerName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].OutboundCorrespondenceReCheck.QCCompletedByName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].OutboundCorrespondenceReCheck.DateQCCompleted)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].ReCheckQCResult)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.EmailNotifications)
+                    </th>
+                </tr>
+
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <tr>
+                        @Html.HiddenFor(modelItem => Model[i].OutboundCorrespondenceReCheck.CheckId)
+                        @Html.HiddenFor(modelItem => Model[i].OutboundCorrespondenceReCheck.OutboundCorrespondenceId)
+                        <td>
+                            @Html.DisplayFor(modelItem => Model[i].OutboundCorrespondence.CorrespondenceType.Text)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model[i].OutboundCorrespondence.UniqueIdentifierFull)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model[i].OutboundCorrespondence.CrmReferenceFull)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model[i].OutboundCorrespondence.SBI)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model[i].OutboundCorrespondence.PersonName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model[i].OutboundCorrespondence.ManagerName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model[i].OutboundCorrespondenceReCheck.QCCompletedByName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model[i].OutboundCorrespondenceReCheck.DateQCCompleted)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model[i].ReCheckQCResult)
+                        </td>
+                        @if (ViewBag.Email == true)
+                        {
+                            <td id="selectedReCheck">
+                                @Html.CheckBoxFor(modelItem => Model[i].OutboundCorrespondenceReCheck.EmailNotifications)
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                Emails are turned off
+                            </td>
+                        }
+                    </tr>
+                }
+
+            </table>
+
+            <div>
+                @Html.PagedListPager(Model, page => Url.Action("Email", new { checkType = ViewBag.typeOfCheck, page, pageSize = Model.PageSize }))
+                Showing @(Model.TotalItemCount < Model.FirstItemOnPage ? 0 : Model.FirstItemOnPage) to @Model.LastItemOnPage of @Model.TotalItemCount Outbound Correspondences Rechecks
+            </div>
+
+        </div>
+    </div>
+}
+
+
+
+<script>
+    $('#selectAllReCheck').change(function () {
+        $('#selectedReCheck input[type="checkbox"]').prop('checked', this.checked)
+    });
+</script>
+

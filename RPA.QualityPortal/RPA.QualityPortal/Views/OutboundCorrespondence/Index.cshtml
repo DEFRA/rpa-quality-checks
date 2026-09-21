@@ -1,0 +1,184 @@
+﻿@model PagedList<RPA.QualityPortal.ViewModels.OutboundCorrespondenceOverview>
+
+@{
+    ViewBag.Title = "Index";
+    ViewBag.CheckType = "Outbound";
+}
+
+@using PagedList;
+@using PagedList.Mvc;
+
+<div class="jumbotron">
+    <h1>Outbound Correspondence QC</h1>
+    <p>Quality Checking for Outbound Correspondence</p>
+</div>
+
+<div class="form-inline" style="margin-bottom:30px;">
+
+    @using (Html.BeginForm())
+    {
+        <div class=" form-group">
+            <input type="text" class="form-control" id="sRef" name="searchString" />
+        </div>
+
+        <div class="btn-group">
+            <button type="submit" class=" btn btn-success" value="search" name="btnIndexFilter">Search</button>
+            <button type="submit" class=" btn btn-danger" value="reset" name="btnIndexReset">Reset</button>
+        </div>
+    }
+    @if ((User.IsInRole("Quality Checks: OC Admin")) || (User.IsInRole("Quality Checks: OC Team Manager")))
+    {
+        using (Html.BeginForm("Export", "OutboundCorrespondence"))
+        {
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Export Current Data" class="button" />
+            </div>
+        }
+
+        using (Html.BeginForm("ExportArchive", "OutboundCorrespondence"))
+        {
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Export Archived Data" class="button" />
+            </div>
+        }
+    }
+</div>
+
+<div><h2 style="text-align:center">@ViewBag.PageName</h2><br /></div>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.CorrespondenceType.Text)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.UniqueId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.CRMRef)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.SBI)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.PersonName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.ManagerName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.QCCompletedByName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.DateQCCompleted)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].QCResult)
+        </th>
+        @if (ViewBag.PageName == "All Quality Checks")
+        {
+            <th>
+                @Html.DisplayNameFor(model => model[0].OutboundCorrespondence.ReCheckRequired)
+            </th>
+        }
+        else if (ViewBag.PageName == "Complete Checks")
+        {
+            <th>
+                Recheck Result
+            </th>
+        }
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OutboundCorrespondence.CorrespondenceType.Text)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OutboundCorrespondence.UniqueIdentifierFull)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OutboundCorrespondence.CrmReferenceFull)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OutboundCorrespondence.SBI)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OutboundCorrespondence.PersonName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OutboundCorrespondence.ManagerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OutboundCorrespondence.QCCompletedByName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OutboundCorrespondence.DateQCCompleted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QCResult)
+            </td>
+            @if (ViewBag.PageName == "All Quality Checks")
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.OutboundCorrespondence.ReCheckRequired)
+                </td>
+            }
+            else if (ViewBag.PageName == "Complete Checks")
+            {
+            <td>
+                @Html.DisplayFor(modelItem => item.ReCheckQCResult)
+            </td>
+            }
+            <td>
+                @Html.ActionLink("Details", "Details", new { CheckId = item.OutboundCorrespondence.CheckId })
+            </td>
+            @if (item.OutboundCorrespondence.ReCheckRequired == true)
+            {
+                if ((User.IsInRole("Quality Checks: OC Admin")) || (User.IsInRole("Quality Checks: OC Team Manager")))
+                {
+                    <td>
+                        @Html.ActionLink("Recheck", "GeneralDetails", new { CheckId = item.OutboundCorrespondence.CheckId })
+                    </td>
+                }
+            }
+        </tr>
+    }
+
+</table>
+
+@if (ViewBag.PageName == "All Quality Checks")
+{
+    <div>
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize, searchString = ViewBag.CurrentSearch }))
+        Showing @(Model.TotalItemCount < Model.FirstItemOnPage ? 0 : Model.FirstItemOnPage) to @Model.LastItemOnPage of @Model.TotalItemCount
+    </div>
+}
+else if (ViewBag.PageName == "Complete Checks")
+{
+    <div>
+        @Html.PagedListPager(Model, page => Url.Action("Complete", new { page, pageSize = Model.PageSize, searchString = ViewBag.CurrentSearch }))
+        Showing @(Model.TotalItemCount < Model.FirstItemOnPage ? 0 : Model.FirstItemOnPage) to @Model.LastItemOnPage of @Model.TotalItemCount
+    </div>
+}
+else if (ViewBag.PageName == "Outstanding Checks")
+{
+    <div>
+        @Html.PagedListPager(Model, page => Url.Action("Outstanding", new { page, pageSize = Model.PageSize, searchString = ViewBag.CurrentSearch }))
+        Showing @(Model.TotalItemCount < Model.FirstItemOnPage ? 0 : Model.FirstItemOnPage) to @Model.LastItemOnPage of @Model.TotalItemCount
+    </div>
+}
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var msg = @ViewBag.Locked;
+        if (msg == "1") {
+            alert("Recheck is currently locked by another user");
+        }
+    });
+</script>

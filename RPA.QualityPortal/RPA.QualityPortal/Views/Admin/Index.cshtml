@@ -1,0 +1,39 @@
+﻿@if(ViewBag.typeOfCheck == "OutboundCorrespondence")
+{
+    {
+        ViewBag.Title = "Index";
+        ViewBag.CheckType = "Outbound";
+    }
+}
+else if(ViewBag.typeOfCheck == "Bank")
+{
+    {
+        ViewBag.Title = "Index";
+        ViewBag.CheckType = "BankAccount";
+    }
+}
+
+<h1 class="heading-xlarge">Admin Page</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <p><img src="~/Content/Images/Checking.jpg" /></p>
+            <h4 class="heading-small">@Html.ActionLink("Unlock Check", "UnlockCheck", "Admin", new { checkType = ViewBag.typeOfCheck }, "")</h4>
+            <p>Unlock creating a Check or Recheck</p>
+        </div>
+        <div class="col-md-4">
+            <p><img src="~/Content/Images/Email.jpg" /></p>
+            <h4 class="heading-small">@Html.ActionLink("Email", "Email", "Admin", new { checkType = ViewBag.typeOfCheck }, "")</h4>
+            <p>Control whether Email Notifications are sent</p>
+        </div>
+        @if (ViewBag.typeOfCheck == "OutboundCorrespondence")
+        {
+            <div class="col-md-4">
+                <p><img src="~/Content/Images/lock.png" /></p>
+                <h4 class="heading-small">@Html.ActionLink("Access", "Access", "Admin", new { checkType = ViewBag.typeOfCheck }, "")</h4>
+                <p>Control access rights for users</p>
+            </div>
+        }
+    </div>
+</div>

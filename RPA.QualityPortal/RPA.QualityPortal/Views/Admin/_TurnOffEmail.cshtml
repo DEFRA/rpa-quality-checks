@@ -1,0 +1,19 @@
+﻿@model RPA.QualityPortal.Models.Control
+
+@using (Html.BeginForm("_TurnOffEmail", "Admin"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Trigger Notification Emails Process On/Off</div>
+        <div class="panel-body">
+            <div form-group>
+                @Html.CheckBoxFor(model => model.Active)
+                <label for="Email">Auto Email Notifications</label>
+                <input type="submit" value="Save Auto Emails" style="margin-left:700px" class="btn btn-success" />
+            </div>
+            @Html.HiddenFor(model => model.ControlId)
+            @Html.HiddenFor(model => model.Property)
+        </div>
+    </div>
+}
