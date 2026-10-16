@@ -1,12 +1,12 @@
-﻿@model PagedList<RPA.QualityPortal.ViewModels.BankAccountOverview>
+@model X.PagedList.IPagedList<RPA.QualityPortal.ViewModels.BankAccountOverview>
 
 @{
     ViewBag.Title = "Bank Account Quality Checks";
     ViewBag.CheckType = "BankAccount";
 }
 
-@using PagedList;
-@using PagedList.Mvc;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
 
 <div class="jumbotron">
     <h1>Bank Account QC</h1>

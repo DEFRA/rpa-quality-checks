@@ -1,4 +1,4 @@
-﻿using Moq;
+using Moq;
 using NUnit.Framework;
 using RPA.QualityPortal.Helpers;
 using RPA.QualityPortal.Models.CheckTypes;
@@ -21,7 +21,7 @@ namespace RPA.QualityPortal.Tests.Services
         IAnswerService answerService;
         IMessageService messageService;
         IFilterService filterService;
-        IUserHelper userHelper;
+        IUserHelper userHelper = Mock.Of<IUserHelper>();
         Mock<IRoleManager> roleManager;
         ILockService lockService;
 
@@ -49,8 +49,8 @@ namespace RPA.QualityPortal.Tests.Services
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
                 CheckId = 6,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -70,9 +70,9 @@ namespace RPA.QualityPortal.Tests.Services
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -84,7 +84,7 @@ namespace RPA.QualityPortal.Tests.Services
 
             //Assert
 
-            Assert.AreEqual(result.To[0], "[REDACTED_EMAIL]");
+            Assert.AreEqual("person4@test.com", result.To[0].Address);
 
         }
 
@@ -97,8 +97,8 @@ namespace RPA.QualityPortal.Tests.Services
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
                 CheckId = 6,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -118,9 +118,9 @@ namespace RPA.QualityPortal.Tests.Services
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -132,7 +132,7 @@ namespace RPA.QualityPortal.Tests.Services
 
             //Assert
 
-            Assert.AreEqual(result.To[0], "[REDACTED_EMAIL]");
+            Assert.AreEqual("person4@test.com", result.To[0].Address);
         }
 
         [Test]
@@ -165,9 +165,9 @@ namespace RPA.QualityPortal.Tests.Services
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -179,7 +179,7 @@ namespace RPA.QualityPortal.Tests.Services
 
             //Assert
 
-            Assert.AreEqual(result.To[0], "[REDACTED_EMAIL]");
+            Assert.AreEqual("person4@test.com", result.To[0].Address);
 
         }
 
@@ -192,8 +192,8 @@ namespace RPA.QualityPortal.Tests.Services
             BankAccountCheck bankAccount = new BankAccountCheck
             {
                 CheckId = 53,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 3,
@@ -204,7 +204,7 @@ namespace RPA.QualityPortal.Tests.Services
                 SBI = "123456789",
                 FRN = 1234567890,
                 CoachingPoint = false,
-                ManagerName = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true
             };
@@ -215,7 +215,7 @@ namespace RPA.QualityPortal.Tests.Services
 
             //Assert
 
-            Assert.AreEqual(result.To[0], "[REDACTED_EMAIL]");
+            Assert.AreEqual("person4@test.com", result.To[0].Address);
 
         }
 
@@ -228,8 +228,8 @@ namespace RPA.QualityPortal.Tests.Services
             BankAccountCheck bankAccount = new BankAccountCheck
             {
                 CheckId = 54,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 3,
@@ -240,7 +240,7 @@ namespace RPA.QualityPortal.Tests.Services
                 SBI = "123456789",
                 FRN = 1234567890,
                 CoachingPoint = false,
-                ManagerName = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true
             };
@@ -251,7 +251,7 @@ namespace RPA.QualityPortal.Tests.Services
 
             //Assert
 
-            Assert.AreEqual(result.CC[0], "[REDACTED_EMAIL]");
+            Assert.AreEqual("person5@test.com", result.CC[0].Address);
 
         }
 
@@ -264,8 +264,8 @@ namespace RPA.QualityPortal.Tests.Services
             BankAccountCheck bankAccount = new BankAccountCheck
             {
                 CheckId = 54,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 3,
@@ -276,7 +276,7 @@ namespace RPA.QualityPortal.Tests.Services
                 SBI = "123456789",
                 FRN = 1234567890,
                 CoachingPoint = false,
-                ManagerName = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true
             };
@@ -287,7 +287,7 @@ namespace RPA.QualityPortal.Tests.Services
 
             //Assert
 
-            Assert.AreEqual(result.To[0], "[REDACTED_EMAIL]");
+            Assert.AreEqual("person4@test.com", result.To[0].Address);
 
         }
 
@@ -300,8 +300,8 @@ namespace RPA.QualityPortal.Tests.Services
             BankAccountCheck bankAccount = new BankAccountCheck
             {
                 CheckId = 53,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 3,
@@ -312,7 +312,7 @@ namespace RPA.QualityPortal.Tests.Services
                 SBI = "123456789",
                 FRN = 1234567890,
                 CoachingPoint = false,
-                ManagerName = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = false
             };
@@ -323,7 +323,7 @@ namespace RPA.QualityPortal.Tests.Services
 
             //Assert
 
-            Assert.AreEqual(result.To[0], "[REDACTED_EMAIL]");
+            Assert.AreEqual("person4@test.com", result.To[0].Address);
         }
 
         [Test]

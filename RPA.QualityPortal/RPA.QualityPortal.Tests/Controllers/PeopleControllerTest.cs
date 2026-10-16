@@ -1,4 +1,5 @@
-﻿using Moq;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using RPA.QualityPortal.Controllers;
@@ -11,8 +12,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Helpers;
-using System.Web.Mvc;
 
 namespace RPA.QualityPortal.Tests.Controllers
 {
@@ -41,12 +40,12 @@ namespace RPA.QualityPortal.Tests.Controllers
         [Test]
         public void Test_PeopleSearch_Returns_Person_By_Name()
         {
-            var result = controller.PeopleSearch("Gordon, [REDACTED_NAME]") as ContentResult;
+            var result = controller.PeopleSearch("Gordon, Lee George") as ContentResult;
 
             var actual = JsonConvert.DeserializeObject<IEnumerable<PeopleSearchModel>>(result.Content).ToList();
 
-            Assert.AreEqual(actual[0].Label, "Gordon, [REDACTED_NAME] (LM: Slee, Alan)");
-            Assert.AreEqual(actual[0].Value, "Gordon, [REDACTED_NAME]");
+            Assert.AreEqual(actual[0].Label, "Gordon, Lee George (LM: Slee, Alan)");
+            Assert.AreEqual(actual[0].Value, "Gordon, Lee George");
             Assert.AreEqual(actual[0].StaffNumber, "M600300");
             Assert.AreEqual(actual[0].Manager, "Slee, Alan");
         }
@@ -54,12 +53,12 @@ namespace RPA.QualityPortal.Tests.Controllers
         [Test]
         public void Test_PeopleSearch_Returns_Person_By_Staff_Number()
         {
-            var result = controller.PeopleSearch("Gordon, [REDACTED_NAME]") as ContentResult;
+            var result = controller.PeopleSearch("Gordon, Lee George") as ContentResult;
 
             var actual = JsonConvert.DeserializeObject<IEnumerable<PeopleSearchModel>>(result.Content).ToList();
 
-            Assert.AreEqual(actual[0].Label, "Gordon, [REDACTED_NAME] (LM: Slee, Alan)");
-            Assert.AreEqual(actual[0].Value, "Gordon, [REDACTED_NAME]");
+            Assert.AreEqual(actual[0].Label, "Gordon, Lee George (LM: Slee, Alan)");
+            Assert.AreEqual(actual[0].Value, "Gordon, Lee George");
             Assert.AreEqual(actual[0].StaffNumber, "M600300");
             Assert.AreEqual(actual[0].Manager, "Slee, Alan");
         }

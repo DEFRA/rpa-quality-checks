@@ -1,4 +1,4 @@
-﻿@model RPA.QualityPortal.ViewModels.QuestionAnswerList
+@model RPA.QualityPortal.ViewModels.QuestionAnswerList
 
 
 @{
@@ -58,9 +58,7 @@
                             @Html.HiddenFor(model => model.QuestionAnswers[i].Answer)
                         </td>
                         <td>
-                            @{
-                                Html.RenderAction("_CheckAnswer", new { CheckId = ViewBag.CheckId, QuestionId = Model.QuestionAnswers[i].CheckQuestion.Question.QuestionId });
-                            }
+                            @await Component.InvokeAsync("CheckAnswer", new { CheckId = ViewBag.CheckId, QuestionId = Model.QuestionAnswers[i].CheckQuestion.Question.QuestionId })
                         </td>
                     </tr>
                 }

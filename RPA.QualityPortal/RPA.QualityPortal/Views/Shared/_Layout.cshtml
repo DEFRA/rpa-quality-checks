@@ -1,16 +1,18 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge, width=device-width, initial-scale=1.0">
         <title>Quality Check Portal</title>
-        @Scripts.Render("~/bundles/modernizr")
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
-        @Scripts.Render("~/bundles/jqueryui")
-        @Scripts.Render("~/bundles/jqueryval")
-        @Styles.Render("~/Content/css")
-        @Styles.Render("~/Content/JQueryUI/css")
+        <script src="~/Scripts/modernizr-2.8.3.js"></script>
+        <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+        <script src="~/Scripts/bootstrap.js"></script>
+        <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+        <script src="~/Scripts/jquery.validate.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+        <link href="~/Content/bootstrap.css" rel="stylesheet" />
+        <link href="~/Content/Site.css" rel="stylesheet" />
+        <link href="~/Content/themes/base/all.css" rel="stylesheet" />
         @RenderSection("scripts", required: false)
     </head>
 
@@ -20,7 +22,7 @@
                 <div class="container">
 
                     <div class="navbar-header">
-                        @Html.ActionLink("Quality Check Portal", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                        <a asp-controller="Home" asp-action="Index" class="navbar-brand">Quality Check Portal</a>
                     </div>
 
                     @{
@@ -31,12 +33,12 @@
 
                             case "Outbound":
 
-                                @Html.Partial("_OutboundNav")
+                                <partial name="_OutboundNav" />
                                 break;
 
                             case "BankAccount":
 
-                                @Html.Partial("_BankAccountNav")
+                                <partial name="_BankAccountNav" />
                                 break;
                         }
                     }

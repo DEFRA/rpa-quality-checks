@@ -1,4 +1,4 @@
-﻿@model RPA.QualityPortal.ViewModels.DetailsReCheck
+@model RPA.QualityPortal.ViewModels.DetailsReCheck
 
 @{
     ViewBag.Title = "DetailsReCheck";
@@ -223,9 +223,7 @@
     @if (Model.Challenge == true)
     {
         <div>
-            @{
-                Html.RenderAction("_ChallengeView", "OutboundCorrespondence", new { CheckId = Model.OutboundCorrespondence.CheckId });
-            }
+            @await Component.InvokeAsync("ChallengeView", new { CheckId = Model.OutboundCorrespondence.CheckId })
         </div>
     }
 

@@ -15,6 +15,11 @@ namespace RPA.QualityPortal.Migrations
             ContextKey = "RPA.QualityPortal.DAL.QualityContext";
         }
 
+        public Configuration(string connectionString) : this()
+        {
+            TargetDatabase = new System.Data.Entity.Infrastructure.DbConnectionInfo(connectionString, "System.Data.SqlClient");
+        }
+
         protected override void Seed(DAL.QualityContext context)
         {
 

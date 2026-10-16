@@ -1,10 +1,9 @@
-﻿using RPA.QualityPortal.DAL;
+using RPA.QualityPortal.DAL;
 using RPA.QualityPortal.Models;
 using RPA.QualityPortal.Models.CheckTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace RPA.QualityPortal.Services
 {

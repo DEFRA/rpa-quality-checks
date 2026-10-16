@@ -7,9 +7,9 @@ namespace RPA.QualityPortal.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class emailnotificationnotnullable : IMigrationMetadata
+    public sealed partial class Emailnotificationnotnullable : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(emailnotificationnotnullable));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Emailnotificationnotnullable));
         
         string IMigrationMetadata.Id
         {

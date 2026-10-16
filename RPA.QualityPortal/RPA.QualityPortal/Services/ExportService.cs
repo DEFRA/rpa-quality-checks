@@ -1,9 +1,8 @@
-﻿using RPA.QualityPortal.Models.CheckTypes;
+using RPA.QualityPortal.Models.CheckTypes;
 using RPA.QualityPortal.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Text;
 using RPA.QualityPortal.DAL;
 using System.IO;

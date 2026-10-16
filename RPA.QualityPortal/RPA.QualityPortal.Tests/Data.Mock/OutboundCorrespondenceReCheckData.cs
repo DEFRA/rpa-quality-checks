@@ -1,4 +1,4 @@
-﻿using RPA.QualityPortal.Models;
+using RPA.QualityPortal.Models;
 using RPA.QualityPortal.Models.CheckTypes;
 using System;
 using System.Collections.Generic;
@@ -18,26 +18,26 @@ namespace RPA.QualityPortal.Tests.Data.Mock
                 {
                     CheckId = 1,
                     OutboundCorrespondenceId = 1,
-                    PersonName = "Gordon, [REDACTED_NAME]",
-                    QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                    PersonName = "Gordon, Lee George",
+                    QCCompletedByName = "Gordon, Lee George",
                     DateQCCompleted = DateTime.Now,
                     Archived = false,
                     CheckTypeId = 2,
                     CheckType =  new CheckType{ CheckTypeId = 2, Name = "Outbound Correspondence ReCheck" },
-                    ReCheckCompletedBy = "Gordon, [REDACTED_NAME]",
+                    ReCheckCompletedBy = "Gordon, Lee George",
                     EmailNotifications = false
                 },
                 new OutboundCorrespondenceReCheck
                 {
                     CheckId = 3,
                     OutboundCorrespondenceId = 3,
-                    PersonName = "Gordon, [REDACTED_NAME]",
-                    QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                    PersonName = "Gordon, Lee George",
+                    QCCompletedByName = "Gordon, Lee George",
                     DateQCCompleted = DateTime.Now,
                     Archived = false,
                     CheckTypeId = 2,
                     CheckType = new CheckType{ CheckTypeId = 2, Name = "Outbound Correspondence ReCheck" },
-                    ReCheckCompletedBy = "Gordon, [REDACTED_NAME]",
+                    ReCheckCompletedBy = "Gordon, Lee George",
                     ReCheckActive = false,
                     EmailNotifications = true
                 },
@@ -45,13 +45,13 @@ namespace RPA.QualityPortal.Tests.Data.Mock
                 {
                     CheckId = 4,
                     OutboundCorrespondenceId = 4,
-                    PersonName = "Gordon, [REDACTED_NAME]",
-                    QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                    PersonName = "Gordon, Lee George",
+                    QCCompletedByName = "Gordon, Lee George",
                     DateQCCompleted = DateTime.Now,
                     Archived = false,
                     CheckTypeId = 2,
                     CheckType =  new CheckType{ CheckTypeId = 2, Name = "Outbound Correspondence ReCheck" },
-                    ReCheckCompletedBy = "Gordon, [REDACTED_NAME]",
+                    ReCheckCompletedBy = "Gordon, Lee George",
                     EmailNotifications = true
                 },
                 new OutboundCorrespondenceReCheck
@@ -105,13 +105,13 @@ namespace RPA.QualityPortal.Tests.Data.Mock
                 {
                     CheckId = 9,
                     OutboundCorrespondenceId = 4,
-                    PersonName = "Gordon, [REDACTED_NAME]",
-                    QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                    PersonName = "Gordon, Lee George",
+                    QCCompletedByName = "Gordon, Lee George",
                     DateQCCompleted = DateTime.Now,
                     Archived = false,
                     CheckTypeId = 2,
                     CheckType =  new CheckType{ CheckTypeId = 2, Name = "Outbound Correspondence ReCheck" },
-                    ReCheckCompletedBy = "Gordon, [REDACTED_NAME]",
+                    ReCheckCompletedBy = "Gordon, Lee George",
                     EmailNotifications = true
                 }
             };

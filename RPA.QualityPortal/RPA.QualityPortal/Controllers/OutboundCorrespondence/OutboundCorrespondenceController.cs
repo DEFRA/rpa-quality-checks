@@ -1,4 +1,6 @@
-﻿using PagedList;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
+using X.PagedList;
 using RPA.QualityPortal.DAL;
 using RPA.QualityPortal.Helpers;
 using RPA.QualityPortal.Models;
@@ -11,12 +13,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace RPA.QualityPortal.Controllers
 {
     [Authorize(Roles = "Quality Checks: OC Team Member, Quality Checks: OC Team Manager")]
-    public class OutboundCorrespondenceController : Controller
+    public class OutboundCorrespondenceController : QualityController
     {
         IQualityContext db;
         IPeopleContext pdb;
@@ -32,23 +34,6 @@ namespace RPA.QualityPortal.Controllers
         IUserHelper userHelper;
         IRoleManager roleManager;
         ILockService lockService;
-
-        public OutboundCorrespondenceController()
-        {
-            db = new QualityContext();
-            pdb = new PeopleContext();
-            answerService = new AnswerService(db);           
-            peopleService = new PeopleService(pdb);
-            userHelper = new UserHelper(pdb);
-            roleManager = new RoleManager();
-            filterService = new FilterService(db, pdb, userHelper, roleManager);
-            auditService = new AuditService(db);
-            sendService = new SendService();
-            messageService = new EmailService(db, pdb);
-            exportService = new ExportService(db);
-            lockService = new LockService(db, pdb, userHelper);
-            outboundCorrespondenceService = new OutboundCorrespondenceService(db, answerService, userHelper, lockService);
-        }
 
         public OutboundCorrespondenceController(IQualityContext context, IPeopleContext peopleContext, IOutboundCorrespondenceService outboundCorrespondenceService, IPeopleService peopleService, IMessageService messageService, ISendService sendService, IAuditService auditService, IFilterService filterService, IAnswerService answerService, IUserHelper userHelper, IExportService exportService, IRoleManager roleManager, ILockService lockService)
 
@@ -69,7 +54,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult Index(bool locked = false, string searchString = null, int page = 1, int pageSize = 50, int filterId = 0)
+        public IActionResult Index(bool locked = false, string searchString = null, int page = 1, int pageSize = 50, int filterId = 0)
         {
             if (locked)
             {
@@ -80,13 +65,13 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult Complete(string searchString = null, int page = 1, int pageSize = 50, int filterId = 0)
+        public IActionResult Complete(string searchString = null, int page = 1, int pageSize = 50, int filterId = 0)
         {
             return GetListViews(searchString, page, pageSize, "Complete Checks");
         }
 
         //GET:
-        public ActionResult Outstanding(string searchString = null, int page = 1, int pageSize = 50, int filterId = 0)
+        public IActionResult Outstanding(string searchString = null, int page = 1, int pageSize = 50, int filterId = 0)
         {
             return GetListViews(searchString, page, pageSize, "Outstanding Checks");
         }
@@ -118,7 +103,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult Export()
+        public IActionResult Export()
         {
             DateTime sixteenMonths = DateTime.Now.AddMonths(-16);
 
@@ -129,7 +114,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult ExportArchive()
+        public IActionResult ExportArchive()
         {
             DateTime sixteenMonths = DateTime.Now.AddMonths(-16);
 
@@ -140,13 +125,13 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult GeneralDetails(int CheckId)
+        public IActionResult GeneralDetails(int CheckId)
         {
             return View(db.OutboundCorrespondence.Where(x => x.CheckId == CheckId).FirstOrDefault());
         }
 
         //GET: OutboundCorrespondence/CreateGeneral
-        public ActionResult CreateGeneral()
+        public IActionResult CreateGeneral()
         {
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence();
 
@@ -167,7 +152,7 @@ namespace RPA.QualityPortal.Controllers
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateGeneral(OutboundCorrespondence outboundCorrespondence)
+        public IActionResult CreateGeneral(OutboundCorrespondence outboundCorrespondence)
         {
             NameCheck(outboundCorrespondence);
 
@@ -221,7 +206,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult CreateQuestions()
+        public IActionResult CreateQuestions()
         {
             OutboundCorrespondence outboundCorrespondence = this.Session["CreateGeneral"] as OutboundCorrespondence;
 
@@ -245,7 +230,7 @@ namespace RPA.QualityPortal.Controllers
 
         }
 
-        public ActionResult CreateListQuestions(OutboundCorrespondence outboundCorrespondence)
+        public IActionResult CreateListQuestions(OutboundCorrespondence outboundCorrespondence)
         {
             List<CheckQuestion> checkQuestions = db.CheckQuestions.Where(x => x.CheckType.Name == "Outbound Correspondence").OrderBy(c => c.Order).ToList();
 
@@ -267,7 +252,7 @@ namespace RPA.QualityPortal.Controllers
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateQuestions(QuestionAnswerList qaList)
+        public IActionResult CreateQuestions(QuestionAnswerList qaList)
         {
             OutboundCorrespondence outboundCorrespondence = this.Session["CreateGeneral"] as OutboundCorrespondence;
 
@@ -283,7 +268,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult CreateResult()
+        public IActionResult CreateResult()
         {
             OutboundCorrespondence outboundCorrespondence = this.Session["CreateGeneral"] as OutboundCorrespondence;
 
@@ -312,7 +297,7 @@ namespace RPA.QualityPortal.Controllers
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateResult(OutboundCorrespondence outboundCorrespondence)
+        public IActionResult CreateResult(OutboundCorrespondence outboundCorrespondence)
         {
             QuestionAnswerList qaList = this.Session["CreateQuestions"] as QuestionAnswerList;
 
@@ -381,7 +366,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult Details(int CheckId)
+        public IActionResult Details(int CheckId)
         {
             int reCheckCount = db.OutboundCorrespondenceReCheck.Where(x => x.OutboundCorrespondenceId == CheckId).Count();
 
@@ -405,7 +390,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult EditGeneral(int CheckId)
+        public IActionResult EditGeneral(int CheckId)
         {
             OutboundCorrespondence outboundCorrespondence = db.OutboundCorrespondence.Where(x => x.CheckId == CheckId).FirstOrDefault();
 
@@ -424,7 +409,7 @@ namespace RPA.QualityPortal.Controllers
         // POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditGeneral(OutboundCorrespondence outboundCorrespondence)
+        public IActionResult EditGeneral(OutboundCorrespondence outboundCorrespondence)
         {
             //set model to session data
 
@@ -454,7 +439,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult EditQuestions()
+        public IActionResult EditQuestions()
         {
             //get models from session data 
 
@@ -494,7 +479,7 @@ namespace RPA.QualityPortal.Controllers
         // POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditQuestions(QuestionAnswerList qaList)
+        public IActionResult EditQuestions(QuestionAnswerList qaList)
         {
             if (ModelState.IsValid)
             {
@@ -508,7 +493,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult EditResult()
+        public IActionResult EditResult()
         {
             OutboundCorrespondence outboundCorrespondence = this.Session["EditGeneral"] as OutboundCorrespondence;
 
@@ -526,7 +511,7 @@ namespace RPA.QualityPortal.Controllers
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditResult(OutboundCorrespondence outboundCorrespondence)
+        public IActionResult EditResult(OutboundCorrespondence outboundCorrespondence)
         {
             //obtain existing models from session data
 
@@ -562,7 +547,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult AmendmentReason()
+        public IActionResult AmendmentReason()
         {
             CheckAmendmentReason checkAmendmentReason = new CheckAmendmentReason();
 
@@ -575,7 +560,7 @@ namespace RPA.QualityPortal.Controllers
 
         //POST:
         [HttpPost]
-        public ActionResult AmendmentReason(CheckAmendmentReason checkAmendmentReason)
+        public IActionResult AmendmentReason(CheckAmendmentReason checkAmendmentReason)
         {
             QuestionAnswerList qaList = this.Session["EditQuestions"] as QuestionAnswerList;
 
@@ -636,7 +621,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult Challenge(int CheckId)
+        public IActionResult Challenge(int CheckId)
         {
             Challenge challenge = new Challenge
             {
@@ -653,7 +638,7 @@ namespace RPA.QualityPortal.Controllers
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Challenge(string ReCheck, Challenge challenge)
+        public IActionResult Challenge(string ReCheck, Challenge challenge)
         {
 
             ChallengeOutcome challengeOutcome = db.ChallengeOutcomes.AsNoTracking().Where(x => x.ChallengeOutcomeId == challenge.ChallengeOutcomeId).FirstOrDefault();
@@ -724,16 +709,9 @@ namespace RPA.QualityPortal.Controllers
 
         }
 
-        public PartialViewResult _ChallengeView(int CheckId)
-        {
-            Challenge challenge = db.Challenge.Include("ChallengeOutcome").Where(x => x.CheckId == CheckId).FirstOrDefault();
-
-            return PartialView(challenge);
-        }
-
-        //GET:
+//GET:
         //Method to edit questions when challenge raised
-        public ActionResult ChallengeQuestions(int CheckId)
+        public IActionResult ChallengeQuestions(int CheckId)
         {
             OutboundCorrespondence outboundCorrespondence = db.OutboundCorrespondence.Where(x => x.CheckId == CheckId).FirstOrDefault();
 
@@ -765,7 +743,7 @@ namespace RPA.QualityPortal.Controllers
         //Method to edit questions when challenge raised
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChallengeQuestions(int CheckId, QuestionAnswerList qaList)
+        public IActionResult ChallengeQuestions(int CheckId, QuestionAnswerList qaList)
         {
 
             if (ModelState.IsValid)
@@ -781,7 +759,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult ChallengeResult(int CheckId)
+        public IActionResult ChallengeResult(int CheckId)
         {
 
             QuestionAnswerList qaList = this.Session["ChallengeQuestions"] as QuestionAnswerList;
@@ -800,7 +778,7 @@ namespace RPA.QualityPortal.Controllers
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChallengeResult(OutboundCorrespondence outboundCorrespondence)
+        public IActionResult ChallengeResult(OutboundCorrespondence outboundCorrespondence)
         {
             //Challenge check - if there has been a successful challenge ensure that the QC Result is now a pass
 
@@ -830,7 +808,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult ChallengeAmendmentReason(int CheckId)
+        public IActionResult ChallengeAmendmentReason(int CheckId)
         {
 
             CheckAmendmentReason checkAmendmentReason = new CheckAmendmentReason
@@ -849,7 +827,7 @@ namespace RPA.QualityPortal.Controllers
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChallengeAmendmentReason(CheckAmendmentReason checkAmendmentReason)
+        public IActionResult ChallengeAmendmentReason(CheckAmendmentReason checkAmendmentReason)
         {
             QuestionAnswerList qaList = this.Session["ChallengeQuestions"] as QuestionAnswerList;
 
@@ -890,7 +868,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult DeleteView(int CheckId)
+        public IActionResult DeleteView(int CheckId)
         {
             Details detailView = new Details
             {
@@ -907,7 +885,7 @@ namespace RPA.QualityPortal.Controllers
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int CheckId)
+        public IActionResult Delete(int CheckId)
         {
             outboundCorrespondenceService.DeleteCheck(CheckId);
 

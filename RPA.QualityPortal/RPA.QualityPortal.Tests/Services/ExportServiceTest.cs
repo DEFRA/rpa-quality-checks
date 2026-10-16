@@ -1,4 +1,4 @@
-﻿using Moq;
+using Moq;
 using NUnit.Framework;
 using OfficeOpenXml;
 using RPA.QualityPortal.Helpers;
@@ -16,7 +16,7 @@ namespace RPA.QualityPortal.Tests.Services
         MockQualityContext context;
         MockPeopleContext peopleContext;
         IFilterService filterService;
-        IUserHelper userHelper;
+        IUserHelper userHelper = Mock.Of<IUserHelper>();
         Mock<IRoleManager> roleManager;
         IExportService exportService;
 

@@ -1,4 +1,8 @@
-﻿using Moq;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
+using RPA.QualityPortal.ViewComponents;
+using RPA.QualityPortal.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
 using NUnit.Framework;
 using RPA.QualityPortal.Controllers;
 using RPA.QualityPortal.Helpers;
@@ -8,10 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using RPA.QualityPortal.Tests.Factory;
-using RPA.QualityPortal.Factory;
 using RPA.QualityPortal.ViewModels.OutboundCorrespondenceVM.MI;
-using System.Web.Mvc;
-using MvcContrib.TestHelper;
 using RPA.QualityPortal.Tests.Data.Mock;
 using RPA.QualityPortal.Models.CheckTypes;
 using RPA.QualityPortal.Models.OutboundCorrespondenceDropDowns;
@@ -36,11 +37,9 @@ namespace RPA.QualityPortal.Tests.Controllers
             context = new MockQualityContext();
             peopleContext = new MockPeopleContext();
             roleManager = new Mock<IRoleManager>();
-            userHelper = new UserHelper(peopleContext.MockContext.Object);
+            userHelper = new UserHelper(peopleContext.MockContext.Object, MockHttpContext.GetMockedHttpContextAccessor());
             filterService = new FilterService(context.MockContext.Object, peopleContext.MockContext.Object, userHelper, roleManager.Object);
             miService = new MIService(context.MockContext.Object, peopleContext.MockContext.Object, userHelper, filterService);
-
-            HttpContextManager.SetCurrentContext(MockHttpContext.GetMockedHttpContext());
 
             controller = new OutboundCorrespondenceMIController(context.MockContext.Object, peopleContext.MockContext.Object, miService, userHelper, filterService, roleManager.Object);
         }
@@ -57,11 +56,11 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             //Act
 
-            var result = controller._OutboundCorrespondenceMI("", "", "", "") as PartialViewResult;
+            var result = new OutboundCorrespondenceMIViewComponent(context.MockContext.Object, miService, filterService, (controller.SessionStore ??= new InMemorySessionStore())).WithViewContext(("searchString", ""), ("searchOption", ""), ("dateFrom", ""), ("dateTo", "")).Invoke();
 
             //Assert
 
-            Assert.AreEqual(4, ((OutboundCorrespondenceMI)result.ViewData.Model).OutboundCorrespondenceList.Count());
+            Assert.AreEqual(4, result.ModelOf<OutboundCorrespondenceMI>().OutboundCorrespondenceList.Count());
 
         }
 
@@ -179,11 +178,11 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             //Act
 
-            var result = controller._OutboundCorrespondenceMI("Dormand, Scott", "LineManager", "", "") as PartialViewResult;
+            var result = new OutboundCorrespondenceMIViewComponent(context.MockContext.Object, miService, filterService, (controller.SessionStore ??= new InMemorySessionStore())).WithViewContext(("searchString", "Dormand, Scott"), ("searchOption", "LineManager"), ("dateFrom", ""), ("dateTo", "")).Invoke();
 
             //Assert
 
-            Assert.AreEqual("Dormand, Scott", ((OutboundCorrespondenceMI)result.ViewData.Model).OutboundCorrespondenceList[0].PersonName);
+            Assert.AreEqual("Dormand, Scott", result.ModelOf<OutboundCorrespondenceMI>().OutboundCorrespondenceList[0].PersonName);
         }
 
         [Test]
@@ -203,11 +202,11 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             //Act
 
-            var result = controller._OutboundCorrespondenceMI("Toward, Fay", "LineManager", "", "", back: true) as PartialViewResult;
+            var result = new OutboundCorrespondenceMIViewComponent(context.MockContext.Object, miService, filterService, (controller.SessionStore ??= new InMemorySessionStore())).WithViewContext(("searchString", "Toward, Fay"), ("searchOption", "LineManager"), ("dateFrom", ""), ("dateTo", "")).Invoke(back: true);
 
             //Assert
 
-            Assert.AreEqual("Session Test", ((OutboundCorrespondenceMI)result.ViewData.Model).ResultHeader);
+            Assert.AreEqual("Session Test", result.ModelOf<OutboundCorrespondenceMI>().ResultHeader);
         }
 
         [Test]
@@ -227,11 +226,11 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             //Act
 
-            var result = controller._OutboundCorrespondenceMI("", "", "", "", back: true) as PartialViewResult;
+            var result = new OutboundCorrespondenceMIViewComponent(context.MockContext.Object, miService, filterService, (controller.SessionStore ??= new InMemorySessionStore())).WithViewContext(("searchString", ""), ("searchOption", ""), ("dateFrom", ""), ("dateTo", "")).Invoke(back: true);
 
             //Assert
 
-            Assert.AreEqual("Session Test", ((OutboundCorrespondenceMI)result.ViewData.Model).ResultHeader);
+            Assert.AreEqual("Session Test", result.ModelOf<OutboundCorrespondenceMI>().ResultHeader);
         }
 
         [Test]
@@ -386,7 +385,7 @@ namespace RPA.QualityPortal.Tests.Controllers
         {
             //Act
 
-            var result = controller._AnswerMI() as PartialViewResult;
+            var result = new AnswerMIViewComponent(miService).WithViewContext().Invoke();
 
             //Assert
 

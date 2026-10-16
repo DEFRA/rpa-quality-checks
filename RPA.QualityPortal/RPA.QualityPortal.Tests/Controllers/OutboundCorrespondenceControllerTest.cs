@@ -1,9 +1,11 @@
-﻿using Moq;
-using MvcContrib.TestHelper;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
+using RPA.QualityPortal.ViewComponents;
+using RPA.QualityPortal.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
 using NUnit.Framework;
-using PagedList;
+using X.PagedList;
 using RPA.QualityPortal.Controllers;
-using RPA.QualityPortal.Factory;
 using RPA.QualityPortal.Helpers;
 using RPA.QualityPortal.Models;
 using RPA.QualityPortal.Models.CheckTypes;
@@ -15,7 +17,6 @@ using RPA.QualityPortal.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
 
 namespace RPA.QualityPortal.Tests.Controllers
 {
@@ -46,7 +47,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             peopleContext = new MockPeopleContext();
 
             answerService = new AnswerService(context.MockContext.Object);
-            userHelper = new UserHelper(peopleContext.MockContext.Object);
+            userHelper = new UserHelper(peopleContext.MockContext.Object, MockHttpContext.GetMockedHttpContextAccessor());
             roleManager = new Mock<IRoleManager>();
             peopleService = new PeopleService(peopleContext.MockContext.Object);
             sendService = new Mock<ISendService>();
@@ -56,8 +57,6 @@ namespace RPA.QualityPortal.Tests.Controllers
             exportService = new ExportService(context.MockContext.Object);
             lockService = new LockService(context.MockContext.Object, peopleContext.MockContext.Object, userHelper);
             outboundCorrespondenceService = new OutboundCorrespondenceService(context.MockContext.Object, answerService, userHelper, lockService);
-
-            HttpContextManager.SetCurrentContext(MockHttpContext.GetMockedHttpContext());
 
             controller = new OutboundCorrespondenceController(context.MockContext.Object, peopleContext.MockContext.Object, outboundCorrespondenceService, peopleService, messageService.Object, sendService.Object, auditService, filterService, answerService, userHelper, exportService, roleManager.Object, lockService);
         }
@@ -82,7 +81,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             builder.InitializeController(controller);
 
-            var result = controller.Index(true, "Gordon, [REDACTED_NAME]", 1, 50, 0) as ViewResult;
+            var result = controller.Index(true, "Gordon, Lee George", 1, 50, 0) as ViewResult;
 
             Assert.AreEqual(1, ((PagedList<OutboundCorrespondenceOverview>)result.ViewData.Model).Count);
         }
@@ -132,7 +131,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             builder.InitializeController(controller);
 
-            var result = controller.Outstanding("Gordon, [REDACTED_NAME]", 1, 50, 0) as ViewResult;
+            var result = controller.Outstanding("Gordon, Lee George", 1, 50, 0) as ViewResult;
 
             Assert.AreEqual(1, ((PagedList<OutboundCorrespondenceOverview>)result.ViewData.Model).Count);
         }
@@ -159,8 +158,8 @@ namespace RPA.QualityPortal.Tests.Controllers
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
                 CheckId = 3,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -176,9 +175,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 SBI = "123456789",
                 CRMRef = "123457",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -188,12 +187,12 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             //Act
 
-            var result = controller.CreateGeneral(outboundCorrespondence) as RedirectToRouteResult;
+            var result = controller.CreateGeneral(outboundCorrespondence) as RedirectToActionResult;
 
 
             //Assert
 
-            Assert.AreEqual("CreateQuestions", result.RouteValues["Action"]);
+            Assert.AreEqual("CreateQuestions", result.ActionName);
         }
 
         [Test]
@@ -293,8 +292,8 @@ namespace RPA.QualityPortal.Tests.Controllers
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
                 CheckId = 2,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -309,9 +308,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -327,7 +326,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             //Assert
 
-            Assert.AreEqual("Gordon, [REDACTED_NAME]", ((OutboundCorrespondence)result.ViewData.Model).ManagerName);
+            Assert.AreEqual("Gordon, Lee George", ((OutboundCorrespondence)result.ViewData.Model).ManagerName);
         }
 
         [Test]
@@ -338,8 +337,8 @@ namespace RPA.QualityPortal.Tests.Controllers
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
                 CheckId = 2,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -354,9 +353,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -417,11 +416,11 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             //Act
 
-            var result = controller.CreateQuestions(qaList) as RedirectToRouteResult;
+            var result = controller.CreateQuestions(qaList) as RedirectToActionResult;
 
             //Assert
 
-            Assert.AreEqual("CreateResult", result.RouteValues["Action"]);
+            Assert.AreEqual("CreateResult", result.ActionName);
 
         }
 
@@ -439,8 +438,8 @@ namespace RPA.QualityPortal.Tests.Controllers
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
                 CheckId = 2,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -455,9 +454,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -525,8 +524,8 @@ namespace RPA.QualityPortal.Tests.Controllers
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
                 CheckId = 2,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -541,9 +540,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -608,8 +607,8 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -630,9 +629,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -642,8 +641,8 @@ namespace RPA.QualityPortal.Tests.Controllers
             OutboundCorrespondence outboundCorrespondenceExisting = new OutboundCorrespondence
             {
                 CheckId = 1,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -664,9 +663,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 EmailNotifications = true
 
             };
@@ -711,11 +710,11 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             //Act
 
-            var result = controller.CreateResult(outboundCorrespondence) as RedirectToRouteResult;
+            var result = controller.CreateResult(outboundCorrespondence) as RedirectToActionResult;
 
             //Assert
 
-            Assert.AreEqual("Details", result.RouteValues["Action"]);
+            Assert.AreEqual("Details", result.ActionName);
         }
 
         [Test]
@@ -728,8 +727,8 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -748,9 +747,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false,
@@ -761,8 +760,8 @@ namespace RPA.QualityPortal.Tests.Controllers
             OutboundCorrespondence outboundCorrespondenceExisting = new OutboundCorrespondence
             {
                 CheckId = 1,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -781,9 +780,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]"
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George"
 
             };
 
@@ -826,7 +825,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             //Act
 
-            var result = controller.CreateResult(outboundCorrespondence) as RedirectToRouteResult;
+            var result = controller.CreateResult(outboundCorrespondence) as RedirectToActionResult;
 
             //Assert
             Assert.IsTrue(!controller.ModelState.IsValid);
@@ -846,8 +845,8 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -865,9 +864,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 UniqueId = "1234",
                 SBI = "123456789",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -877,8 +876,8 @@ namespace RPA.QualityPortal.Tests.Controllers
             OutboundCorrespondence outboundCorrespondenceExisting = new OutboundCorrespondence
             {
                 CheckId = 1,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -896,9 +895,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 UniqueId = "1234",
                 SBI = "123456789",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]"
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George"
 
             };
 
@@ -945,7 +944,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             //Act
 
-            var result = controller.CreateResult(outboundCorrespondence) as RedirectToRouteResult;
+            var result = controller.CreateResult(outboundCorrespondence) as RedirectToActionResult;
 
             //Assert
 
@@ -968,11 +967,11 @@ namespace RPA.QualityPortal.Tests.Controllers
         public void Test_Detail_With_ReCheck_Redirects_to_RecheckController()
         {
 
-            var result = controller.Details(1) as RedirectToRouteResult;
+            var result = controller.Details(1) as RedirectToActionResult;
 
             //Assert
 
-            Assert.AreEqual("DetailsReCheck", result.RouteValues["Action"]);
+            Assert.AreEqual("DetailsReCheck", result.ActionName);
         }
 
         [Test]
@@ -997,8 +996,8 @@ namespace RPA.QualityPortal.Tests.Controllers
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
                 CheckId = 3,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -1014,9 +1013,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 SBI = "123456789",
                 CRMRef = "123457",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -1026,12 +1025,12 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             //Act
 
-            var result = controller.EditGeneral(outboundCorrespondence) as RedirectToRouteResult;
+            var result = controller.EditGeneral(outboundCorrespondence) as RedirectToActionResult;
 
 
             //Assert
 
-            Assert.AreEqual("EditQuestions", result.RouteValues["Action"]);
+            Assert.AreEqual("EditQuestions", result.ActionName);
         }
 
         [Test]
@@ -1046,8 +1045,8 @@ namespace RPA.QualityPortal.Tests.Controllers
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
                 CheckId = 2,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -1062,9 +1061,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -1080,7 +1079,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             //Assert
 
-            Assert.AreEqual("Gordon, [REDACTED_NAME]", ((OutboundCorrespondence)result.ViewData.Model).ManagerName);
+            Assert.AreEqual("Gordon, Lee George", ((OutboundCorrespondence)result.ViewData.Model).ManagerName);
         }
 
         [Test]
@@ -1089,8 +1088,8 @@ namespace RPA.QualityPortal.Tests.Controllers
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
                 CheckId = 2,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -1106,9 +1105,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -1168,11 +1167,11 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             //Act
 
-            var result = controller.EditQuestions(qaList) as RedirectToRouteResult;
+            var result = controller.EditQuestions(qaList) as RedirectToActionResult;
 
             //Assert
 
-            Assert.AreEqual("EditResult", result.RouteValues["Action"]);
+            Assert.AreEqual("EditResult", result.ActionName);
 
         }
 
@@ -1188,8 +1187,8 @@ namespace RPA.QualityPortal.Tests.Controllers
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
                 CheckId = 2,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -1204,9 +1203,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -1273,8 +1272,8 @@ namespace RPA.QualityPortal.Tests.Controllers
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
                 CheckId = 2,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -1289,9 +1288,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -1352,8 +1351,8 @@ namespace RPA.QualityPortal.Tests.Controllers
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
                 CheckId = 2,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -1368,9 +1367,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -1378,8 +1377,8 @@ namespace RPA.QualityPortal.Tests.Controllers
             OutboundCorrespondence outboundCorrespondenceExisting = new OutboundCorrespondence
             {
                 CheckId = 2,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -1393,9 +1392,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
             };
             //QA List
             QuestionAnswerList qaList = new QuestionAnswerList
@@ -1425,9 +1424,9 @@ namespace RPA.QualityPortal.Tests.Controllers
             controller.Session["EditGeneral"] = outboundCorrespondenceExisting;
             controller.Session["EditQuestions"] = qaList;
             //Act
-            var result = controller.EditResult(outboundCorrespondence) as RedirectToRouteResult;
+            var result = controller.EditResult(outboundCorrespondence) as RedirectToActionResult;
             //Assert
-            Assert.AreEqual("AmendmentReason", result.RouteValues["Action"]);
+            Assert.AreEqual("AmendmentReason", result.ActionName);
         }
 
         [Test]
@@ -1442,8 +1441,8 @@ namespace RPA.QualityPortal.Tests.Controllers
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
                 CheckId = 2,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -1458,9 +1457,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -1492,8 +1491,8 @@ namespace RPA.QualityPortal.Tests.Controllers
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
                 CheckId = 2,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -1508,9 +1507,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -1571,8 +1570,8 @@ namespace RPA.QualityPortal.Tests.Controllers
             OutboundCorrespondence outboundCorrespondenceExisting = new OutboundCorrespondence
             {
                 CheckId = 2,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -1586,9 +1585,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
             };
             //QA List
             QuestionAnswerList qaList = new QuestionAnswerList
@@ -1638,10 +1637,10 @@ namespace RPA.QualityPortal.Tests.Controllers
             controller.Session["EditQuestions"] = qaList;
 
             //Act
-            var result = controller.AmendmentReason(CAR) as RedirectToRouteResult;
+            var result = controller.AmendmentReason(CAR) as RedirectToActionResult;
 
             //Assert
-            Assert.AreEqual("Details", result.RouteValues["Action"]);
+            Assert.AreEqual("Details", result.ActionName);
         }
 
         [Test]
@@ -1653,8 +1652,8 @@ namespace RPA.QualityPortal.Tests.Controllers
             OutboundCorrespondence outboundCorrespondenceExisting = new OutboundCorrespondence
             {
                 CheckId = 2,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -1668,9 +1667,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
             };
             //QA List
             QuestionAnswerList qaList = new QuestionAnswerList
@@ -1720,7 +1719,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             controller.Session["EditQuestions"] = qaList;
 
             //Act
-            var result = controller.AmendmentReason(CAR) as RedirectToRouteResult;
+            var result = controller.AmendmentReason(CAR) as RedirectToActionResult;
 
             //Assert
             Assert.IsTrue(controller.ModelState["AmendmentReason"].Errors.Any(modelError => modelError.ErrorMessage == "An amendment reason must be selected - if no amendments have been made please return to details screen"));
@@ -1761,11 +1760,11 @@ namespace RPA.QualityPortal.Tests.Controllers
             builder.InitializeController(controller);
             //Act
 
-            var result = controller.Challenge("Yes", challenge) as RedirectToRouteResult;
+            var result = controller.Challenge("Yes", challenge) as RedirectToActionResult;
 
             //Assert
 
-            Assert.AreEqual("ChallengeQuestions", result.RouteValues["Action"]);
+            Assert.AreEqual("ChallengeQuestions", result.ActionName);
             Assert.AreEqual(context.MockContext.Object.OutboundCorrespondenceReCheck.Where(x => x.OutboundCorrespondenceId == challenge.CheckId).Count(), 0);
         }
 
@@ -1787,11 +1786,11 @@ namespace RPA.QualityPortal.Tests.Controllers
             builder.InitializeController(controller);
             //Act
 
-            var result = controller.Challenge("Yes", challenge) as RedirectToRouteResult;
+            var result = controller.Challenge("Yes", challenge) as RedirectToActionResult;
 
             //Assert
 
-            Assert.AreEqual("Details", result.RouteValues["Action"]);
+            Assert.AreEqual("Details", result.ActionName);
             context.MockContext.Verify(x => x.SaveChanges(), Times.Once());
         }
 
@@ -1813,11 +1812,11 @@ namespace RPA.QualityPortal.Tests.Controllers
             builder.InitializeController(controller);
             //Act
 
-            var result = controller.Challenge("No", challenge) as RedirectToRouteResult;
+            var result = controller.Challenge("No", challenge) as RedirectToActionResult;
 
             //Assert
 
-            Assert.AreEqual("ChallengeQuestions", result.RouteValues["Action"]);
+            Assert.AreEqual("ChallengeQuestions", result.ActionName);
 
         }
 
@@ -1839,11 +1838,11 @@ namespace RPA.QualityPortal.Tests.Controllers
             builder.InitializeController(controller);
             //Act
 
-            var result = controller.Challenge("No", challenge) as RedirectToRouteResult;
+            var result = controller.Challenge("No", challenge) as RedirectToActionResult;
 
             //Assert
 
-            Assert.AreEqual("Details", result.RouteValues["Action"]);
+            Assert.AreEqual("Details", result.ActionName);
             context.MockContext.Verify(x => x.SaveChanges(), Times.Once());
         }
 
@@ -1855,7 +1854,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             //Act
 
-            var result = controller._ChallengeView(1) as PartialViewResult;
+            var result = new ChallengeViewViewComponent(context.MockContext.Object).WithViewContext().Invoke(1) as ViewViewComponentResult;
 
             //Assert
 
@@ -1915,11 +1914,11 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             //Act
 
-            var result = controller.ChallengeQuestions(2, qaList) as RedirectToRouteResult;
+            var result = controller.ChallengeQuestions(2, qaList) as RedirectToActionResult;
 
             //Assert
 
-            Assert.AreEqual("ChallengeResult", result.RouteValues["Action"]);
+            Assert.AreEqual("ChallengeResult", result.ActionName);
         }
 
         [Test]
@@ -1979,8 +1978,8 @@ namespace RPA.QualityPortal.Tests.Controllers
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
                 CheckId = 2,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -1994,9 +1993,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
             };
 
             //QA List
@@ -2033,13 +2032,13 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             //Act
 
-            var result = controller.ChallengeResult(outboundCorrespondence) as RedirectToRouteResult;
+            var result = controller.ChallengeResult(outboundCorrespondence) as RedirectToActionResult;
 
 
             //Assert
 
 
-            Assert.AreEqual("ChallengeAmendmentReason", result.RouteValues["Action"]);
+            Assert.AreEqual("ChallengeAmendmentReason", result.ActionName);
 
         }
 
@@ -2068,8 +2067,8 @@ namespace RPA.QualityPortal.Tests.Controllers
             OutboundCorrespondence outboundCorrespondenceExisting = new OutboundCorrespondence
             {
                 CheckId = 2,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -2083,9 +2082,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
             };
 
             //QA List
@@ -2137,11 +2136,11 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             //Act
 
-            var result = controller.ChallengeAmendmentReason(CAR) as RedirectToRouteResult;
+            var result = controller.ChallengeAmendmentReason(CAR) as RedirectToActionResult;
 
             //Assert
 
-            Assert.AreEqual("Details", result.RouteValues["Action"]);
+            Assert.AreEqual("Details", result.ActionName);
             context.MockContext.Verify(x => x.SaveChanges(), Times.AtLeastOnce());
 
         }

@@ -1,4 +1,4 @@
-﻿@if (ViewBag.typeOfCheck == "OutboundCorrespondence")
+@if (ViewBag.typeOfCheck == "OutboundCorrespondence")
 {
     {
         ViewBag.Title = "Index";
@@ -13,8 +13,8 @@ else if (ViewBag.typeOfCheck == "Bank")
     }
 }
 
-@using PagedList;
-@using PagedList.Mvc;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
 
 <div class="jumbotron">
     <h1>Email Administration</h1>
@@ -22,27 +22,27 @@ else if (ViewBag.typeOfCheck == "Bank")
 </div>
 
 <div>
-    @{Html.RenderAction("_TurnOffEmail", "Admin", new { checkType = ViewBag.typeOfCheck }); }<br />
+    @await Component.InvokeAsync("TurnOffEmail", new { checkType = ViewBag.typeOfCheck })<br />
 </div>
 
 @if (ViewBag.typeOfCheck == "OutboundCorrespondence")
 {
     <div>
-        @{Html.RenderAction("_OutboundCorrespondenceEmails", "Admin");}
+        @await Component.InvokeAsync("OutboundCorrespondenceEmails")
     </div>
 
     <div>
-        @{Html.RenderAction("_ReCheckEmails", "Admin");}
+        @await Component.InvokeAsync("ReCheckEmails")
     </div>
 }
 else if (ViewBag.typeOfCheck == "Bank")
 {
     <div>
-        @{Html.RenderAction("_BankEmails", "Admin");}
+        @await Component.InvokeAsync("BankEmails")
     </div>
 
     <div>
-        @{Html.RenderAction("_BankReCheckEmails", "Admin");}
+        @await Component.InvokeAsync("BankReCheckEmails")
     </div>
 }
 

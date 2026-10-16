@@ -1,29 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
 using RPA.QualityPortal.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace RPA.QualityPortal.Controllers
 {
-    public class PeopleController : Controller
+    public class PeopleController : QualityController
     {
         IPeopleContext pdb;
-
-        public PeopleController()
-        {
-            pdb = new PeopleContext();
-        }
 
         public PeopleController(IPeopleContext context)
         {
             this.pdb = context;
         }
 
-        public ActionResult PeopleSearch(string searchstring)
+        public IActionResult PeopleSearch(string searchstring)
         {
             var people = new List<PeopleSearchModel>();
 

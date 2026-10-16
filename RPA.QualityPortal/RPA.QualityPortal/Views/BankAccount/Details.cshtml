@@ -1,4 +1,4 @@
-﻿@model RPA.QualityPortal.ViewModels.BankAccountDetails
+@model RPA.QualityPortal.ViewModels.BankAccountDetails
 
 @{
     ViewBag.Title = "Bank Account Quality Checks";
@@ -110,10 +110,10 @@
             @if (Model.Answers.Count() != 0)
             {
                 <table class="table">
-                    @Html.Partial("_AnswerBlock", new ViewDataDictionary(ViewData) { { "from", 0 }, { "to", 3 }, { "header", "Customer Verification Questions" } })
-                    @Html.Partial("_AnswerBlock", new ViewDataDictionary(ViewData) { { "from", 3 }, { "to", 4 }, { "header", "Bank Account Validation" } })
-                    @Html.Partial("_AnswerBlock", new ViewDataDictionary(ViewData) { { "from", 4 }, { "to", 8 }, { "header", "Bank Account details/amendment to bank details" } })
-                    @Html.Partial("_AnswerBlock", new ViewDataDictionary(ViewData) { { "from", 8 }, { "to", 11 }, { "header", "Confirmation" } })
+                    <partial name="_AnswerBlock" view-data='@(new ViewDataDictionary(ViewData) { { "from", 0 }, { "to", 3 }, { "header", "Customer Verification Questions" } })' />
+                    <partial name="_AnswerBlock" view-data='@(new ViewDataDictionary(ViewData) { { "from", 3 }, { "to", 4 }, { "header", "Bank Account Validation" } })' />
+                    <partial name="_AnswerBlock" view-data='@(new ViewDataDictionary(ViewData) { { "from", 4 }, { "to", 8 }, { "header", "Bank Account details/amendment to bank details" } })' />
+                    <partial name="_AnswerBlock" view-data='@(new ViewDataDictionary(ViewData) { { "from", 8 }, { "to", 11 }, { "header", "Confirmation" } })' />
                 </table>
             }
         </div>
@@ -170,9 +170,7 @@
 @if (Model.Challenge == true)
 {
     <div>
-        @{
-            Html.RenderAction("_ChallengeView", "BankAccount", new { CheckId = Model.BankAccount.CheckId });
-        }
+        @await Component.InvokeAsync("ChallengeView", new { CheckId = Model.BankAccount.CheckId })
     </div>
 }
 

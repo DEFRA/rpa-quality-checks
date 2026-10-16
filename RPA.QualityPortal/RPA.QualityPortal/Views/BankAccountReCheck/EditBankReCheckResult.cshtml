@@ -1,4 +1,4 @@
-﻿@model RPA.QualityPortal.Models.CheckTypes.BankAccountReCheck
+@model RPA.QualityPortal.Models.CheckTypes.BankAccountReCheck
 
 @{
     ViewBag.Title = "Bank Account Quality Checks - Edit";
@@ -14,15 +14,26 @@
 {
     @Html.AntiForgeryToken()
 
+    @*
+        TODO (.NET 10 migration): the hidden fields below are commented out because this view's model,
+        BankAccountReCheck (and its base class Check), does not define SBI, FRN, BACheckTypeId,
+        BusinessName, ManagerName or DateQCCreated. These properties exist on BankAccountCheck, so
+        the lines look copied from that view. In MVC 5 they would have thrown at runtime when the page
+        rendered; ASP.NET Core compiles Razor at build time, so they break the build.
+        Confirm whether the edit form needs to post these values. If so, add the properties to
+        BankAccountReCheck and uncomment these lines.
+
+        @Html.HiddenFor(model => model.SBI)
+        @Html.HiddenFor(model => model.FRN)
+        @Html.HiddenFor(model => model.BACheckTypeId)
+        @Html.HiddenFor(model => model.BusinessName)
+        @Html.HiddenFor(model => model.ManagerName)
+        @Html.HiddenFor(model => model.DateQCCreated)
+    *@
+
     @Html.HiddenFor(model => model.CheckId)
     @Html.HiddenFor(model => model.CheckTypeId)
-    @Html.HiddenFor(model => model.SBI)
-    @Html.HiddenFor(model => model.FRN)
-    @Html.HiddenFor(model => model.BACheckTypeId)
-    @Html.HiddenFor(model => model.BusinessName)
     @Html.HiddenFor(model => model.PersonName)
-    @Html.HiddenFor(model => model.ManagerName)
-    @Html.HiddenFor(model => model.DateQCCreated)
     @Html.HiddenFor(model => model.QCCompletedByName)
     @Html.HiddenFor(model => model.DateQCCompleted)
 

@@ -1,4 +1,5 @@
-﻿using System;
+using RPA.QualityPortal.Tests.Factory;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace RPA.QualityPortal.Tests.Services
         IOutboundCorrespondenceService outboundCorrespondenceService;
         IAnswerService answerService;
         IFilterService filterService;
-        IRoleManager roleManager;
+        IRoleManager roleManager = Mock.Of<IRoleManager>();
         IUserHelper userHelper;
         ILockService lockService;
 
@@ -36,7 +37,7 @@ namespace RPA.QualityPortal.Tests.Services
             context = new MockQualityContext();
             peopleContext = new MockPeopleContext();
             answerService = new AnswerService(context.MockContext.Object);
-            userHelper = new UserHelper(peopleContext.MockContext.Object);
+            userHelper = new UserHelper(peopleContext.MockContext.Object, MockHttpContext.GetMockedHttpContextAccessor());
             filterService = new FilterService(context.MockContext.Object, peopleContext.MockContext.Object, userHelper, roleManager);
             lockService = new LockService(context.MockContext.Object, peopleContext.MockContext.Object, userHelper);
             outboundCorrespondenceService = new OutboundCorrespondenceService(context.MockContext.Object, answerService, userHelper, lockService);
@@ -307,8 +308,8 @@ namespace RPA.QualityPortal.Tests.Services
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
                 CheckId = 2,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -323,9 +324,9 @@ namespace RPA.QualityPortal.Tests.Services
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -380,8 +381,8 @@ namespace RPA.QualityPortal.Tests.Services
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
                 CheckId = 2,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -396,9 +397,9 @@ namespace RPA.QualityPortal.Tests.Services
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -453,8 +454,8 @@ namespace RPA.QualityPortal.Tests.Services
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
                 CheckId = 2,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -469,9 +470,9 @@ namespace RPA.QualityPortal.Tests.Services
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -527,8 +528,8 @@ namespace RPA.QualityPortal.Tests.Services
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
                 CheckId = 2,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -543,9 +544,9 @@ namespace RPA.QualityPortal.Tests.Services
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -600,8 +601,8 @@ namespace RPA.QualityPortal.Tests.Services
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
                 CheckId = 2,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -616,9 +617,9 @@ namespace RPA.QualityPortal.Tests.Services
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -672,8 +673,8 @@ namespace RPA.QualityPortal.Tests.Services
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
                 CheckId = 2,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -688,9 +689,9 @@ namespace RPA.QualityPortal.Tests.Services
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false
@@ -761,8 +762,8 @@ namespace RPA.QualityPortal.Tests.Services
             OutboundCorrespondence outboundCorrespondence = new OutboundCorrespondence
             {
                 CheckId = 1,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 1,
@@ -777,9 +778,9 @@ namespace RPA.QualityPortal.Tests.Services
                 SBI = "123456789",
                 CRMRef = "123456",
                 OutboundCorrespondenceDateSent = DateTime.Now,
-                ManagerName = "Gordon, [REDACTED_NAME]",
-                HEO = "Gordon, [REDACTED_NAME]",
-                SEO = "Gordon, [REDACTED_NAME]",
+                ManagerName = "Gordon, Lee George",
+                HEO = "Gordon, Lee George",
+                SEO = "Gordon, Lee George",
                 Comments = "Test",
                 ReCheckRequired = true,
                 ExcludeQCResult = false

@@ -1,4 +1,6 @@
-﻿using PagedList;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
+using X.PagedList;
 using RPA.QualityPortal.DAL;
 using RPA.QualityPortal.Helpers;
 using RPA.QualityPortal.Models;
@@ -12,12 +14,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace RPA.QualityPortal.Controllers
 {
     [Authorize(Roles = "Quality Checks: BA Team Member")]
-    public class BankAccountController : Controller
+    public class BankAccountController : QualityController
     {
         IQualityContext db;
         IPeopleContext pdb;
@@ -34,25 +36,7 @@ namespace RPA.QualityPortal.Controllers
         IMessageService messageService;
         ISendService sendService;
 
-        public BankAccountController()
-        {
-            db = new QualityContext();
-            pdb = new PeopleContext();
-
-            userHelper = new UserHelper(pdb);
-            roleManager = new RoleManager();
-            filterService = new FilterService(db, pdb, userHelper, roleManager);
-            peopleService = new PeopleService(pdb);
-            answerService = new AnswerService(db);
-            lockService = new LockService(db, pdb, userHelper);
-            bankAccountService = new BankAccountService(db, answerService, lockService);
-            auditService = new AuditService(db);
-            exportService = new ExportService(db);
-            sendService = new SendService();
-            messageService = new EmailService(db, pdb);
-        }
-
-        public BankAccountController(IQualityContext context, IPeopleContext peopleContext, IUserHelper userHelper, IRoleManager roleManager, IFilterService filterService, IPeopleService peopleService, IAnswerService answerService, ILockService lockService, IBankAccountService bankAccountService, IAuditService auditService, IExportService exportService)
+        public BankAccountController(IQualityContext context, IPeopleContext peopleContext, IUserHelper userHelper, IRoleManager roleManager, IFilterService filterService, IPeopleService peopleService, IAnswerService answerService, ILockService lockService, IBankAccountService bankAccountService, IAuditService auditService, IExportService exportService, IMessageService messageService, ISendService sendService)
         {
             db = context;
             pdb = peopleContext;
@@ -66,9 +50,11 @@ namespace RPA.QualityPortal.Controllers
             this.bankAccountService = bankAccountService;
             this.auditService = auditService;
             this.exportService = exportService;
+            this.messageService = messageService;
+            this.sendService = sendService;
         }
 
-        public ActionResult Index(bool locked = false, string searchString = null, string dateFrom = null, string dateTo = null, int page = 1, int pageSize = 50, string btnCoachingPoint = null)
+        public IActionResult Index(bool locked = false, string searchString = null, string dateFrom = null, string dateTo = null, int page = 1, int pageSize = 50, string btnCoachingPoint = null)
         {
             bool? coachingPoint = CoachingPoint(btnCoachingPoint);
 
@@ -84,7 +70,7 @@ namespace RPA.QualityPortal.Controllers
             return GetListViews(searchString, dateFrom, dateTo, page, pageSize, "All Quality Checks", coachingPoint);
         }
 
-        public ActionResult Complete(string searchString = null, string dateFrom = null, string dateTo = null, int page = 1, int pageSize = 50, string btnCoachingPoint = null)
+        public IActionResult Complete(string searchString = null, string dateFrom = null, string dateTo = null, int page = 1, int pageSize = 50, string btnCoachingPoint = null)
         {
             bool? coachingPoint = CoachingPoint(btnCoachingPoint);
 
@@ -95,7 +81,7 @@ namespace RPA.QualityPortal.Controllers
             return GetListViews(searchString, dateFrom, dateTo, page, pageSize, "Complete Checks", coachingPoint);
         }
 
-        public ActionResult Outstanding(string searchString = null, string dateFrom = null, string dateTo = null, int page = 1, int pageSize = 50, string btnCoachingPoint = null)
+        public IActionResult Outstanding(string searchString = null, string dateFrom = null, string dateTo = null, int page = 1, int pageSize = 50, string btnCoachingPoint = null)
         {
             bool? coachingPoint = CoachingPoint(btnCoachingPoint);
 
@@ -124,7 +110,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult Export()
+        public IActionResult Export()
         {
             DateTime sixteenMonths = DateTime.Now.AddMonths(-16);
 
@@ -134,7 +120,7 @@ namespace RPA.QualityPortal.Controllers
             return File(new UTF8Encoding().GetBytes(exportService.BuildBank(bankAccounts, bankAccountReChecks)), "text/csv", string.Format("BankAccountQC_{0}.csv", DateTime.Now.ToString("yyyyMMddHHmmss")));
         }
 
-        public ActionResult CreateGeneral(int CheckId)
+        public IActionResult CreateGeneral(int CheckId)
         {
             if (lockService.IsCheckLocked(CheckId))
             {
@@ -167,7 +153,7 @@ namespace RPA.QualityPortal.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateGeneral(BankAccountCheck bankAccount)
+        public IActionResult CreateGeneral(BankAccountCheck bankAccount)
         {
             if (lockService.IsCheckLocked(bankAccount.CheckId))
             {
@@ -207,7 +193,7 @@ namespace RPA.QualityPortal.Controllers
             return RedirectToAction("CreateQuestions");
         }
 
-        public ActionResult CreateQuestions()
+        public IActionResult CreateQuestions()
         {
             BankAccountCheck bankAccountInSession = this.Session["CreateGeneral"] as BankAccountCheck;
 
@@ -246,7 +232,7 @@ namespace RPA.QualityPortal.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateQuestions(QuestionAnswerList questionAnswerList)
+        public IActionResult CreateQuestions(QuestionAnswerList questionAnswerList)
         {
             BankAccountCheck bankAccount = this.Session["CreateGeneral"] as BankAccountCheck;
 
@@ -260,7 +246,7 @@ namespace RPA.QualityPortal.Controllers
             return RedirectToAction("CreateResult");
         }
 
-        public ActionResult CreateResult()
+        public IActionResult CreateResult()
         {
             BankAccountCheck bankAccountInSession = this.Session["CreateGeneral"] as BankAccountCheck;
 
@@ -280,7 +266,7 @@ namespace RPA.QualityPortal.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateResult(BankAccountCheck bankAccount, string result)
+        public IActionResult CreateResult(BankAccountCheck bankAccount, string result)
         {
             if (lockService.IsCheckLocked(bankAccount.CheckId))
             {
@@ -344,7 +330,7 @@ namespace RPA.QualityPortal.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Details(int CheckId)
+        public IActionResult Details(int CheckId)
         {
             int reCheckCount = db.BankAccountReChecks.Where(x => x.BankAccountId == CheckId).Count();
 
@@ -366,18 +352,8 @@ namespace RPA.QualityPortal.Controllers
             }
         }
 
-        public PartialViewResult _CheckComment(int CheckId, int QuestionId)
-        {
-            BankAccountComments comment = new BankAccountComments
-            {
-                AnswerComment = db.BankAccountComments.Where(x => x.CheckId == CheckId && x.QuestionId == QuestionId).Select(c => c.AnswerComment).FirstOrDefault() ?? ""
-            };
-
-            return PartialView(comment);
-        }
-
-        //GET:
-        public ActionResult Challenge(int CheckId)
+//GET:
+        public IActionResult Challenge(int CheckId)
         {
             Challenge challenge = new Challenge
             {
@@ -394,7 +370,7 @@ namespace RPA.QualityPortal.Controllers
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Challenge(string ReCheck, Challenge challenge)
+        public IActionResult Challenge(string ReCheck, Challenge challenge)
         {
             ChallengeOutcome challengeOutcome = db.ChallengeOutcomes.AsNoTracking().Where(x => x.ChallengeOutcomeId == challenge.ChallengeOutcomeId).FirstOrDefault();
 
@@ -456,16 +432,9 @@ namespace RPA.QualityPortal.Controllers
             return RedirectToAction("Details", new { challenge.CheckId });
         }
 
-        public PartialViewResult _ChallengeView(int CheckId)
-        {
-            Challenge challenge = db.Challenge.Include("ChallengeOutcome").Where(x => x.CheckId == CheckId).FirstOrDefault();
-
-            return PartialView(challenge);
-        }
-
-        //GET:
+//GET:
         //Method to edit questions when challenge raised
-        public ActionResult ChallengeQuestions(int CheckId)
+        public IActionResult ChallengeQuestions(int CheckId)
         {
             BankAccountCheck bankAccount = db.BankAccounts.Where(x => x.CheckId == CheckId).FirstOrDefault();
 
@@ -496,7 +465,7 @@ namespace RPA.QualityPortal.Controllers
         //Method to edit questions when challenge raised
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChallengeQuestions(int CheckId, QuestionAnswerList qaList)
+        public IActionResult ChallengeQuestions(int CheckId, QuestionAnswerList qaList)
         {
             if (ModelState.IsValid)
             {
@@ -509,7 +478,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult ChallengeResult(int CheckId)
+        public IActionResult ChallengeResult(int CheckId)
         {
             QuestionAnswerList qaList = this.Session["ChallengeBankQuestions"] as QuestionAnswerList;
 
@@ -527,7 +496,7 @@ namespace RPA.QualityPortal.Controllers
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChallengeResult(BankAccountCheck bankAccount, string result)
+        public IActionResult ChallengeResult(BankAccountCheck bankAccount, string result)
         {
             //Challenge check - if there has been a successful challenge ensure that the QC Result is now a pass
 
@@ -555,7 +524,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult ChallengeAmendmentReason(int CheckId)
+        public IActionResult ChallengeAmendmentReason(int CheckId)
         {
             CheckAmendmentReason checkAmendmentReason = new CheckAmendmentReason
             {
@@ -573,7 +542,7 @@ namespace RPA.QualityPortal.Controllers
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChallengeAmendmentReason(CheckAmendmentReason checkAmendmentReason)
+        public IActionResult ChallengeAmendmentReason(CheckAmendmentReason checkAmendmentReason)
         {
             QuestionAnswerList qaList = this.Session["ChallengeBankQuestions"] as QuestionAnswerList;
 
@@ -610,7 +579,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult EditGeneral(int CheckId)
+        public IActionResult EditGeneral(int CheckId)
         {
             BankAccountCheck bankAccount = db.BankAccounts.Where(x => x.CheckId == CheckId).FirstOrDefault();
 
@@ -629,7 +598,7 @@ namespace RPA.QualityPortal.Controllers
         // POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditGeneral(BankAccountCheck bankAccount)
+        public IActionResult EditGeneral(BankAccountCheck bankAccount)
         {
             bankAccount.CheckType = db.CheckTypes.Where(x => x.CheckTypeId == bankAccount.CheckTypeId).FirstOrDefault();
 
@@ -648,7 +617,7 @@ namespace RPA.QualityPortal.Controllers
             return View(bankAccount);
         }
 
-        public ActionResult EditQuestions()
+        public IActionResult EditQuestions()
         {
             //get models from session data 
 
@@ -688,7 +657,7 @@ namespace RPA.QualityPortal.Controllers
         // POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditQuestions(QuestionAnswerList qaList)
+        public IActionResult EditQuestions(QuestionAnswerList qaList)
         {
             if (ModelState.IsValid)
             {
@@ -701,7 +670,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult EditResult()
+        public IActionResult EditResult()
         {
             BankAccountCheck bankAccount = this.Session["EditBankGeneral"] as BankAccountCheck;
 
@@ -716,7 +685,7 @@ namespace RPA.QualityPortal.Controllers
             return View(bankAccount);
         }
 
-        public ActionResult GeneralDetails(int CheckId)
+        public IActionResult GeneralDetails(int CheckId)
         {
             return View(db.BankAccounts.Where(x => x.CheckId == CheckId).FirstOrDefault());
         }
@@ -724,7 +693,7 @@ namespace RPA.QualityPortal.Controllers
         //POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditResult(BankAccountCheck bankAccount, string result)
+        public IActionResult EditResult(BankAccountCheck bankAccount, string result)
         {
             //obtain existing models from session data
 
@@ -761,7 +730,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult AmendmentReason()
+        public IActionResult AmendmentReason()
         {
             CheckAmendmentReason checkAmendmentReason = new CheckAmendmentReason();
 
@@ -774,7 +743,7 @@ namespace RPA.QualityPortal.Controllers
 
         //POST:
         [HttpPost]
-        public ActionResult AmendmentReason(CheckAmendmentReason checkAmendmentReason)
+        public IActionResult AmendmentReason(CheckAmendmentReason checkAmendmentReason)
         {
             QuestionAnswerList qaList = this.Session["EditBankQuestions"] as QuestionAnswerList;
 

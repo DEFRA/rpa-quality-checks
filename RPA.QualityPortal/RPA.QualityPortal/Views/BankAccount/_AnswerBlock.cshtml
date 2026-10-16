@@ -1,4 +1,4 @@
-﻿@model RPA.QualityPortal.ViewModels.BankAccountDetails
+@model RPA.QualityPortal.ViewModels.BankAccountDetails
 
 @{
     string header = (string)ViewData["header"];
@@ -22,8 +22,6 @@
         </td>
     </tr>
     <tr>
-            @{
-                Html.RenderAction("_CheckComment", new { CheckId = Model.BankAccount.CheckId, QuestionId = Model.Answers[i].QuestionId });
-            }
+            @await Component.InvokeAsync("CheckComment", new { CheckId = Model.BankAccount.CheckId, QuestionId = Model.Answers[i].QuestionId })
     </tr>
 }

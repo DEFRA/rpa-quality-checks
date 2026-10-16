@@ -1,4 +1,4 @@
-﻿using RPA.QualityPortal.Models;
+using RPA.QualityPortal.Models;
 using RPA.QualityPortal.Models.CheckTypes;
 using RPA.QualityPortal.Models.OutboundCorrespondenceDropDowns;
 using System;
@@ -18,8 +18,8 @@ namespace RPA.QualityPortal.Tests.Data.Mock
                 new OutboundCorrespondence
                 {
                     CheckId = 1,
-                    PersonName = "Gordon, [REDACTED_NAME]",
-                    QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                    PersonName = "Gordon, Lee George",
+                    QCCompletedByName = "Gordon, Lee George",
                     DateQCCompleted = DateTime.Now,
                     Archived = false,
                     CheckTypeId = 1,
@@ -41,9 +41,9 @@ namespace RPA.QualityPortal.Tests.Data.Mock
                     SBI = "123456789",
                     CRMRef = "123456",
                     OutboundCorrespondenceDateSent = DateTime.Now,
-                    ManagerName = "Gordon, [REDACTED_NAME]",
-                    HEO = "Gordon, [REDACTED_NAME]",
-                    SEO = "Gordon, [REDACTED_NAME]",
+                    ManagerName = "Gordon, Lee George",
+                    HEO = "Gordon, Lee George",
+                    SEO = "Gordon, Lee George",
                     Comments = "Test",
                     ReCheckRequired = true,
                     ExcludeQCResult = true,

@@ -1,17 +1,16 @@
-﻿using RPA.QualityPortal.DAL;
+using Microsoft.AspNetCore.Authorization;
+using RPA.QualityPortal.DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Security;
+using Microsoft.AspNetCore.Mvc;
 
 namespace RPA.QualityPortal.Controllers
 {
     [Authorize(Roles = "Quality Checks: Basic Access")]
-    public class HomeController : Controller
+    public class HomeController : QualityController
     {
-        public ActionResult Index()
+        public IActionResult Index()
         {
             ViewBag.CheckType = "Home";
             return View();

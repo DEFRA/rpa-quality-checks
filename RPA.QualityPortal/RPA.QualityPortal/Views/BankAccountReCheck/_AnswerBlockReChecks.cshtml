@@ -1,4 +1,4 @@
-﻿@model RPA.QualityPortal.ViewModels.BankAccount.BankAccountDetailsReChecks
+@model RPA.QualityPortal.ViewModels.BankAccount.BankAccountDetailsReChecks
 
 @{
     string header = (string)ViewData["header"];
@@ -40,19 +40,13 @@
         }
     </tr>
     <tr>
-        @{
-            Html.RenderAction("_CheckComment", new { CheckId = Model.BankAccount.CheckId, QuestionId = Model.Answers[i].QuestionId });
-        }
+        @await Component.InvokeAsync("CheckComment", new { CheckId = Model.BankAccount.CheckId, QuestionId = Model.Answers[i].QuestionId })
     </tr>
     <tr>
-        @{
-            Html.RenderAction("_CheckComment", new { CheckId = Model.FirstBankAccountReCheck.CheckId, QuestionId = Model.Answers[i].QuestionId });
-        }
+        @await Component.InvokeAsync("CheckComment", new { CheckId = Model.FirstBankAccountReCheck.CheckId, QuestionId = Model.Answers[i].QuestionId })
     </tr>
     <tr>
-        @{
-            Html.RenderAction("_CheckComment", new { CheckId = Model.SecondBankAccountReCheck.CheckId, QuestionId = Model.Answers[i].QuestionId });
-        }
+        @await Component.InvokeAsync("CheckComment", new { CheckId = Model.SecondBankAccountReCheck.CheckId, QuestionId = Model.Answers[i].QuestionId })
     </tr>
     if (Model.ThirdReCheckAnswers.Count > 0)
     {
@@ -61,9 +55,7 @@
                 @Html.Display("Third Recheck Comment")
             </td>
             <td align="right">
-                @{
-                    Html.RenderAction("_CheckComment", new { CheckId = Model.ThirdBankAccountReCheck.CheckId, QuestionId = Model.Answers[i].QuestionId });
-                }
+                @await Component.InvokeAsync("CheckComment", new { CheckId = Model.ThirdBankAccountReCheck.CheckId, QuestionId = Model.Answers[i].QuestionId })
             </td>
         </tr>
     }

@@ -1,9 +1,11 @@
-﻿using Moq;
-using MvcContrib.TestHelper;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
+using RPA.QualityPortal.ViewComponents;
+using RPA.QualityPortal.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
 using NUnit.Framework;
-using PagedList;
+using X.PagedList;
 using RPA.QualityPortal.Controllers;
-using RPA.QualityPortal.Factory;
 using RPA.QualityPortal.Helpers;
 using RPA.QualityPortal.Models;
 using RPA.QualityPortal.Models.BankAccountDropDowns;
@@ -16,7 +18,6 @@ using RPA.QualityPortal.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
 using Assert = NUnit.Framework.Assert;
 
 namespace RPA.QualityPortal.Tests.Controllers
@@ -45,7 +46,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             db = new MockQualityContext();
             pdb = new MockPeopleContext();
 
-            userHelper = new UserHelper(pdb.MockContext.Object);
+            userHelper = new UserHelper(pdb.MockContext.Object, MockHttpContext.GetMockedHttpContextAccessor());
             roleManager = new Mock<IRoleManager>();
             filterService = new FilterService(db.MockContext.Object, pdb.MockContext.Object, userHelper, roleManager.Object);
             peopleService = new PeopleService(pdb.MockContext.Object);
@@ -55,9 +56,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             auditService = new AuditService(db.MockContext.Object);
             exportService = new ExportService(db.MockContext.Object);
 
-            HttpContextManager.SetCurrentContext(MockHttpContext.GetMockedHttpContext());
-
-            controller = new BankAccountController(db.MockContext.Object, pdb.MockContext.Object, userHelper, roleManager.Object, filterService, peopleService, answerService, lockService, bankAccountService, auditService, exportService);
+            controller = new BankAccountController(db.MockContext.Object, pdb.MockContext.Object, userHelper, roleManager.Object, filterService, peopleService, answerService, lockService, bankAccountService, auditService, exportService, Mock.Of<IMessageService>(), Mock.Of<ISendService>());
         }
 
         [Test]
@@ -132,7 +131,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             builder.InitializeController(controller);
 
             // Act
-            RedirectToRouteResult result = controller.CreateGeneral(55) as RedirectToRouteResult;
+            RedirectToActionResult result = controller.CreateGeneral(55) as RedirectToActionResult;
 
             // Assert
             Assert.IsNotNull(result);
@@ -148,7 +147,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             BankAccountCheck bankAccount = GetBankAccount();
 
             // Act
-            RedirectToRouteResult result = controller.CreateGeneral(bankAccount) as RedirectToRouteResult;
+            RedirectToActionResult result = controller.CreateGeneral(bankAccount) as RedirectToActionResult;
 
             // Assert
             Assert.IsNotNull(result);
@@ -164,7 +163,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             BankAccountCheck bankAccount = GetBankAccountLock();
 
             // Act
-            RedirectToRouteResult result = controller.CreateGeneral(bankAccount) as RedirectToRouteResult;
+            RedirectToActionResult result = controller.CreateGeneral(bankAccount) as RedirectToActionResult;
 
             // Assert
             Assert.IsNotNull(result);
@@ -212,7 +211,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             builder.InitializeController(controller);
 
             // Act
-            RedirectToRouteResult result = controller.CreateQuestions() as RedirectToRouteResult;
+            RedirectToActionResult result = controller.CreateQuestions() as RedirectToActionResult;
 
             // Assert
             Assert.IsNotNull(result);
@@ -251,7 +250,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             controller.Session["CreateGeneral"] = bankAccount;
 
             // Act
-            RedirectToRouteResult result = controller.CreateQuestions(questionAnswerList) as RedirectToRouteResult;
+            RedirectToActionResult result = controller.CreateQuestions(questionAnswerList) as RedirectToActionResult;
 
             // Assert
             Assert.IsNotNull(result);
@@ -270,7 +269,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             controller.Session["CreateGeneral"] = bankAccount;
 
             // Act
-            RedirectToRouteResult result = controller.CreateQuestions(questionAnswerList) as RedirectToRouteResult;
+            RedirectToActionResult result = controller.CreateQuestions(questionAnswerList) as RedirectToActionResult;
 
             // Assert
             Assert.IsNotNull(result);
@@ -307,7 +306,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             controller.Session["CreateQuestions"] = questionAnswerList;
 
             // Act
-            RedirectToRouteResult result = controller.CreateResult() as RedirectToRouteResult;
+            RedirectToActionResult result = controller.CreateResult() as RedirectToActionResult;
 
             // Assert
             Assert.IsNotNull(result);
@@ -324,7 +323,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             controller.Session["CreateGeneral"] = bankAccount;
 
             // Act
-            RedirectToRouteResult result = controller.CreateResult() as RedirectToRouteResult;
+            RedirectToActionResult result = controller.CreateResult() as RedirectToActionResult;
 
             // Assert
             Assert.IsNotNull(result);
@@ -343,7 +342,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             controller.Session["CreateQuestions"] = questionAnswerList;
 
             // Act
-            RedirectToRouteResult result = controller.CreateResult(bankAccount, "Approved") as RedirectToRouteResult;
+            RedirectToActionResult result = controller.CreateResult(bankAccount, "Approved") as RedirectToActionResult;
 
             // Assert
             Assert.IsNotNull(result);
@@ -362,7 +361,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             controller.Session["CreateQuestions"] = questionAnswerList;
 
             // Act
-            RedirectToRouteResult result = controller.CreateResult(bankAccount, "Approved") as RedirectToRouteResult;
+            RedirectToActionResult result = controller.CreateResult(bankAccount, "Approved") as RedirectToActionResult;
 
             // Assert
             Assert.IsNotNull(result);
@@ -398,7 +397,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             BankAccountCheck bankAccount = GetBankAccount();
 
             // Act
-            RedirectToRouteResult result = controller.CreateResult(bankAccount, "Not Approved") as RedirectToRouteResult;
+            RedirectToActionResult result = controller.CreateResult(bankAccount, "Not Approved") as RedirectToActionResult;
 
             // Assert
             Assert.IsNotNull(result);
@@ -607,12 +606,12 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             //Act
 
-            var result = controller.EditGeneral(bankAccount) as RedirectToRouteResult;
+            var result = controller.EditGeneral(bankAccount) as RedirectToActionResult;
 
 
             //Assert
 
-            Assert.AreEqual("EditQuestions", result.RouteValues["Action"]);
+            Assert.AreEqual("EditQuestions", result.ActionName);
         }
 
         [Test]
@@ -734,11 +733,11 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             //Act
 
-            var result = controller.EditQuestions(qaList) as RedirectToRouteResult;
+            var result = controller.EditQuestions(qaList) as RedirectToActionResult;
 
             //Assert
 
-            Assert.AreEqual("EditResult", result.RouteValues["Action"]);
+            Assert.AreEqual("EditResult", result.ActionName);
 
         }
 
@@ -975,9 +974,9 @@ namespace RPA.QualityPortal.Tests.Controllers
             controller.Session["EditBankGeneral"] = bankAccountExisting;
             controller.Session["EditBankQuestions"] = qaList;
             //Act
-            var result = controller.EditResult(bankAccount, "Approved") as RedirectToRouteResult;
+            var result = controller.EditResult(bankAccount, "Approved") as RedirectToActionResult;
             //Assert
-            Assert.AreEqual("AmendmentReason", result.RouteValues["Action"]);
+            Assert.AreEqual("AmendmentReason", result.ActionName);
         }
 
         [Test]
@@ -1173,10 +1172,10 @@ namespace RPA.QualityPortal.Tests.Controllers
             controller.Session["EditBankQuestions"] = qaList;
 
             //Act
-            var result = controller.AmendmentReason(CAR) as RedirectToRouteResult;
+            var result = controller.AmendmentReason(CAR) as RedirectToActionResult;
 
             //Assert
-            Assert.AreEqual("Details", result.RouteValues["Action"]);
+            Assert.AreEqual("Details", result.ActionName);
         }
 
         [Test]
@@ -1253,7 +1252,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             controller.Session["EditBankQuestions"] = qaList;
 
             //Act
-            var result = controller.AmendmentReason(CAR) as RedirectToRouteResult;
+            var result = controller.AmendmentReason(CAR) as RedirectToActionResult;
 
             //Assert
             Assert.IsTrue(controller.ModelState["AmendmentReason"].Errors.Any(modelError => modelError.ErrorMessage == "An amendment reason must be selected - if no amendments have been made please return to details screen"));
@@ -1292,10 +1291,10 @@ namespace RPA.QualityPortal.Tests.Controllers
             builder.InitializeController(controller);
 
             //Act
-            var result = controller.Challenge("Yes", challenge) as RedirectToRouteResult;
+            var result = controller.Challenge("Yes", challenge) as RedirectToActionResult;
 
             //Assert
-            Assert.AreEqual("ChallengeQuestions", result.RouteValues["Action"]);
+            Assert.AreEqual("ChallengeQuestions", result.ActionName);
             Assert.AreEqual(db.MockContext.Object.BankAccountReChecks.Where(x => x.BankAccountId == challenge.CheckId).Count(), 0);
         }
 
@@ -1314,10 +1313,10 @@ namespace RPA.QualityPortal.Tests.Controllers
             builder.InitializeController(controller);
 
             //Act
-            var result = controller.Challenge("Yes", challenge) as RedirectToRouteResult;
+            var result = controller.Challenge("Yes", challenge) as RedirectToActionResult;
 
             //Assert
-            Assert.AreEqual("Details", result.RouteValues["Action"]);
+            Assert.AreEqual("Details", result.ActionName);
             db.MockContext.Verify(x => x.SaveChanges(), Times.Once());
         }
 
@@ -1336,10 +1335,10 @@ namespace RPA.QualityPortal.Tests.Controllers
             builder.InitializeController(controller);
 
             //Act
-            var result = controller.Challenge("No", challenge) as RedirectToRouteResult;
+            var result = controller.Challenge("No", challenge) as RedirectToActionResult;
 
             //Assert
-            Assert.AreEqual("ChallengeQuestions", result.RouteValues["Action"]);
+            Assert.AreEqual("ChallengeQuestions", result.ActionName);
         }
 
         [Test]
@@ -1357,10 +1356,10 @@ namespace RPA.QualityPortal.Tests.Controllers
             builder.InitializeController(controller);
 
             //Act
-            var result = controller.Challenge("No", challenge) as RedirectToRouteResult;
+            var result = controller.Challenge("No", challenge) as RedirectToActionResult;
 
             //Assert
-            Assert.AreEqual("Details", result.RouteValues["Action"]);
+            Assert.AreEqual("Details", result.ActionName);
             db.MockContext.Verify(x => x.SaveChanges(), Times.Once());
         }
 
@@ -1368,7 +1367,7 @@ namespace RPA.QualityPortal.Tests.Controllers
         public void Test_Challenge_Partial_View_is_returned_when_requested()
         {
             //Act
-            var result = controller._ChallengeView(53) as PartialViewResult;
+            var result = new ChallengeViewViewComponent(db.MockContext.Object).WithViewContext().Invoke(53) as ViewViewComponentResult;
 
             //Assert
             Assert.IsNotNull(result);
@@ -1418,10 +1417,10 @@ namespace RPA.QualityPortal.Tests.Controllers
             builder.InitializeController(controller);
 
             //Act
-            var result = controller.ChallengeQuestions(57, qaList) as RedirectToRouteResult;
+            var result = controller.ChallengeQuestions(57, qaList) as RedirectToActionResult;
 
             //Assert
-            Assert.AreEqual("ChallengeResult", result.RouteValues["Action"]);
+            Assert.AreEqual("ChallengeResult", result.ActionName);
         }
 
         [Test]
@@ -1523,10 +1522,10 @@ namespace RPA.QualityPortal.Tests.Controllers
             controller.Session["ChallengeBankGeneral"] = bankAccount;
 
             //Act
-            var result = controller.ChallengeResult(bankAccount, "Approved") as RedirectToRouteResult;
+            var result = controller.ChallengeResult(bankAccount, "Approved") as RedirectToActionResult;
 
             //Assert
-            Assert.AreEqual("ChallengeAmendmentReason", result.RouteValues["Action"]);
+            Assert.AreEqual("ChallengeAmendmentReason", result.ActionName);
         }
 
         [Test]
@@ -1612,10 +1611,10 @@ namespace RPA.QualityPortal.Tests.Controllers
             controller.Session["ChallengeBankQuestions"] = qaList;
 
             //Act
-            var result = controller.ChallengeAmendmentReason(CAR) as RedirectToRouteResult;
+            var result = controller.ChallengeAmendmentReason(CAR) as RedirectToActionResult;
 
             //Assert
-            Assert.AreEqual("Details", result.RouteValues["Action"]);
+            Assert.AreEqual("Details", result.ActionName);
             db.MockContext.Verify(x => x.SaveChanges(), Times.AtLeastOnce());
         }
     }

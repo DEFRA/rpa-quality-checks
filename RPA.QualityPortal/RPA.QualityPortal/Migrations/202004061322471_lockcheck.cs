@@ -4,7 +4,7 @@ namespace RPA.QualityPortal.Migrations
     using System.Diagnostics.CodeAnalysis;
 
     [ExcludeFromCodeCoverage]
-    public partial class lockcheck : DbMigration
+    public partial class Lockcheck : DbMigration
     {
         public override void Up()
         {

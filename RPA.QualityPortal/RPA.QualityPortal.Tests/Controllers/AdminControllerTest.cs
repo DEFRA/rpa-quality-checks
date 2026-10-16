@@ -1,8 +1,13 @@
-﻿using Moq;
-using MvcContrib.TestHelper;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
+using RPA.QualityPortal.ViewComponents;
+using RPA.QualityPortal.Infrastructure;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
 using NUnit.Framework;
 using RPA.QualityPortal.Controllers;
-using RPA.QualityPortal.Factory;
 using RPA.QualityPortal.Helpers;
 using RPA.QualityPortal.Models;
 using RPA.QualityPortal.Models.CheckTypes;
@@ -14,8 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-using System.Web;
-using System.Web.Mvc;
 
 namespace RPA.QualityPortal.Tests.Controllers
 {
@@ -43,7 +46,7 @@ namespace RPA.QualityPortal.Tests.Controllers
         {
             context = new MockQualityContext();
             peopleContext = new MockPeopleContext();
-            userHelper = new UserHelper(peopleContext.MockContext.Object);
+            userHelper = new UserHelper(peopleContext.MockContext.Object, MockHttpContext.GetMockedHttpContextAccessor());
 
             answerService = new AnswerService(context.MockContext.Object);
             roleManager = new Mock<IRoleManager>();
@@ -51,12 +54,10 @@ namespace RPA.QualityPortal.Tests.Controllers
             lockService = new LockService(context.MockContext.Object, peopleContext.MockContext.Object, userHelper);
             outboundCorrespondenceService = new OutboundCorrespondenceService(context.MockContext.Object, answerService, userHelper, lockService);
             messageService = new EmailService(context.MockContext.Object, peopleContext.MockContext.Object);
-            accessService = new AccessService(context.MockContext.Object, peopleContext.MockContext.Object);
+            accessService = new AccessService(context.MockContext.Object, peopleContext.MockContext.Object, new ConfigurationBuilder().Build());
             peopleService = new PeopleService(peopleContext.MockContext.Object);
             bankAccountService = new BankAccountService(context.MockContext.Object, answerService, lockService);
-            sendService = new SendService();
-
-            HttpContextManager.SetCurrentContext(MockHttpContext.GetMockedHttpContext());
+            sendService = new SendService(new ConfigurationBuilder().Build());
 
             controller = new AdminController(context.MockContext.Object, peopleContext.MockContext.Object, outboundCorrespondenceService, bankAccountService, answerService, filterService, messageService, roleManager.Object, userHelper, accessService, peopleService, lockService, sendService);
         }
@@ -116,7 +117,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             builder.InitializeController(controller);
 
-            var result = controller._TurnOffEmail("OutboundCorrespondence") as PartialViewResult;
+            var result = new TurnOffEmailViewComponent(context.MockContext.Object).WithViewContext().Invoke("OutboundCorrespondence") as ViewViewComponentResult;
 
             Assert.IsNotNull(result);
         }
@@ -128,7 +129,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             builder.InitializeController(controller);
 
-            var result = controller._TurnOffEmail("Bank") as PartialViewResult;
+            var result = new TurnOffEmailViewComponent(context.MockContext.Object).WithViewContext().Invoke("Bank") as ViewViewComponentResult;
 
             Assert.IsNotNull(result);
         }
@@ -140,7 +141,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             builder.InitializeController(controller);
 
-            var result = controller._ReCheckEmails() as PartialViewResult;
+            var result = new ReCheckEmailsViewComponent(context.MockContext.Object, outboundCorrespondenceService).WithViewContext().Invoke() as ViewViewComponentResult;
 
             Assert.IsNotNull(result);
         }
@@ -152,7 +153,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             builder.InitializeController(controller);
 
-            var result = controller._BankReCheckEmails() as PartialViewResult;
+            var result = new BankReCheckEmailsViewComponent(context.MockContext.Object, bankAccountService).WithViewContext().Invoke() as ViewViewComponentResult;
 
             Assert.IsNotNull(result);
         }
@@ -171,9 +172,9 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             builder.InitializeController(controller);
 
-            var result = controller._TurnOffEmail(control) as RedirectToRouteResult;
+            var result = controller._TurnOffEmail(control) as RedirectToActionResult;
 
-            Assert.AreEqual("Index", result.RouteValues["Action"]);
+            Assert.AreEqual("Index", result.ActionName);
             context.MockContext.Verify(x => x.SaveChanges(), Times.Once());
         }
 
@@ -189,8 +190,8 @@ namespace RPA.QualityPortal.Tests.Controllers
                     OutboundCorrespondence = new OutboundCorrespondence
                     {
                         CheckId = 2,
-                        PersonName = "Gordon, [REDACTED_NAME]",
-                        QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                        PersonName = "Gordon, Lee George",
+                        QCCompletedByName = "Gordon, Lee George",
                         DateQCCompleted = DateTime.Now,
                         Archived = false,
                         CheckTypeId = 1,
@@ -204,9 +205,9 @@ namespace RPA.QualityPortal.Tests.Controllers
                         SBI = "123456789",
                         CRMRef = "123456",
                         OutboundCorrespondenceDateSent = DateTime.Now,
-                        ManagerName = "Gordon, [REDACTED_NAME]",
-                        HEO = "Gordon, [REDACTED_NAME]",
-                        SEO = "Gordon, [REDACTED_NAME]",
+                        ManagerName = "Gordon, Lee George",
+                        HEO = "Gordon, Lee George",
+                        SEO = "Gordon, Lee George",
                         EmailNotifications = false
                     },
                 }
@@ -214,9 +215,9 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             builder.InitializeController(controller);
 
-            var result = controller._OutboundCorrespondenceEmails(qualityChecks) as RedirectToRouteResult;
+            var result = controller._OutboundCorrespondenceEmails(qualityChecks) as RedirectToActionResult;
 
-            Assert.AreEqual("Index", result.RouteValues["Action"]);
+            Assert.AreEqual("Index", result.ActionName);
             context.MockContext.Verify(x => x.SaveChanges(), Times.Once());
         }
 
@@ -233,13 +234,13 @@ namespace RPA.QualityPortal.Tests.Controllers
                     {
                         CheckId = 1,
                         OutboundCorrespondenceId = 1,
-                        PersonName = "Gordon, [REDACTED_NAME]",
-                        QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                        PersonName = "Gordon, Lee George",
+                        QCCompletedByName = "Gordon, Lee George",
                         DateQCCompleted = DateTime.Now,
                         Archived = false,
                         CheckTypeId = 2,
                         CheckType =  new CheckType{ CheckTypeId = 2, Name = "Outbound Correspondence ReCheck" },
-                        ReCheckCompletedBy = "Gordon, [REDACTED_NAME]",
+                        ReCheckCompletedBy = "Gordon, Lee George",
                         EmailNotifications = false
                     },
                 }
@@ -247,9 +248,9 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             builder.InitializeController(controller);
 
-            var result = controller._ReCheckEmails(qualityChecks) as RedirectToRouteResult;
+            var result = controller._ReCheckEmails(qualityChecks) as RedirectToActionResult;
 
-            Assert.AreEqual("Index", result.RouteValues["Action"]);
+            Assert.AreEqual("Index", result.ActionName);
             context.MockContext.Verify(x => x.SaveChanges(), Times.Once());
         }
 
@@ -266,14 +267,14 @@ namespace RPA.QualityPortal.Tests.Controllers
                  BankAccount = new BankAccountCheck
                     {
                         CheckId = 53,
-                        PersonName = "Gordon, [REDACTED_NAME]",
-                        QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                        PersonName = "Gordon, Lee George",
+                        QCCompletedByName = "Gordon, Lee George",
                         DateQCCompleted = DateTime.Now,
                         Archived = false,
                         CheckTypeId = 3,
                         SBI = "123456789",
                         FRN = 123456789,
-                        ManagerName = "Gordon, [REDACTED_NAME]",
+                        ManagerName = "Gordon, Lee George",
                         EmailNotifications = false,
                         CoachingPoint = false,
                         BusinessName = "Test Business"
@@ -283,9 +284,9 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             builder.InitializeController(controller);
 
-            var result = controller._BankEmails(qualityChecks) as RedirectToRouteResult;
+            var result = controller._BankEmails(qualityChecks) as RedirectToActionResult;
 
-            Assert.AreEqual("Index", result.RouteValues["Action"]);
+            Assert.AreEqual("Index", result.ActionName);
             context.MockContext.Verify(x => x.SaveChanges(), Times.Once());
         }
 
@@ -301,8 +302,8 @@ namespace RPA.QualityPortal.Tests.Controllers
                     BankAccountReCheck = new BankAccountReCheck
                     {
                         CheckId = 60,
-                        PersonName = "Gordon, [REDACTED_NAME]",
-                        QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                        PersonName = "Gordon, Lee George",
+                        QCCompletedByName = "Gordon, Lee George",
                         DateQCCompleted = DateTime.Now,
                         Archived = false,
                         CheckTypeId = 4,
@@ -315,9 +316,9 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             builder.InitializeController(controller);
 
-            var result = controller._BankReCheckEmails(qualityChecks) as RedirectToRouteResult;
+            var result = controller._BankReCheckEmails(qualityChecks) as RedirectToActionResult;
 
-            Assert.AreEqual("Index", result.RouteValues["Action"]);
+            Assert.AreEqual("Index", result.ActionName);
             context.MockContext.Verify(x => x.SaveChanges(), Times.Once());
         }
 
@@ -367,13 +368,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             TestControllerBuilder builder = new TestControllerBuilder();
             builder.InitializeController(controller);
 
-            var userMock = new Mock<IPrincipal>();
-            userMock.Setup(p => p.IsInRole("Quality Checks: OC Admin")).Returns(true);
-            var contextMock = new Mock<HttpContextBase>();
-            contextMock.SetupGet(ctx => ctx.User).Returns(userMock.Object);
-            var controllerContextMock = new Mock<ControllerContext>();
-            controllerContextMock.SetupGet(con => con.HttpContext).Returns(contextMock.Object);
-            controller.ControllerContext = controllerContextMock.Object;
+            controller.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Role, "Quality Checks: OC Admin") }, "Test")) } };
 
             var result = controller.UnlockCheck("OutboundCorrespondence") as ViewResult;
 
@@ -386,13 +381,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             TestControllerBuilder builder = new TestControllerBuilder();
             builder.InitializeController(controller);
 
-            var userMock = new Mock<IPrincipal>();
-            userMock.Setup(p => p.IsInRole("Quality Checks: Bank Admin")).Returns(true);
-            var contextMock = new Mock<HttpContextBase>();
-            contextMock.SetupGet(ctx => ctx.User).Returns(userMock.Object);
-            var controllerContextMock = new Mock<ControllerContext>();
-            controllerContextMock.SetupGet(con => con.HttpContext).Returns(contextMock.Object);
-            controller.ControllerContext = controllerContextMock.Object;
+            controller.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Role, "Quality Checks: Bank Admin") }, "Test")) } };
 
             var result = controller.UnlockCheck("Bank") as ViewResult;
 
@@ -411,7 +400,7 @@ namespace RPA.QualityPortal.Tests.Controllers
         [Test]
         public void Test_Outbound_Correspondence_Emails_Returns_Partial_View()
         {
-            var result = controller._OutboundCorrespondenceEmails();
+            var result = new OutboundCorrespondenceEmailsViewComponent(context.MockContext.Object, filterService, outboundCorrespondenceService).WithViewContext().Invoke();
 
             Assert.IsNotNull(result);
         }
@@ -420,7 +409,7 @@ namespace RPA.QualityPortal.Tests.Controllers
         [Test]
         public void Test_Bank_Emails_Returns_Partial_View()
         {
-            var result = controller._BankEmails();
+            var result = new BankEmailsViewComponent(context.MockContext.Object, filterService, bankAccountService).WithViewContext().Invoke();
 
             Assert.IsNotNull(result);
         }

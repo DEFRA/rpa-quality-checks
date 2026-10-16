@@ -1,4 +1,4 @@
-﻿@model RPA.QualityPortal.ViewModels.QuestionAnswerList
+@model RPA.QualityPortal.ViewModels.QuestionAnswerList
 
 @{
     ViewBag.Title = "Bank Account Quality Checks - Create";
@@ -17,10 +17,10 @@
         <div class="panel-heading">Bank Account - Quality Check Questions</div>
         <div class="panel-body">
             <table class="table">
-                @Html.Partial("_QuestionBlock", new ViewDataDictionary(ViewData) { { "from", 0 }, { "to", 3 }, { "header", "Customer Verification Questions" } })
-                @Html.Partial("_QuestionBlock", new ViewDataDictionary(ViewData) { { "from", 3 }, { "to", 4 }, { "header", "Bank Account Validation" } })
-                @Html.Partial("_QuestionBlock", new ViewDataDictionary(ViewData) { { "from", 4 }, { "to", 8 }, { "header", "Bank Account details/amendment to bank details" } })
-                @Html.Partial("_QuestionBlock", new ViewDataDictionary(ViewData) { { "from", 8 }, { "to", 11 }, { "header", "Confirmation" } })
+                <partial name="_QuestionBlock" view-data='@(new ViewDataDictionary(ViewData) { { "from", 0 }, { "to", 3 }, { "header", "Customer Verification Questions" } })' />
+                <partial name="_QuestionBlock" view-data='@(new ViewDataDictionary(ViewData) { { "from", 3 }, { "to", 4 }, { "header", "Bank Account Validation" } })' />
+                <partial name="_QuestionBlock" view-data='@(new ViewDataDictionary(ViewData) { { "from", 4 }, { "to", 8 }, { "header", "Bank Account details/amendment to bank details" } })' />
+                <partial name="_QuestionBlock" view-data='@(new ViewDataDictionary(ViewData) { { "from", 8 }, { "to", 11 }, { "header", "Confirmation" } })' />
             </table>
         </div>
     </div>

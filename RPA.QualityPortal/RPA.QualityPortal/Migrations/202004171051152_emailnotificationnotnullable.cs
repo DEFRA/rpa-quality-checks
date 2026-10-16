@@ -4,7 +4,7 @@ namespace RPA.QualityPortal.Migrations
     using System.Diagnostics.CodeAnalysis;
 
     [ExcludeFromCodeCoverage]
-    public partial class emailnotificationnotnullable : DbMigration
+    public partial class Emailnotificationnotnullable : DbMigration
     {
         public override void Up()
         {

@@ -3,7 +3,7 @@ namespace RPA.QualityPortal.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class accreditation : DbMigration
+    public partial class Accreditation : DbMigration
     {
         public override void Up()
         {

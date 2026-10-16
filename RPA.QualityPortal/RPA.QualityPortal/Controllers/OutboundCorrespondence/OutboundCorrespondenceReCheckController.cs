@@ -1,4 +1,6 @@
-﻿using RPA.QualityPortal.DAL;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
+using RPA.QualityPortal.DAL;
 using RPA.QualityPortal.Helpers;
 using RPA.QualityPortal.Models;
 using RPA.QualityPortal.Models.CheckTypes;
@@ -8,18 +10,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
-using System.Web;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace RPA.QualityPortal.Controllers
 {
     [Authorize(Roles = "Quality Checks: OC Team Member, Quality Checks: OC Team Manager")]
-    public class OutboundCorrespondenceReCheckController : Controller
+    public class OutboundCorrespondenceReCheckController : QualityController
     {
         IQualityContext db;
         IPeopleContext pdb;
 
-        IAnswerService answerService;
         IMessageService messageService;
         ISendService sendService;
         IAuditService auditService;
@@ -29,22 +29,6 @@ namespace RPA.QualityPortal.Controllers
         IFilterService filterService;
         IOutboundCorrespondenceService outboundCorrespondenceService;
         ILockService lockService;
-
-        public OutboundCorrespondenceReCheckController()
-        {
-            db = new QualityContext();
-            pdb = new PeopleContext();
-            answerService = new AnswerService(db);
-            sendService = new SendService();
-            messageService = new EmailService(db, pdb);
-            auditService = new AuditService(db);
-            peopleService = new PeopleService(pdb);
-            userHelper = new UserHelper(pdb);
-            roleManager = new RoleManager();
-            filterService = new FilterService(db, pdb, userHelper, roleManager);
-            lockService = new LockService(db, pdb, userHelper);
-            outboundCorrespondenceService = new OutboundCorrespondenceService(db, answerService, userHelper, lockService);      
-        }
 
         public OutboundCorrespondenceReCheckController(IQualityContext context, IPeopleContext peopleContext, IOutboundCorrespondenceService outboundCorrespondenceService, IMessageService messageService, ISendService sendService, IAuditService auditService, IPeopleService peopleService, IUserHelper userHelper, IRoleManager roleManager, IFilterService filterService, ILockService lockService)
         {
@@ -61,7 +45,7 @@ namespace RPA.QualityPortal.Controllers
             this.lockService = lockService;
         }
 
-        public ActionResult CreateReCheckQuestions(int CheckId)
+        public IActionResult CreateReCheckQuestions(int CheckId)
         {
             if (lockService.IsCheckLocked(CheckId))
             {
@@ -80,14 +64,14 @@ namespace RPA.QualityPortal.Controllers
 
             if (qaListExisting == null)
             {
-                CreateListReCheckQuestions(outboundCorrespondence);
+                return CreateListReCheckQuestions(outboundCorrespondence);
             }
 
             return View(qaListExisting);
 
         }
 
-        public ActionResult CreateListReCheckQuestions(OutboundCorrespondence outboundCorrespondence)
+        public IActionResult CreateListReCheckQuestions(OutboundCorrespondence outboundCorrespondence)
         {
             List<CheckQuestion> checkQuestions = db.CheckQuestions.Where(x => x.CheckType.Name == "Outbound Correspondence ReCheck").OrderBy(c => c.Order).ToList();
 
@@ -113,20 +97,9 @@ namespace RPA.QualityPortal.Controllers
             return View("CreateReCheckQuestions", qaList);
         }
 
-        public PartialViewResult _CheckAnswer(int CheckId, int QuestionId)
-        {
-            QuestionAnswer qa = new QuestionAnswer
-            {
-                CheckQuestion = db.CheckQuestions.Where(x => x.QuestionId == QuestionId).FirstOrDefault(),
-                Answer = db.Answers.Where(x => x.CheckId == CheckId && x.QuestionId == QuestionId).Select(c => c.Text).FirstOrDefault()
-            };
-
-            return PartialView(qa);
-        }
-
-        [HttpPost]
+[HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateReCheckQuestions(int CheckId, QuestionAnswerList qaList)
+        public IActionResult CreateReCheckQuestions(int CheckId, QuestionAnswerList qaList)
         {
             if (lockService.IsCheckLocked(CheckId))
             {
@@ -160,7 +133,7 @@ namespace RPA.QualityPortal.Controllers
             return View(qaList);
         }
 
-        public ActionResult CreateReCheckResult(int CheckId)
+        public IActionResult CreateReCheckResult(int CheckId)
         {
             OutboundCorrespondence existingOutboundCorrespondence = db.OutboundCorrespondence.Where(x => x.CheckId == CheckId).FirstOrDefault();
 
@@ -196,7 +169,7 @@ namespace RPA.QualityPortal.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateReCheckResult(int CheckId, OutboundCorrespondenceReCheck outboundCorrespondenceReCheck)
+        public IActionResult CreateReCheckResult(int CheckId, OutboundCorrespondenceReCheck outboundCorrespondenceReCheck)
         {
             if (lockService.IsCheckLocked(CheckId))
             {
@@ -241,7 +214,7 @@ namespace RPA.QualityPortal.Controllers
             return RedirectToAction("Index", "OutboundCorrespondence");
         }
 
-        public ActionResult DetailsReCheck(int CheckId)
+        public IActionResult DetailsReCheck(int CheckId)
         {
             int ReCheckId = db.OutboundCorrespondenceReCheck.Where(x => x.OutboundCorrespondenceId == CheckId && x.ReCheckActive == true).Select(x => x.CheckId).FirstOrDefault();
 
@@ -266,7 +239,7 @@ namespace RPA.QualityPortal.Controllers
             return View(detailsReCheck);
         }
 
-        public ActionResult DetailsReChecks(int CheckId)
+        public IActionResult DetailsReChecks(int CheckId)
         {
             List<int> outboundCorrespondenceReChecksIds = db.OutboundCorrespondenceReCheck.Where(x => x.OutboundCorrespondenceId == CheckId).OrderBy(c => c.DateQCCompleted).Select(c => c.CheckId).ToList();
 
@@ -307,7 +280,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult EditReCheckQuestions(int ReCheckId)
+        public IActionResult EditReCheckQuestions(int ReCheckId)
         {
             QuestionAnswerList qaListExisting = this.Session["EditReCheckQuestions"] as QuestionAnswerList;
 
@@ -342,7 +315,7 @@ namespace RPA.QualityPortal.Controllers
         // POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditReCheckQuestions(int ReCheckId, QuestionAnswerList qaList)
+        public IActionResult EditReCheckQuestions(int ReCheckId, QuestionAnswerList qaList)
         {
             OutboundCorrespondenceReCheck outboundCorrespondenceReCheck = db.OutboundCorrespondenceReCheck.Where(x => x.CheckId == ReCheckId).FirstOrDefault();
             OutboundCorrespondence outboundCorrespondence = db.OutboundCorrespondence.Where(x => x.CheckId == outboundCorrespondenceReCheck.OutboundCorrespondenceId).FirstOrDefault();
@@ -370,7 +343,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult EditReCheckResult(int ReCheckId)
+        public IActionResult EditReCheckResult(int ReCheckId)
         {
             QuestionAnswerList qaList = this.Session["EditReCheckQuestions"] as QuestionAnswerList;
 
@@ -394,7 +367,7 @@ namespace RPA.QualityPortal.Controllers
 
         // POST:
         [HttpPost]
-        public ActionResult EditReCheckResult(OutboundCorrespondenceReCheck outboundCorrespondenceReCheck)
+        public IActionResult EditReCheckResult(OutboundCorrespondenceReCheck outboundCorrespondenceReCheck)
         {
             QuestionAnswerList qaList = this.Session["EditReCheckQuestions"] as QuestionAnswerList;
 
@@ -419,7 +392,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         [HttpGet]
-        public ActionResult AmendmentReasonReCheck()
+        public IActionResult AmendmentReasonReCheck()
         {
             OutboundCorrespondenceReCheck outboundCorrespondenceReCheck = this.Session["EditReCheckResult"] as OutboundCorrespondenceReCheck;
 
@@ -441,7 +414,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         [HttpPost]
-        public ActionResult AmendmentReasonReCheck(CheckAmendmentReason checkAmendmentReason)
+        public IActionResult AmendmentReasonReCheck(CheckAmendmentReason checkAmendmentReason)
         {
             QuestionAnswerList qaList = this.Session["EditReCheckQuestions"] as QuestionAnswerList;
 
@@ -481,7 +454,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //Get
-        public ActionResult DeleteReCheckView(int CheckId)
+        public IActionResult DeleteReCheckView(int CheckId)
         {
 
             int ReCheckId = db.OutboundCorrespondenceReCheck.Where(x => x.OutboundCorrespondenceId == CheckId && x.ReCheckActive == true).Select(x => x.CheckId).FirstOrDefault();
@@ -506,7 +479,7 @@ namespace RPA.QualityPortal.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteReCheck(int CheckId)
+        public IActionResult DeleteReCheck(int CheckId)
         {
             outboundCorrespondenceService.DeleteReCheck(CheckId);
 

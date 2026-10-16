@@ -1,13 +1,13 @@
-﻿using RPA.QualityPortal.Models.CheckTypes;
+using Microsoft.AspNetCore.Authorization;
+using RPA.QualityPortal.Models.CheckTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using RPA.QualityPortal.DAL;
 using RPA.QualityPortal.Helpers;
 using RPA.QualityPortal.Services;
-using PagedList;
+using X.PagedList;
 using RPA.QualityPortal.ViewModels.OutboundCorrespondenceVM;
 using RPA.QualityPortal.Models;
 using System.Net.Mail;
@@ -18,7 +18,7 @@ using OfficeOpenXml;
 namespace RPA.QualityPortal.Controllers
 {
     [Authorize(Roles = "Quality Checks: OC Team Member, Quality Checks: OC Team Manager")]
-    public class OutboundCorrespondenceAccreditationController : Controller
+    public class OutboundCorrespondenceAccreditationController : QualityController
     {
         IQualityContext db;
         IPeopleContext pdb;
@@ -53,12 +53,12 @@ namespace RPA.QualityPortal.Controllers
         }
 
         // GET: OutboundCorrespondenceAccreditation
-        public ActionResult AccreditationIndex(int page = 1, int pageSize = 50)
+        public IActionResult AccreditationIndex(int page = 1, int pageSize = 50)
         {
             return View(new PagedList<OutboundCorrespondenceAccreditation> (db.OutboundCorrespondenceAccreditation.ToList(), page, pageSize));
         }
 
-        public ActionResult Accredit(int accreditationId)
+        public IActionResult Accredit(int accreditationId)
         {
             OutboundCorrespondenceAccreditation accreditation = db.OutboundCorrespondenceAccreditation.Where(x => x.OutboundCorrespondenceAccreditationId == accreditationId).FirstOrDefault();
             db.SetModified(accreditation);
@@ -79,14 +79,14 @@ namespace RPA.QualityPortal.Controllers
             };
         }
 
-        public ActionResult ManualRefreshBulk()
+        public IActionResult ManualRefreshBulk()
         {
             accreditationService.ManualRefreshBulk();
 
             return RedirectToAction("AccreditationIndex");
         }
 
-        public ActionResult ManualRefreshIndividual(string name)
+        public IActionResult ManualRefreshIndividual(string name)
         {
             accreditationService.ManualRefreshIndividual(name, false);
 
@@ -94,7 +94,7 @@ namespace RPA.QualityPortal.Controllers
         }
 
         //GET:
-        public ActionResult UserConsecutivePasses()
+        public IActionResult UserConsecutivePasses()
         {
             List<OutboundCorrespondenceAccreditation> consecutivePasses = new List<OutboundCorrespondenceAccreditation>();
 

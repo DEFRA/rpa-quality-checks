@@ -5,7 +5,7 @@ namespace RPA.QualityPortal.Migrations
     using System.Diagnostics.CodeAnalysis;
 
     [ExcludeFromCodeCoverage]
-    public partial class initialrecheckbank : DbMigration
+    public partial class Initialrecheckbank : DbMigration
     {
         public override void Up()
         {

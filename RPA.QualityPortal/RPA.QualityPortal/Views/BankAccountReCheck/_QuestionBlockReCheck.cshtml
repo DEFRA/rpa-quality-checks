@@ -1,4 +1,4 @@
-﻿@model RPA.QualityPortal.ViewModels.QuestionAnswerList
+@model RPA.QualityPortal.ViewModels.QuestionAnswerList
 
 @{
     string header = (string)ViewData["header"];
@@ -28,9 +28,7 @@
             @Html.HiddenFor(model => model.QuestionAnswers[i].Answer)
         </td>
         <td>
-            @{
-                Html.RenderAction("_CheckAnswer", new { CheckId = ViewBag.CheckId, QuestionId = Model.QuestionAnswers[i].CheckQuestion.Question.QuestionId });
-            }
+            @await Component.InvokeAsync("CheckAnswer", new { CheckId = ViewBag.CheckId, QuestionId = Model.QuestionAnswers[i].CheckQuestion.Question.QuestionId })
         </td>
     </tr>
     <tr>
@@ -38,9 +36,7 @@
             @Html.Display("Check Comment")
         </td>
         <td align="right">
-            @{
-                Html.RenderAction("_CheckComment", new { CheckId = ViewBag.CheckId, QuestionId = Model.QuestionAnswers[i].CheckQuestion.Question.QuestionId });
-            }
+            @await Component.InvokeAsync("CheckComment", new { CheckId = ViewBag.CheckId, QuestionId = Model.QuestionAnswers[i].CheckQuestion.Question.QuestionId })
         </td>
     </tr>
     <tr>

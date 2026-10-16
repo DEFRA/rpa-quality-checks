@@ -1,12 +1,12 @@
-﻿@model PagedList<RPA.QualityPortal.ViewModels.OutboundCorrespondenceOverview>
+@model X.PagedList.IPagedList<RPA.QualityPortal.ViewModels.OutboundCorrespondenceOverview>
 
 @{
     ViewBag.Title = "Index";
     ViewBag.CheckType = "Outbound";
 }
 
-@using PagedList;
-@using PagedList.Mvc;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
 
 <div class="jumbotron">
     <h1>Outbound Correspondence QC</h1>

@@ -1,11 +1,10 @@
-﻿using RPA.QualityPortal.Models.CheckTypes;
+using RPA.QualityPortal.Models.CheckTypes;
 using RPA.QualityPortal.ViewModels.OutboundCorrespondenceVM.MI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Web;
 
 namespace RPA.QualityPortal.ViewModels.OutboundCorrespondenceVM.MI
 {

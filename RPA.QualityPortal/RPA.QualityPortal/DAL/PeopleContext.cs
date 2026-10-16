@@ -7,10 +7,11 @@ namespace RPA.QualityPortal
     using System.Diagnostics.CodeAnalysis;
 
     [ExcludeFromCodeCoverage]
+    [DbConfigurationType(typeof(RPA.QualityPortal.DAL.QualityDbConfiguration))]
     public partial class PeopleContext : DbContext, IPeopleContext
     {
-        public PeopleContext()
-            : base("name=PeopleContext")
+        public PeopleContext(string nameOrConnectionString)
+            : base(nameOrConnectionString)
         {
         }
 

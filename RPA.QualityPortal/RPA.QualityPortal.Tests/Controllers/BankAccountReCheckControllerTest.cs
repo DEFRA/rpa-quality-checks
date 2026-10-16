@@ -1,8 +1,10 @@
-﻿using Moq;
-using MvcContrib.TestHelper;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
+using RPA.QualityPortal.ViewComponents;
+using RPA.QualityPortal.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
 using NUnit.Framework;
 using RPA.QualityPortal.Controllers.BankAccount;
-using RPA.QualityPortal.Factory;
 using RPA.QualityPortal.Helpers;
 using RPA.QualityPortal.Models;
 using RPA.QualityPortal.Models.CheckTypes;
@@ -16,7 +18,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 
 namespace RPA.QualityPortal.Tests.Controllers
 {
@@ -33,7 +34,7 @@ namespace RPA.QualityPortal.Tests.Controllers
         Mock<IMessageService> messageService;
         Mock<ISendService> sendService;
         IUserHelper userHelper;
-        IRoleManager roleManager;
+        IRoleManager roleManager = Mock.Of<IRoleManager>();
         ILockService lockService;
         IAuditService auditService;
 
@@ -44,15 +45,13 @@ namespace RPA.QualityPortal.Tests.Controllers
             peopleContext = new MockPeopleContext();
 
             answerService = new AnswerService(context.MockContext.Object);
-            userHelper = new UserHelper(peopleContext.MockContext.Object);
+            userHelper = new UserHelper(peopleContext.MockContext.Object, MockHttpContext.GetMockedHttpContextAccessor());
             peopleService = new PeopleService(peopleContext.MockContext.Object);
             sendService = new Mock<ISendService>();
             messageService = new Mock<IMessageService>();
             lockService = new LockService(context.MockContext.Object, peopleContext.MockContext.Object, userHelper);
             auditService = new AuditService(context.MockContext.Object);
             bankAccountService = new BankAccountService(context.MockContext.Object, answerService, lockService);
-
-            HttpContextManager.SetCurrentContext(MockHttpContext.GetMockedHttpContext());
 
             controller = new BankAccountReCheckController(context.MockContext.Object, peopleContext.MockContext.Object, answerService, messageService.Object, sendService.Object, peopleService, userHelper, roleManager, lockService, bankAccountService, auditService);
         }
@@ -76,7 +75,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             builder.InitializeController(controller);
 
-            var result = controller._CheckAnswer(53, 18) as PartialViewResult;
+            var result = new CheckAnswerViewComponent(context.MockContext.Object).WithViewContext().Invoke(53, 18) as ViewViewComponentResult;
 
             Assert.IsNotNull(result);
         }
@@ -88,7 +87,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             builder.InitializeController(controller);
 
-            var result = controller._CheckComment(53, 18) as PartialViewResult;
+            var result = new CheckCommentViewComponent(context.MockContext.Object).WithViewContext().Invoke(53, 18) as ViewViewComponentResult;
 
             Assert.IsNotNull(result);
         }
@@ -131,10 +130,10 @@ namespace RPA.QualityPortal.Tests.Controllers
             builder.InitializeController(controller);
 
             //Act
-            var result = controller.CreateBankReCheckQuestions(53, qaList) as RedirectToRouteResult;
+            var result = controller.CreateBankReCheckQuestions(53, qaList) as RedirectToActionResult;
 
             //Assert
-            Assert.AreEqual("CreateBankReCheckResult", result.RouteValues["Action"]);
+            Assert.AreEqual("CreateBankReCheckResult", result.ActionName);
         }
 
         [Test]
@@ -191,10 +190,10 @@ namespace RPA.QualityPortal.Tests.Controllers
             builder.InitializeController(controller);
 
             //Act
-            var result = controller.CreateBankReCheckResult(53) as RedirectToRouteResult;
+            var result = controller.CreateBankReCheckResult(53) as RedirectToActionResult;
 
             //Assert
-            Assert.AreEqual("GeneralDetails", result.RouteValues["Action"]);      
+            Assert.AreEqual("GeneralDetails", result.ActionName);      
         }
 
         [Test]
@@ -209,7 +208,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             BankAccountReCheck bankAccountReCheck = new BankAccountReCheck
             {
                 CheckId = 100,
-                PersonName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
                 BankAccountId = 55,
                 QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
@@ -218,10 +217,10 @@ namespace RPA.QualityPortal.Tests.Controllers
             };
 
             //Act
-            var result = controller.CreateBankReCheckResult(53, bankAccountReCheck, "Approved") as RedirectToRouteResult;
+            var result = controller.CreateBankReCheckResult(53, bankAccountReCheck, "Approved") as RedirectToActionResult;
 
             //Assert
-            Assert.AreEqual("GeneralDetails", result.RouteValues["Action"]);
+            Assert.AreEqual("GeneralDetails", result.ActionName);
         }
 
         [Test]
@@ -234,9 +233,9 @@ namespace RPA.QualityPortal.Tests.Controllers
             BankAccountReCheck bankAccountReCheck = new BankAccountReCheck
             {
                 CheckId = 100,
-                PersonName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
                 BankAccountId = 54,
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 4,
@@ -277,10 +276,10 @@ namespace RPA.QualityPortal.Tests.Controllers
             controller.Session["CreateBankReCheckQuestions"] = qaList;
 
             //Act
-            var result = controller.CreateBankReCheckResult(54, bankAccountReCheck, "Approved") as RedirectToRouteResult;
+            var result = controller.CreateBankReCheckResult(54, bankAccountReCheck, "Approved") as RedirectToActionResult;
 
             //Assert
-            Assert.AreEqual("BankAccountDetailsReCheck", result.RouteValues["Action"]);
+            Assert.AreEqual("BankAccountDetailsReCheck", result.ActionName);
         }
 
         [Test]
@@ -293,9 +292,9 @@ namespace RPA.QualityPortal.Tests.Controllers
             BankAccountReCheck bankAccountReCheck = new BankAccountReCheck
             {
                 CheckId = 100,
-                PersonName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
                 BankAccountId = 53,
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 4,
@@ -337,10 +336,10 @@ namespace RPA.QualityPortal.Tests.Controllers
             controller.Session["CreateBankReCheckQuestions"] = qaList;
 
             //Act
-            var result = controller.CreateBankReCheckResult(53, bankAccountReCheck, "Not Approved") as RedirectToRouteResult;
+            var result = controller.CreateBankReCheckResult(53, bankAccountReCheck, "Not Approved") as RedirectToActionResult;
 
             //Assert
-            Assert.AreEqual("BankAccountDetailsReCheck", result.RouteValues["Action"]);
+            Assert.AreEqual("BankAccountDetailsReCheck", result.ActionName);
         }
 
         [Test]
@@ -353,9 +352,9 @@ namespace RPA.QualityPortal.Tests.Controllers
             BankAccountReCheck bankAccountReCheck = new BankAccountReCheck
             {
                 CheckId = 100,
-                PersonName = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
                 BankAccountId = 56,
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 4
@@ -394,7 +393,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             controller.Session["CreateBankReCheckQuestions"] = qaList;
 
             //Act
-            var result = controller.CreateBankReCheckResult(56, bankAccountReCheck, "Not Approved") as RedirectToRouteResult;
+            var result = controller.CreateBankReCheckResult(56, bankAccountReCheck, "Not Approved") as RedirectToActionResult;
 
             //Assert
             Assert.IsTrue(!controller.ModelState.IsValid);
@@ -470,10 +469,10 @@ namespace RPA.QualityPortal.Tests.Controllers
             builder.InitializeController(controller);
 
             //Act
-            var result = controller.EditBankReCheckQuestions(56, qaList) as RedirectToRouteResult;
+            var result = controller.EditBankReCheckQuestions(56, qaList) as RedirectToActionResult;
 
             //Assert
-            Assert.AreEqual("EditBankReCheckResult", result.RouteValues["Action"]);
+            Assert.AreEqual("EditBankReCheckResult", result.ActionName);
         }
 
         [Test]
@@ -578,9 +577,9 @@ namespace RPA.QualityPortal.Tests.Controllers
             BankAccountReCheck bankAccountReCheck = new BankAccountReCheck
             {
                 CheckId = 56,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
-                ReCheckCompletedBy = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
+                ReCheckCompletedBy = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 4
@@ -622,10 +621,10 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             controller.Session["EditBankReCheckResult"] = bankAccountReCheck;
 
-            var testResult = controller.EditBankReCheckResult(bankAccountReCheck, result) as RedirectToRouteResult;
+            var testResult = controller.EditBankReCheckResult(bankAccountReCheck, result) as RedirectToActionResult;
 
             //Assert
-            Assert.AreEqual("BankAmendmentReasonReCheck", testResult.RouteValues["Action"]);
+            Assert.AreEqual("BankAmendmentReasonReCheck", testResult.ActionName);
         }
 
         [Test]
@@ -683,7 +682,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             controller.Session["EditBankReCheckResult"] = bankAccountReCheck;
 
-            var testResult = controller.EditBankReCheckResult(bankAccountReCheck, result) as RedirectToRouteResult;
+            var testResult = controller.EditBankReCheckResult(bankAccountReCheck, result) as RedirectToActionResult;
 
             //Assert
             Assert.IsTrue(!controller.ModelState.IsValid);
@@ -703,9 +702,9 @@ namespace RPA.QualityPortal.Tests.Controllers
             BankAccountReCheck bankAccountReCheck = new BankAccountReCheck
             {
                 CheckId = 56,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
-                ReCheckCompletedBy = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
+                ReCheckCompletedBy = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 4
@@ -751,7 +750,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             var testResult = controller.EditBankReCheckResult(60) as ViewResult;
 
             //Assert
-            Assert.AreEqual("Gordon, [REDACTED_NAME]", ((BankAccountReCheck)testResult.ViewData.Model).PersonName);
+            Assert.AreEqual("Gordon, Lee George", ((BankAccountReCheck)testResult.ViewData.Model).PersonName);
         }
 
         [Test]
@@ -764,9 +763,9 @@ namespace RPA.QualityPortal.Tests.Controllers
             BankAccountReCheck bankAccountReCheck = new BankAccountReCheck
             {
                 CheckId = 56,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
-                ReCheckCompletedBy = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
+                ReCheckCompletedBy = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 4
@@ -825,9 +824,9 @@ namespace RPA.QualityPortal.Tests.Controllers
             BankAccountReCheck bankAccountReCheck = new BankAccountReCheck
             {
                 CheckId = 56,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
-                ReCheckCompletedBy = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
+                ReCheckCompletedBy = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 4,
@@ -886,10 +885,10 @@ namespace RPA.QualityPortal.Tests.Controllers
             controller.Session["EditBankReCheckQuestions"] = qaList;
 
             //Act
-            var result = controller.BankAmendmentReasonReCheck(CAR) as RedirectToRouteResult;
+            var result = controller.BankAmendmentReasonReCheck(CAR) as RedirectToActionResult;
 
             //Assert
-            Assert.AreEqual("DetailsReCheck", result.RouteValues["Action"]);
+            Assert.AreEqual("DetailsReCheck", result.ActionName);
         }
 
         [Test]
@@ -902,9 +901,9 @@ namespace RPA.QualityPortal.Tests.Controllers
             BankAccountReCheck bankAccountReCheck = new BankAccountReCheck
             {
                 CheckId = 56,
-                PersonName = "Gordon, [REDACTED_NAME]",
-                QCCompletedByName = "Gordon, [REDACTED_NAME]",
-                ReCheckCompletedBy = "Gordon, [REDACTED_NAME]",
+                PersonName = "Gordon, Lee George",
+                QCCompletedByName = "Gordon, Lee George",
+                ReCheckCompletedBy = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,
                 Archived = false,
                 CheckTypeId = 4

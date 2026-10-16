@@ -1,10 +1,9 @@
-﻿using RPA.QualityPortal.DAL;
+using RPA.QualityPortal.DAL;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Web;
 
 
 namespace RPA.QualityPortal.Services
@@ -13,9 +12,11 @@ namespace RPA.QualityPortal.Services
     {
         IQualityContext db;
         IPeopleContext pdb;
+        string conString;
 
-        public AccessService(IQualityContext context, IPeopleContext peopleContext)
+        public AccessService(IQualityContext context, IPeopleContext peopleContext, IConfiguration configuration)
         {
+            this.conString = configuration.GetConnectionString("IDTSecurityConnection");
             this.db = context;
             this.pdb = peopleContext;
         }
@@ -46,7 +47,7 @@ namespace RPA.QualityPortal.Services
 
             if (CheckRole(userId, currentRole))
             {
-                string conString = System.Configuration.ConfigurationManager.ConnectionStrings["IDTSecurityConnection"].ConnectionString;
+                
                 using (SqlConnection con = new SqlConnection(conString))
                 {
                     using (SqlCommand cmd = new SqlCommand("[dbo].[ChangeRoles]", con))
@@ -70,7 +71,7 @@ namespace RPA.QualityPortal.Services
         }
         private bool CheckRole(Guid userId, string currentRole)
         {
-            string conString = System.Configuration.ConfigurationManager.ConnectionStrings["IDTSecurityConnection"].ConnectionString;
+            
             using (SqlConnection con = new SqlConnection(conString))
             {
                 using (SqlCommand cmd = new SqlCommand("[dbo].[Check Roles]", con))

@@ -1,4 +1,4 @@
-﻿@model RPA.QualityPortal.ViewModels.BankAccount.BankAccountDetailsReCheck
+@model RPA.QualityPortal.ViewModels.BankAccount.BankAccountDetailsReCheck
 
 @{
     string header = (string)ViewData["header"];
@@ -30,9 +30,7 @@
             @Html.Display("Check Comment")
         </td>
         <td align="right">
-            @{
-                Html.RenderAction("_CheckComment", new { CheckId = Model.BankAccount.CheckId, QuestionId = Model.Answers[i].QuestionId });
-            }
+            @await Component.InvokeAsync("CheckComment", new { CheckId = Model.BankAccount.CheckId, QuestionId = Model.Answers[i].QuestionId })
         </td>
     </tr>
     <tr>
@@ -40,9 +38,7 @@
             @Html.Display("Recheck Comment")
         </td>
         <td align="right">
-            @{
-                Html.RenderAction("_CheckComment", new { CheckId = Model.BankAccountReCheck.CheckId, QuestionId = Model.Answers[i].QuestionId });
-            }
+            @await Component.InvokeAsync("CheckComment", new { CheckId = Model.BankAccountReCheck.CheckId, QuestionId = Model.Answers[i].QuestionId })
         </td>
     </tr>
 }

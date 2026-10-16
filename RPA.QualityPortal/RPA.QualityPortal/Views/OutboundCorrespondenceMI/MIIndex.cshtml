@@ -1,4 +1,4 @@
-﻿
+
 
 @{
     ViewBag.CheckType = "Outbound";
@@ -17,7 +17,7 @@
     <div class="partial-view-container fade active in tab-pane" id="overview">
         @{
             <br />
-            Html.RenderAction("_OutboundCorrespondenceMI", "OutboundCorrespondenceMI", new { back = ViewBag.Back });
+            @await Component.InvokeAsync("OutboundCorrespondenceMI", new { back = ViewBag.Back })
         }
     </div>
     @if ((User.IsInRole("Quality Checks: OC Admin")) || (User.IsInRole("Quality Checks: OC Team Manager")))
@@ -25,7 +25,7 @@
         <div class="partial-view-container tab-pane fade" id="answer">
             @{
                 <br />
-                Html.RenderAction("_AnswerMI", "OutboundCorrespondenceMI");
+                @await Component.InvokeAsync("AnswerMI")
             }
         </div>
      }

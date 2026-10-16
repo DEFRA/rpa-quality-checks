@@ -1,12 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace RPA.QualityPortal.Controllers
 {
-    public class OutboundCorrespondenceReCheckController : Controller
+    public class OutboundCorrespondenceReCheckController : QualityController
     {
         QualityContext db;
         PeopleContext pdb;
@@ -28,7 +27,7 @@ namespace RPA.QualityPortal.Controllers
             this.OutboundCorrespondenceService = outboundCorrespondenceService;
         }
 
-        public ActionResult CreateReCheck()
+        public IActionResult CreateReCheck()
         {
             return View();
         }

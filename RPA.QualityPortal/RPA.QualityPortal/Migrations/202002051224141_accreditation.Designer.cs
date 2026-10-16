@@ -7,9 +7,9 @@ namespace RPA.QualityPortal.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class accreditation : IMigrationMetadata
+    public sealed partial class Accreditation : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(accreditation));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Accreditation));
         
         string IMigrationMetadata.Id
         {

@@ -1,4 +1,6 @@
-﻿using RPA.QualityPortal.DAL;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
+using RPA.QualityPortal.DAL;
 using RPA.QualityPortal.Helpers;
 using RPA.QualityPortal.Models;
 using RPA.QualityPortal.Models.CheckTypes;
@@ -9,13 +11,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
-using System.Web;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace RPA.QualityPortal.Controllers.BankAccount
 {
     [Authorize(Roles = "Quality Checks: BA Team Member")]
-    public class BankAccountReCheckController : Controller
+    public class BankAccountReCheckController : QualityController
     {
         IQualityContext db;
         IPeopleContext pdb;
@@ -29,22 +30,6 @@ namespace RPA.QualityPortal.Controllers.BankAccount
         IBankAccountService bankAccountService;
         ILockService lockService;
         IAuditService auditService;
-
-        public BankAccountReCheckController()
-        {
-            db = new QualityContext();
-            pdb = new PeopleContext();
-
-            answerService = new AnswerService(db);
-            messageService = new EmailService(db, pdb);
-            sendService = new SendService();
-            peopleService = new PeopleService(pdb);
-            userHelper = new UserHelper(pdb);
-            roleManager = new RoleManager();
-            lockService = new LockService(db, pdb, userHelper);
-            bankAccountService = new BankAccountService(db, answerService, lockService);
-            auditService = new AuditService(db);
-        }
 
         public BankAccountReCheckController(IQualityContext context, IPeopleContext peopleContext, IAnswerService answerService, IMessageService messageService, ISendService sendService, IPeopleService peopleService, IUserHelper userHelper, IRoleManager roleManager, ILockService lockService, IBankAccountService bankAccountService, IAuditService auditService)
         {
@@ -62,7 +47,7 @@ namespace RPA.QualityPortal.Controllers.BankAccount
             this.auditService = auditService;
         }
 
-        public ActionResult CreateBankReCheckQuestions(int CheckId)
+        public IActionResult CreateBankReCheckQuestions(int CheckId)
         {
             if (lockService.IsCheckLocked(CheckId))
             {
@@ -87,7 +72,7 @@ namespace RPA.QualityPortal.Controllers.BankAccount
             return View(qaListExisting);
         }
 
-        public ActionResult CreateListReCheckQuestions()
+        public IActionResult CreateListReCheckQuestions()
         {
             List<CheckQuestion> checkQuestions = db.CheckQuestions.Where(x => x.CheckType.Name == "Bank Account ReCheck").OrderBy(c => c.Order).ToList();
 
@@ -106,30 +91,9 @@ namespace RPA.QualityPortal.Controllers.BankAccount
             return View("CreateBankReCheckQuestions", qaList);
         }
 
-        public PartialViewResult _CheckAnswer(int CheckId, int QuestionId)
-        {
-            QuestionAnswer qa = new QuestionAnswer
-            {
-                CheckQuestion = db.CheckQuestions.Where(x => x.QuestionId == QuestionId).FirstOrDefault(),
-                Answer = db.Answers.Where(x => x.CheckId == CheckId && x.QuestionId == QuestionId).Select(c => c.Text).FirstOrDefault()
-            };
-
-            return PartialView(qa);
-        }
-
-        public PartialViewResult _CheckComment(int CheckId, int QuestionId)
-        {
-            BankAccountComments comment = new BankAccountComments
-            {
-                AnswerComment = db.BankAccountComments.Where(x => x.CheckId == CheckId && x.QuestionId == QuestionId).Select(c => c.AnswerComment).FirstOrDefault() ?? ""
-            };
-
-            return PartialView(comment);
-        }
-
-        [HttpPost]
+[HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateBankReCheckQuestions(int CheckId, QuestionAnswerList qaList)
+        public IActionResult CreateBankReCheckQuestions(int CheckId, QuestionAnswerList qaList)
         {
             if (lockService.IsCheckLocked(CheckId))
             {
@@ -140,7 +104,7 @@ namespace RPA.QualityPortal.Controllers.BankAccount
             return RedirectToAction("CreateBankReCheckResult", new { CheckId });
         }
 
-        public ActionResult CreateBankReCheckResult(int CheckId)
+        public IActionResult CreateBankReCheckResult(int CheckId)
         {
             BankAccountCheck existingBankAccount = db.BankAccounts.Where(x => x.CheckId == CheckId).FirstOrDefault();
 
@@ -172,7 +136,7 @@ namespace RPA.QualityPortal.Controllers.BankAccount
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateBankReCheckResult(int CheckId, BankAccountReCheck bankAccountReCheck, string result)
+        public IActionResult CreateBankReCheckResult(int CheckId, BankAccountReCheck bankAccountReCheck, string result)
         {
             if (lockService.IsCheckLocked(CheckId))
             {
@@ -242,7 +206,7 @@ namespace RPA.QualityPortal.Controllers.BankAccount
         }
 
         //GET:
-        public ActionResult EditBankReCheckQuestions(int ReCheckId)
+        public IActionResult EditBankReCheckQuestions(int ReCheckId)
         {
             QuestionAnswerList qaListExisting = this.Session["EditBankReCheckQuestions"] as QuestionAnswerList;
 
@@ -275,14 +239,14 @@ namespace RPA.QualityPortal.Controllers.BankAccount
         // POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditBankReCheckQuestions(int ReCheckId, QuestionAnswerList qaList)
+        public IActionResult EditBankReCheckQuestions(int ReCheckId, QuestionAnswerList qaList)
         {
             this.Session["EditBankReCheckQuestions"] = qaList;
             return RedirectToAction("EditBankReCheckResult", new { ReCheckId });
         }
 
         //GET:
-        public ActionResult EditBankReCheckResult(int ReCheckId)
+        public IActionResult EditBankReCheckResult(int ReCheckId)
         {
             QuestionAnswerList qaList = this.Session["EditBankReCheckQuestions"] as QuestionAnswerList;
 
@@ -302,7 +266,7 @@ namespace RPA.QualityPortal.Controllers.BankAccount
 
         // POST:
         [HttpPost]
-        public ActionResult EditBankReCheckResult(BankAccountReCheck bankAccountReCheck, string result)
+        public IActionResult EditBankReCheckResult(BankAccountReCheck bankAccountReCheck, string result)
         {
             QuestionAnswerList qaList = this.Session["EditBankReCheckQuestions"] as QuestionAnswerList;
 
@@ -353,7 +317,7 @@ namespace RPA.QualityPortal.Controllers.BankAccount
         }
 
         [HttpGet]
-        public ActionResult BankAmendmentReasonReCheck()
+        public IActionResult BankAmendmentReasonReCheck()
         {
             BankAccountReCheck bankAccountReCheck = this.Session["EditBankReCheckResult"] as BankAccountReCheck;
 
@@ -367,7 +331,7 @@ namespace RPA.QualityPortal.Controllers.BankAccount
         }
 
         [HttpPost]
-        public ActionResult BankAmendmentReasonReCheck(CheckAmendmentReason checkAmendmentReason)
+        public IActionResult BankAmendmentReasonReCheck(CheckAmendmentReason checkAmendmentReason)
         {
             QuestionAnswerList qaList = this.Session["EditBankReCheckQuestions"] as QuestionAnswerList;
 
@@ -406,7 +370,7 @@ namespace RPA.QualityPortal.Controllers.BankAccount
             ViewBag.Result = new SelectList(db.Results.AsNoTracking().OrderBy(x => x.ResultId), "Text", "Text");
         }
 
-        public ActionResult BankAccountDetailsReCheck(int CheckId)
+        public IActionResult BankAccountDetailsReCheck(int CheckId)
         {
             int ReCheckId = db.BankAccountReChecks.Where(x => x.BankAccountId == CheckId && x.ReCheckActive == true).Select(x => x.CheckId).FirstOrDefault();
 
@@ -431,7 +395,7 @@ namespace RPA.QualityPortal.Controllers.BankAccount
             return View(detailsReCheck);
         }
 
-        public ActionResult BankAccountDetailsReChecks(int CheckId)
+        public IActionResult BankAccountDetailsReChecks(int CheckId)
         {
             List<int> bankAccountReCheckIds = db.BankAccountReChecks.Where(x => x.BankAccountId == CheckId).OrderBy(c => c.DateQCCompleted).Select(c => c.CheckId).ToList();
 

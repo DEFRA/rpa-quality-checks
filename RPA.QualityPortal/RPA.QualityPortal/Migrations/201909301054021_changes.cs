@@ -5,7 +5,7 @@ namespace RPA.QualityPortal.Migrations
     using System.Diagnostics.CodeAnalysis;
 
     [ExcludeFromCodeCoverage]
-    public partial class changes : DbMigration
+    public partial class Changes : DbMigration
     {
         public override void Up()
         {

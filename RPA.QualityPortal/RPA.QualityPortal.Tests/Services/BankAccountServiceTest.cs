@@ -1,4 +1,5 @@
-﻿using Moq;
+using RPA.QualityPortal.Tests.Factory;
+using Moq;
 using NUnit.Framework;
 using RPA.QualityPortal.Helpers;
 using RPA.QualityPortal.Models;
@@ -33,7 +34,7 @@ namespace RPA.QualityPortal.Tests.Services
             db = new MockQualityContext();
             pdb = new MockPeopleContext();
 
-            userHelper = new UserHelper(pdb.MockContext.Object);
+            userHelper = new UserHelper(pdb.MockContext.Object, MockHttpContext.GetMockedHttpContextAccessor());
             answerService = new AnswerService(db.MockContext.Object);
             lockService = new LockService(db.MockContext.Object, pdb.MockContext.Object, userHelper);
 

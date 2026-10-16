@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace RPA.QualityPortal.Tests.Data.Mock
@@ -14,15 +14,15 @@ namespace RPA.QualityPortal.Tests.Data.Mock
                     Id = Guid.NewGuid(),
                     Name = "Toward, Fay",
                     StaffNumber = "M600500",
-                    Email = "[REDACTED_EMAIL]",
+                    Email = "person1@test.com",
                     Supervisor = "M600200"
                 },
                 new Person
                 {
                     Id = Guid.NewGuid(),
-                    Name = "Gordon, [REDACTED_NAME]",
+                    Name = "Gordon, Lee George",
                     StaffNumber = "M600300",
-                    Email = "[REDACTED_EMAIL]",
+                    Email = "person2@test.com",
                     Supervisor = "M600200"
                 },
                 new Person
@@ -30,7 +30,7 @@ namespace RPA.QualityPortal.Tests.Data.Mock
                     Id = Guid.NewGuid(),
                     Name = "Dormand, Scott",
                     StaffNumber = "M600400",
-                    Email = "[REDACTED_EMAIL]",
+                    Email = "person3@test.com",
                     Supervisor = "M600200"
                 },
                 new Person
@@ -38,7 +38,7 @@ namespace RPA.QualityPortal.Tests.Data.Mock
                     Id = Guid.NewGuid(),
                     Name = "Fazackerley, Paul",
                     StaffNumber = "M600100",
-                    Email = "[REDACTED_EMAIL]",
+                    Email = "person4@test.com",
                     Supervisor = "M600200"
                 },
                 new Person
@@ -46,7 +46,7 @@ namespace RPA.QualityPortal.Tests.Data.Mock
                     Id = Guid.NewGuid(),
                     Name = "Slee, Alan",
                     StaffNumber = "M600200",
-                    Email = "[REDACTED_EMAIL]"
+                    Email = "person5@test.com"
                 }
             };
         }

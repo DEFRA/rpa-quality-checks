@@ -7,9 +7,9 @@ namespace RPA.QualityPortal.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class lockcheck : IMigrationMetadata
+    public sealed partial class Lockcheck : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(lockcheck));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Lockcheck));
         
         string IMigrationMetadata.Id
         {

@@ -1,4 +1,4 @@
-﻿using RPA.QualityPortal.Models;
+using RPA.QualityPortal.Models;
 using RPA.QualityPortal.Models.CheckTypes;
 using RPA.QualityPortal.Models.BankAccountDropDowns;
 using RPA.QualityPortal.Models.OutboundCorrespondenceDropDowns;
@@ -9,9 +9,16 @@ using System.Diagnostics.CodeAnalysis;
 namespace RPA.QualityPortal.DAL
 {
     [ExcludeFromCodeCoverage]
+    [DbConfigurationType(typeof(QualityDbConfiguration))]
     public class QualityContext : DbContext, IQualityContext
     {
+        // Required by DbMigrator, which creates the context itself; the migration configuration supplies the real connection.
         public QualityContext() : base("QualityContext")
+        {
+            Database.CommandTimeout = 1000;
+        }
+
+        public QualityContext(string nameOrConnectionString) : base(nameOrConnectionString)
         {
             Database.CommandTimeout = 1000;
         }

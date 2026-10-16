@@ -1,4 +1,4 @@
-﻿using RPA.QualityPortal.Models;
+using RPA.QualityPortal.Models;
 using RPA.QualityPortal.Models.CheckTypes;
 using System;
 using System.Collections.Generic;
@@ -18,13 +18,13 @@ namespace RPA.QualityPortal.Tests.Data.Mock
                 {
                     CheckId = 57,
                     BankAccountId = 54,
-                    PersonName = "Gordon, [REDACTED_NAME]",
-                    QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                    PersonName = "Gordon, Lee George",
+                    QCCompletedByName = "Gordon, Lee George",
                     DateQCCompleted = DateTime.Now,
                     Archived = false,
                     CheckTypeId = 4,
                     CheckType = new CheckType{ CheckTypeId = 4, Name = "Bank Account ReCheck" },
-                    ReCheckCompletedBy = "Gordon, [REDACTED_NAME]",
+                    ReCheckCompletedBy = "Gordon, Lee George",
                     ReCheckActive = false,
                     EmailNotifications = true
                 },
@@ -32,13 +32,13 @@ namespace RPA.QualityPortal.Tests.Data.Mock
                 {
                     CheckId = 58,
                     BankAccountId = 55,
-                    PersonName = "Gordon, [REDACTED_NAME]",
-                    QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                    PersonName = "Gordon, Lee George",
+                    QCCompletedByName = "Gordon, Lee George",
                     DateQCCompleted = DateTime.Now,
                     Archived = false,
                     CheckTypeId = 4,
                     CheckType = new CheckType{ CheckTypeId = 4, Name = "Bank Account ReCheck" },
-                    ReCheckCompletedBy = "Gordon, [REDACTED_NAME]",
+                    ReCheckCompletedBy = "Gordon, Lee George",
                     EmailNotifications = false,
                     FurtherReCheckRequired = true,
                     FailReasonId = 1,
@@ -48,13 +48,13 @@ namespace RPA.QualityPortal.Tests.Data.Mock
                 {
                     CheckId = 59,
                     BankAccountId = 55,
-                    PersonName = "Gordon, [REDACTED_NAME]",
-                    QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                    PersonName = "Gordon, Lee George",
+                    QCCompletedByName = "Gordon, Lee George",
                     DateQCCompleted = DateTime.Now,
                     Archived = false,
                     CheckTypeId = 4,
                     CheckType = new CheckType{ CheckTypeId = 4, Name = "Bank Account ReCheck" },
-                    ReCheckCompletedBy = "Gordon, [REDACTED_NAME]",
+                    ReCheckCompletedBy = "Gordon, Lee George",
                     ReCheckActive = false,
                     EmailNotifications = true,
                     FurtherReCheckRequired = true,
@@ -65,13 +65,13 @@ namespace RPA.QualityPortal.Tests.Data.Mock
                 {
                     CheckId = 60,
                     BankAccountId = 55,
-                    PersonName = "Gordon, [REDACTED_NAME]",
-                    QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                    PersonName = "Gordon, Lee George",
+                    QCCompletedByName = "Gordon, Lee George",
                     DateQCCompleted = DateTime.Now,
                     Archived = false,
                     CheckTypeId = 4,
                     CheckType = new CheckType{ CheckTypeId = 4, Name = "Bank Account ReCheck" },
-                    ReCheckCompletedBy = "Gordon, [REDACTED_NAME]",
+                    ReCheckCompletedBy = "Gordon, Lee George",
                     ReCheckActive = false,
                     EmailNotifications = true
                 },
@@ -80,13 +80,13 @@ namespace RPA.QualityPortal.Tests.Data.Mock
                     CheckId = 61,
                     BankAccountId = 56,
                     ReCheckActive = true,
-                    PersonName = "Gordon, [REDACTED_NAME]",
-                    QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                    PersonName = "Gordon, Lee George",
+                    QCCompletedByName = "Gordon, Lee George",
                     DateQCCompleted = DateTime.Now,
                     Archived = false,
                     CheckTypeId = 4,
                     CheckType = new CheckType{ CheckTypeId = 4, Name = "Bank Account ReCheck" },
-                    ReCheckCompletedBy = "Gordon, [REDACTED_NAME]",
+                    ReCheckCompletedBy = "Gordon, Lee George",
                     EmailNotifications = false,                 
                 },
                 new BankAccountReCheck
@@ -94,13 +94,13 @@ namespace RPA.QualityPortal.Tests.Data.Mock
                     CheckId = 62,
                     BankAccountId = 56,
                     ReCheckActive = true,
-                    PersonName = "Gordon, [REDACTED_NAME]",
-                    QCCompletedByName = "Gordon, [REDACTED_NAME]",
+                    PersonName = "Gordon, Lee George",
+                    QCCompletedByName = "Gordon, Lee George",
                     DateQCCompleted = DateTime.Now,
                     Archived = false,
                     CheckTypeId = 4,
                     CheckType = new CheckType{ CheckTypeId = 4, Name = "Bank Account ReCheck" },
-                    ReCheckCompletedBy = "Gordon, [REDACTED_NAME]",
+                    ReCheckCompletedBy = "Gordon, Lee George",
                     EmailNotifications = false,
                 }
             };

@@ -1,4 +1,4 @@
-﻿using RPA.QualityPortal.DAL;
+using RPA.QualityPortal.DAL;
 using RPA.QualityPortal.Models.CheckTypes;
 using RPA.QualityPortal.ViewModels;
 using RPA.QualityPortal.ViewModels.BankAccount;
@@ -7,8 +7,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
-using System.Web;
-using System.Web.UI;
 using RPA.QualityPortal.Helpers;
 
 namespace RPA.QualityPortal.Services

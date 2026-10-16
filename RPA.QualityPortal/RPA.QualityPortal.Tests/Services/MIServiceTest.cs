@@ -1,8 +1,7 @@
-﻿using Moq;
+using Moq;
 using NUnit.Framework;
 using RPA.QualityPortal.Controllers;
 using RPA.QualityPortal.DAL;
-using RPA.QualityPortal.Factory;
 using RPA.QualityPortal.Helpers;
 using RPA.QualityPortal.Models;
 using RPA.QualityPortal.Models.CheckTypes;
@@ -43,14 +42,12 @@ namespace RPA.QualityPortal.Tests.Services
 
             roleManager = new Mock<IRoleManager>();
             answerService = new AnswerService(context.MockContext.Object);
-            userHelper = new UserHelper(peopleContext.MockContext.Object);
+            userHelper = new UserHelper(peopleContext.MockContext.Object, MockHttpContext.GetMockedHttpContextAccessor());
             filterService = new FilterService(context.MockContext.Object, peopleContext.MockContext.Object, userHelper, roleManager.Object);
             miService = new MIService(context.MockContext.Object, peopleContext.MockContext.Object, userHelper, filterService);
             lockService = new LockService(context.MockContext.Object, peopleContext.MockContext.Object, userHelper);
             outboundCorrespondenceService = new OutboundCorrespondenceService(context.MockContext.Object, answerService, userHelper, lockService);
             peopleService = new PeopleService(peopleContext.MockContext.Object);
-
-            HttpContextManager.SetCurrentContext(MockHttpContext.GetMockedHttpContext());
         }
 
         [Test]
@@ -267,7 +264,7 @@ namespace RPA.QualityPortal.Tests.Services
         {
             //Arrange
 
-            string personName = "Gordon, [REDACTED_NAME]";
+            string personName = "Gordon, Lee George";
 
             //Act
 

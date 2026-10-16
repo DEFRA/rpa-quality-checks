@@ -6,7 +6,7 @@ namespace RPA.QualityPortal.Migrations
 
     [ExcludeFromCodeCoverage]
 
-    public partial class accreditation : DbMigration
+    public partial class Accreditation : DbMigration
     {
         public override void Up()
         {
