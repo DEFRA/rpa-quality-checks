@@ -5,7 +5,7 @@
 {
     <div class="form-inline" style="margin-bottom:30px;">
 
-        @if ((User.IsInRole("Quality Checks: OC Admin")) || (User.IsInRole("Quality Checks: OC Team Manager")))
+        @if ((RoleManager.IsUserInRole("Quality Checks: OC Admin")) || (RoleManager.IsUserInRole("Quality Checks: OC Team Manager")))
         {
             <div class="form-group">
                 <input type="text" class="form-control" id="searchString" name="searchString" style="width:200px" disabled="disabled" placeholder="Type Name Here" />

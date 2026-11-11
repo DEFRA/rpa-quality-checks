@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace RPA.QualityPortal.Controllers
 {
-    [Authorize(Roles = "Quality Checks: OC Team Member, Quality Checks: OC Team Manager")]
+    [Authorize(Policy = "QualityChecks.OutboundAccess")]
     public class OutboundCorrespondenceMIController : QualityController
     {
         IQualityContext db;

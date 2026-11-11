@@ -19,7 +19,8 @@ namespace RPA.QualityPortal.Helpers
 
             if (context != null)
             {
-                user = context.User.Identity.Name.ToLower().Replace("earth\\", "").Replace("m0", "m").Replace("demeter\\","");
+                user = RPA.QualityPortal.Services.AuditIdentity.GetName(
+                    context.User, (context.User.Identity as System.Security.Claims.ClaimsIdentity)?.NameClaimType);
 
                 user = pdb.People.Where(x => x.StaffNumber == user).Select(x => x.Name).FirstOrDefault();
 

@@ -20,16 +20,5 @@ namespace RPA.QualityPortal.Helpers
             return list;
         }
 
-        internal static List<SelectListItem> Access()
-        {
-            List<SelectListItem> list = new List<SelectListItem>();
-
-            list.Add(new SelectListItem() { Text = "Team Member to Team Manager", Value = "Team Member to Team Manager" });
-            list.Add(new SelectListItem() { Text = "Team Manager to Team Member", Value = "Team Manager to Team Member" });
-            list.Add(new SelectListItem() { Text = "Team Manager to Admin", Value = "Team Manager to Admin" });
-            list.Add(new SelectListItem() { Text = "Admin to Team Manager", Value = "Admin to Team Manager" });
-
-            return list;
-        }
     }
 }

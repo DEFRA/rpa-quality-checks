@@ -35,7 +35,6 @@ namespace RPA.QualityPortal.Tests.Controllers
         IFilterService filterService;
         IUserHelper userHelper;
         Mock<IRoleManager> roleManager;
-        IAccessService accessService;
         IPeopleService peopleService;
         ILockService lockService;
         IBankAccountService bankAccountService;
@@ -54,12 +53,11 @@ namespace RPA.QualityPortal.Tests.Controllers
             lockService = new LockService(context.MockContext.Object, peopleContext.MockContext.Object, userHelper);
             outboundCorrespondenceService = new OutboundCorrespondenceService(context.MockContext.Object, answerService, userHelper, lockService);
             messageService = new EmailService(context.MockContext.Object, peopleContext.MockContext.Object);
-            accessService = new AccessService(context.MockContext.Object, peopleContext.MockContext.Object, new ConfigurationBuilder().Build());
             peopleService = new PeopleService(peopleContext.MockContext.Object);
             bankAccountService = new BankAccountService(context.MockContext.Object, answerService, lockService);
             sendService = new SendService(new ConfigurationBuilder().Build());
 
-            controller = new AdminController(context.MockContext.Object, peopleContext.MockContext.Object, outboundCorrespondenceService, bankAccountService, answerService, filterService, messageService, roleManager.Object, userHelper, accessService, peopleService, lockService, sendService);
+            controller = new AdminController(context.MockContext.Object, peopleContext.MockContext.Object, outboundCorrespondenceService, bankAccountService, answerService, filterService, messageService, roleManager.Object, userHelper, peopleService, lockService, sendService);
         }
 
         [Test]
@@ -389,12 +387,13 @@ namespace RPA.QualityPortal.Tests.Controllers
         }
 
         [Test]
-        public void Test_Name_Access_Invalid()
+        public void Test_Access_Post_Is_Retired_Without_Mutation()
         {
-            controller.Access("Test", "Test");
+            var result = controller.Access("Test", "Test") as ObjectResult;
 
-            Assert.IsTrue(!controller.ModelState.IsValid);
-            Assert.IsTrue(controller.ModelState["Name"].Errors.Any(modelError => modelError.ErrorMessage == "Please Select a Valid Name From List"));
+            Assert.AreEqual(StatusCodes.Status410Gone, result.StatusCode);
+            StringAssert.Contains("externally", result.Value.ToString());
+            context.MockContext.Verify(x => x.SaveChanges(), Times.Never());
         }
 
         [Test]

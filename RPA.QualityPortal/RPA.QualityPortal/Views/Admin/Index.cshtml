@@ -32,7 +32,7 @@ else if(ViewBag.typeOfCheck == "Bank")
             <div class="col-md-4">
                 <p><img src="~/Content/Images/lock.png" /></p>
                 <h4 class="heading-small">@Html.ActionLink("Access", "Access", "Admin", new { checkType = ViewBag.typeOfCheck }, "")</h4>
-                <p>Control access rights for users</p>
+                <p>Access is managed externally through Microsoft Entra app-role assignments.</p>
             </div>
         }
     </div>

@@ -4,7 +4,7 @@
         <li>@Html.ActionLink("Complete Checks", "Complete", "OutboundCorrespondence")</li>
         <li>@Html.ActionLink("Outstanding Checks", "Outstanding", "OutboundCorrespondence")</li>
 
-        @if ((User.IsInRole("Quality Checks: OC Admin")) || (User.IsInRole("Quality Checks: OC Team Manager")))
+        @if ((RoleManager.IsUserInRole("Quality Checks: OC Admin")) || (RoleManager.IsUserInRole("Quality Checks: OC Team Manager")))
         {
             <li>@Html.ActionLink("Create", "CreateGeneral", "OutboundCorrespondence")</li>
         }
@@ -14,7 +14,7 @@
             <li>@Html.ActionLink("Accreditation", "AccreditationIndex", "OutboundCorrespondenceAccreditation")</li>
         *@
 
-        @if (User.IsInRole("Quality Checks: OC Admin"))
+        @if (RoleManager.IsUserInRole("Quality Checks: OC Admin"))
         {
             <li>@Html.ActionLink("Admin", "Index", "Admin", new { checkType = "OutboundCorrespondence" }, "")</li>
         }

@@ -327,7 +327,7 @@
 <p>
 
     @Html.ActionLink("Back to Overview", "Index", controllerName: "OutboundCorrespondence") |
-    @if (User.IsInRole("Quality Checks: OC Admin"))
+    @if (RoleManager.IsUserInRole("Quality Checks: OC Admin"))
     {
         @Html.ActionLink("Edit Check", "EditGeneral", "OutboundCorrespondence", new { CheckId = Model.OutboundCorrespondence.CheckId }, null) <text> | </text>
         @Html.ActionLink("Edit Recheck", "EditReCheckQuestions", new { ReCheckId = Model.OutboundCorrespondenceReCheck.CheckId }) <text> | </text>
@@ -338,7 +338,7 @@
         @Html.ActionLink("View All Rechecks", "DetailsReChecks", new { CheckId = Model.OutboundCorrespondence.CheckId }) <text>|</text>
     }
 
-    @if (User.IsInRole("Quality Checks: OC Admin"))
+    @if (RoleManager.IsUserInRole("Quality Checks: OC Admin"))
     {
         @Html.ActionLink("Delete", "DeleteView", "OutboundCorrespondence", new { CheckId = Model.OutboundCorrespondence.CheckId }, null) <text> | </text>
         @Html.ActionLink("Delete Recheck", "DeleteReCheckView", new { CheckId = Model.OutboundCorrespondence.CheckId })

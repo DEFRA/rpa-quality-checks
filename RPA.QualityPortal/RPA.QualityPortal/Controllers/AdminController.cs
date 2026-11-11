@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace RPA.QualityPortal.Controllers
 {
-    [Authorize(Roles = "Quality Checks: OC Admin, Quality Checks: BA Admin")]
+    [Authorize(Policy = QualityPermissions.AdminAccess)]
     public class AdminController : QualityController
     {
         IQualityContext db;
@@ -27,12 +27,11 @@ namespace RPA.QualityPortal.Controllers
         IMessageService messageService;
         IFilterService filterService;
         IRoleManager roleManager;
-        IAccessService accessService;
         IPeopleService peopleService;
         ILockService lockService;
         ISendService sendService;
 
-        public AdminController(IQualityContext context, IPeopleContext peopleContext, IOutboundCorrespondenceService outboundCorrespondenceService, IBankAccountService bankAccountService, IAnswerService answerService, IFilterService filterService, IMessageService messageService, IRoleManager roleManager, IUserHelper userHelper, IAccessService accessService, IPeopleService peopleService, ILockService lockService, ISendService sendService)
+        public AdminController(IQualityContext context, IPeopleContext peopleContext, IOutboundCorrespondenceService outboundCorrespondenceService, IBankAccountService bankAccountService, IAnswerService answerService, IFilterService filterService, IMessageService messageService, IRoleManager roleManager, IUserHelper userHelper, IPeopleService peopleService, ILockService lockService, ISendService sendService)
         {
             this.db = context;
             this.pdb = peopleContext;
@@ -43,7 +42,6 @@ namespace RPA.QualityPortal.Controllers
             this.messageService = messageService;
             this.roleManager = roleManager;
             this.userHelper = userHelper;
-            this.accessService = accessService;
             this.peopleService = peopleService;
             this.lockService = lockService;
             this.sendService = sendService;
@@ -240,8 +238,6 @@ namespace RPA.QualityPortal.Controllers
         [HttpGet]
         public IActionResult Access(string checkType)
         {
-            ViewBag.AccessRights = ListHelper.Access();
-
             return View();
         }
 
@@ -249,18 +245,8 @@ namespace RPA.QualityPortal.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Access(string name, string access)
         {
-            bool nameCheck = peopleService.PersonCheck(name);
-
-            if (!nameCheck)
-            {
-                ModelState.AddModelError("Name", "Please Select a Valid Name From List");
-            }
-            else
-            {
-                ViewBag.Error = accessService.ChangeRoles(name, access);
-            }
-
-            return RedirectToAction("Access");
+            return StatusCode(StatusCodes.Status410Gone,
+                "Access is managed externally through Microsoft Entra app-role assignments. No access changes have been made.");
         }
     }
 }

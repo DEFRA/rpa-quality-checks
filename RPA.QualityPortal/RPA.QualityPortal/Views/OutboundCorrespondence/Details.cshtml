@@ -270,12 +270,12 @@
     @Html.ActionLink("Back to Overview", "Index") |
     @if (Model.QCResult == "Not Approved")
     {
-        if ((User.IsInRole("Quality Checks: OC Admin")) || (User.IsInRole("Quality Checks: OC Team Manager")))
+        if ((RoleManager.IsUserInRole("Quality Checks: OC Admin")) || (RoleManager.IsUserInRole("Quality Checks: OC Team Manager")))
         {
             @Html.ActionLink("Challenge", "Challenge", new { CheckId = Model.OutboundCorrespondence.CheckId }) <text> | </text>
         }
     }
-    @if (User.IsInRole("Quality Checks: OC Admin"))
+    @if (RoleManager.IsUserInRole("Quality Checks: OC Admin"))
     {
         @Html.ActionLink("Edit", "EditGeneral", new { CheckId = Model.OutboundCorrespondence.CheckId }) <text> | </text>
         @Html.ActionLink("Delete", "DeleteView", new { CheckId = Model.OutboundCorrespondence.CheckId })

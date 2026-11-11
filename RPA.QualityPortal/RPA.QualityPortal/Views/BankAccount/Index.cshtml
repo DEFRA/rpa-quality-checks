@@ -56,7 +56,7 @@
     </div>
 }
 
-@if (User.IsInRole("Quality Checks: BA Admin"))
+@if (RoleManager.IsUserInRole("Quality Checks: BA Admin"))
 {
     using (Html.BeginForm("Export", "BankAccount"))
     {
@@ -152,7 +152,7 @@
             </td>
             @if (item.BankAccount.ReCheckRequired == true)
             {
-                if (User.IsInRole("Quality Checks: BA Admin") || User.IsInRole("Quality Checks: BA Team Leader"))
+                if (RoleManager.IsUserInRole("Quality Checks: BA Admin") || RoleManager.IsUserInRole("Quality Checks: BA Team Leader"))
                 {
                     <td>
                         @Html.ActionLink("Recheck", "GeneralDetails", new { CheckId = item.BankAccount.CheckId })

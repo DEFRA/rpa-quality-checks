@@ -5,7 +5,7 @@
         <li>@Html.ActionLink("Outstanding Checks", "Outstanding", "BankAccount")</li>
 
         
-        @if (User.IsInRole("Quality Checks: BA Admin"))
+        @if (RoleManager.IsUserInRole("Quality Checks: BA Admin"))
         {
             <li>@Html.ActionLink("Admin", "Index", "Admin", new { checkType = "Bank" }, "")</li>
         }

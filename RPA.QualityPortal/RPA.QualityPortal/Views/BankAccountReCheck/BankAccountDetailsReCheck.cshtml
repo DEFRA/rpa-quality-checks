@@ -272,7 +272,7 @@
 
     @Html.ActionLink("Back to Overview", "Index", controllerName: "BankAccount") |
 
-    @if (User.IsInRole("Quality Checks: BA Admin"))
+    @if (RoleManager.IsUserInRole("Quality Checks: BA Admin"))
     {
         @Html.ActionLink("Edit Check", "EditGeneral", "BankAccount", new { CheckId = Model.BankAccount.CheckId }, null) <text> | </text>
         @Html.ActionLink("Edit Recheck", "EditBankReCheckQuestions", new { ReCheckId = Model.BankAccountReCheck.CheckId }) <text> | </text>

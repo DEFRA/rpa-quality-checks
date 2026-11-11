@@ -26,7 +26,7 @@
             <button type="submit" class=" btn btn-danger" value="reset" name="btnIndexReset">Reset</button>
         </div>
     }
-    @if ((User.IsInRole("Quality Checks: OC Admin")) || (User.IsInRole("Quality Checks: OC Team Manager")))
+    @if ((RoleManager.IsUserInRole("Quality Checks: OC Admin")) || (RoleManager.IsUserInRole("Quality Checks: OC Team Manager")))
     {
         using (Html.BeginForm("Export", "OutboundCorrespondence"))
         {
@@ -139,7 +139,7 @@
             </td>
             @if (item.OutboundCorrespondence.ReCheckRequired == true)
             {
-                if ((User.IsInRole("Quality Checks: OC Admin")) || (User.IsInRole("Quality Checks: OC Team Manager")))
+                if ((RoleManager.IsUserInRole("Quality Checks: OC Admin")) || (RoleManager.IsUserInRole("Quality Checks: OC Team Manager")))
                 {
                     <td>
                         @Html.ActionLink("Recheck", "GeneralDetails", new { CheckId = item.OutboundCorrespondence.CheckId })

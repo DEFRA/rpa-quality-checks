@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace RPA.QualityPortal.Controllers.BankAccount
 {
-    [Authorize(Roles = "Quality Checks: BA Team Member")]
+    [Authorize(Policy = "Quality Checks: BA Team Member")]
     public class BankAccountReCheckController : QualityController
     {
         IQualityContext db;

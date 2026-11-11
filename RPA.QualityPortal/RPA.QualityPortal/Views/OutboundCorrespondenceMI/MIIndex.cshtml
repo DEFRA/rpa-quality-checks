@@ -20,7 +20,7 @@
             @await Component.InvokeAsync("OutboundCorrespondenceMI", new { back = ViewBag.Back })
         }
     </div>
-    @if ((User.IsInRole("Quality Checks: OC Admin")) || (User.IsInRole("Quality Checks: OC Team Manager")))
+    @if ((RoleManager.IsUserInRole("Quality Checks: OC Admin")) || (RoleManager.IsUserInRole("Quality Checks: OC Team Manager")))
     {
         <div class="partial-view-container tab-pane fade" id="answer">
             @{

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace RPA.QualityPortal.Controllers
 {
-    [Authorize(Roles = "Quality Checks: Basic Access")]
+    [Authorize(Policy = "Quality Checks: Basic Access")]
     public class HomeController : QualityController
     {
         public IActionResult Index()

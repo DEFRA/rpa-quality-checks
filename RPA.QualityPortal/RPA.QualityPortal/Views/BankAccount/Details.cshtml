@@ -208,13 +208,13 @@
 
     @if (Model.QCResult == "Not Approved")
     {
-        if (User.IsInRole("Quality Checks: BA Admin"))
+        if (RoleManager.IsUserInRole("Quality Checks: BA Admin"))
         {
             @Html.ActionLink("Challenge", "Challenge", new { CheckId = Model.BankAccount.CheckId }) <text> | </text>
         }
     }
 
-    @if (User.IsInRole("Quality Checks: BA Admin"))
+    @if (RoleManager.IsUserInRole("Quality Checks: BA Admin"))
     {
         @Html.ActionLink("Edit", "EditGeneral", new { CheckId = Model.BankAccount.CheckId })
     }
