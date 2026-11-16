@@ -1,0 +1,17 @@
+﻿**/bin/
+**/obj/
+**/.vs/
+**/*.user
+**/.env*
+**/*.pfx
+**/*.pem
+**/*.key
+**/secrets.json
+**/appsettings.Development.json
+**/launchSettings.json
+RPA.QualityPortal/RPA.QualityPortal.Tests/
+docs/
+reports/
+Dockerfile
+*.md
+.git

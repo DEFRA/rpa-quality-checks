@@ -1,8 +1,6 @@
-using Azure.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Identity.Web;
 using RPA.QualityPortal.DAL;
 using RPA.QualityPortal.Helpers;
@@ -102,7 +100,13 @@ public static class ApplicationServices
         });
         services.AddMemoryCache();
         services.AddHttpContextAccessor();
-        AddDataProtection(services, configuration);
+        services.AddQualityPortalDataProtection(configuration);
+        services.AddQualityPortalApplicationInsights(configuration);
+        services.AddQualityPortalForwarding(configuration);
+        services.AddHttpsRedirection(options => options.HttpsPort = RequiredHttpsPort(configuration));
+        services.AddHealthChecks()
+            .AddTypeActivatedCheck<SqlReadinessHealthCheck>("quality-sql", failureStatus: null, tags: ["ready"], args: ["QualityContext"])
+            .AddTypeActivatedCheck<SqlReadinessHealthCheck>("people-sql", failureStatus: null, tags: ["ready"], args: ["PeopleContext"]);
         services.AddScoped<ISessionStore, SessionStore>();
         services.AddScoped<IQualityContext>(_ => new QualityContext(qualityConnection));
         services.AddScoped<IPeopleContext>(_ => new PeopleContext(peopleConnection));
@@ -123,30 +127,11 @@ public static class ApplicationServices
         return services;
     }
 
-    // The auth cookie (and the IMemoryCache-backed session/role-cache keys it implicitly protects
-    // against tampering) is encrypted with the ASP.NET Core Data Protection key ring. On Azure
-    // Container Apps, each replica otherwise generates its own ephemeral key ring, so a cookie
-    // issued by one replica fails to decrypt on another - breaking sign-in and the in-progress
-    // check wizard session whenever a request lands on a different replica. When
-    // DataProtection:BlobUri is configured, the key ring is persisted to Azure Blob Storage so all
-    // replicas share it; when DataProtection:KeyVaultKeyUri is also configured, the persisted keys
-    // are additionally wrapped with a Key Vault key instead of being stored at rest in plain XML.
-    // Both are optional - unset, this falls back to ASP.NET Core's default ephemeral/local key ring,
-    // which remains correct for local development and a single-replica deployment.
-    private static void AddDataProtection(IServiceCollection services, IConfiguration configuration)
+    private static int RequiredHttpsPort(IConfiguration configuration)
     {
-        var blobUri = configuration["DataProtection:BlobUri"];
-        if (string.IsNullOrWhiteSpace(blobUri))
-            return;
-
-        var credential = new DefaultAzureCredential();
-        var dataProtection = services.AddDataProtection()
-            .SetApplicationName("RPA.QualityPortal")
-            .PersistKeysToAzureBlobStorage(new Uri(blobUri), credential);
-
-        var keyVaultKeyUri = configuration["DataProtection:KeyVaultKeyUri"];
-        if (!string.IsNullOrWhiteSpace(keyVaultKeyUri))
-            dataProtection.ProtectKeysWithAzureKeyVault(new Uri(keyVaultKeyUri), credential);
+        if (!int.TryParse(configuration["HttpsRedirection:HttpsPort"] ?? "443", out var httpsPort) || httpsPort is < 1 or > 65535)
+            throw new InvalidOperationException("HttpsRedirection:HttpsPort must be a valid HTTPS port.");
+        return httpsPort;
     }
 
     private static string Required(IConfiguration configuration, string key) =>
