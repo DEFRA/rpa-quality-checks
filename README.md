@@ -11,6 +11,50 @@ Supply these externally for each environment (environment variables use `__` in
 place of `:`). Empty checked-in values deliberately prevent startup. Never commit
 client credentials.
 
+### Key Vault-backed secrets
+
+Setting `KeyVault:Uri` (the vault's `https://<vault-name>.vault.azure.net/` URI)
+makes `Program.cs` resolve configuration from Azure Key Vault via
+`DefaultAzureCredential` - in Azure this is the app's managed identity; locally
+it falls back to `az login`/Visual Studio/VS Code credentials. Left unset (the
+default), the app behaves exactly as before and reads `appsettings*.json`/
+user-secrets/environment variables only - local development and the test suite
+are unaffected.
+
+Store the secret-valued keys below in Key Vault using `--` in place of `:` in
+the secret name (Key Vault secret names cannot contain `:`), e.g. a secret named
+`ConnectionStrings--QualityContext` is exposed to the app as configuration key
+`ConnectionStrings:QualityContext`:
+
+| Key Vault secret name | Configuration key |
+|---|---|
+| `AzureAd--ClientSecret` | `AzureAd:ClientSecret` |
+| `ConnectionStrings--QualityContext` | `ConnectionStrings:QualityContext` |
+| `ConnectionStrings--PeopleContext` | `ConnectionStrings:PeopleContext` |
+| `Mail--Username` | `Mail:Username` |
+| `Mail--Password` | `Mail:Password` |
+
+The app's managed identity needs the **Key Vault Secrets User** RBAC role on
+the vault (RBAC authorization model, not legacy access policies).
+
+### Data Protection key ring (Blob Storage + Key Vault)
+
+ASP.NET Core's Data Protection key ring encrypts the auth cookie and the
+antiforgery token. Without a shared key ring, each Azure Container Apps replica
+generates its own ephemeral keys, so a cookie issued by one replica fails to
+decrypt on another - breaking sign-in (and losing the in-progress check-wizard
+session held in `IMemoryCache`, see `SessionStore.cs`) whenever a request lands
+on a different replica or a replica restarts.
+
+| Key | Requirement |
+|---|---|
+| `DataProtection:BlobUri` | Full blob URL for the shared key ring, e.g. `https://<account>.blob.core.windows.net/dataprotection/keys.xml`. When set, keys are persisted to this blob instead of the local/ephemeral default, so all replicas share one key ring. Requires **Storage Blob Data Contributor** on the container for the app's managed identity |
+| `DataProtection:KeyVaultKeyUri` | Optional. Full Key Vault key URI, e.g. `https://<vault-name>.vault.azure.net/keys/dataprotection-key/<version>`. When set (requires `DataProtection:BlobUri` also set), the persisted keys are wrapped with this Key Vault key instead of being stored at rest as plain XML. Requires **Key Vault Crypto User** on the vault for the app's managed identity |
+
+Both are optional and independently gated - leaving them unset keeps the
+previous (single-replica-only) default key ring behavior, which remains correct
+for local development and a confirmed single-replica deployment.
+
 | Key | Requirement |
 |---|---|
 | `AzureAd:Instance` | Approved HTTPS Entra authority; defaults to `https://login.microsoftonline.com/` |
@@ -26,8 +70,23 @@ client credentials.
 | `Authorization:OutboundTeamMemberRole` | Approved app-role value for OC Team Member |
 | `Authorization:OutboundTeamManagerRole` | Approved app-role value for OC Team Manager |
 | `Authorization:OutboundAdminRole` | Approved app-role value for OC Admin |
-| `ConnectionStrings:QualityContext` | Existing application database; schema/audit contracts unchanged |
-| `ConnectionStrings:PeopleContext` | Existing staff-number to display-name lookup database |
+| `ConnectionStrings:QualityContext` | Azure SQL connection string, SQL authentication (`User ID`/`Password` from the deployment secret store) with `Encrypt=True`; schema/audit contracts unchanged. **Windows Integrated Security is not supported** on Azure Container Apps' Linux containers and must not be used |
+| `ConnectionStrings:PeopleContext` | Azure SQL connection string for the shared staff-number to display-name lookup database; same SQL-authentication + `Encrypt=True` requirement as `QualityContext` |
+| `Mail:Host` | Authenticated SMTP relay/API host (e.g., SendGrid, Exchange Online). There is **no pickup-directory fallback** - UNC-based mail delivery is not supported on Azure Container Apps |
+| `Mail:Port` | SMTP submission port; defaults to `587` |
+| `Mail:EnableSsl` | Defaults to `true`; do not disable in production |
+| `Mail:Username` / `Mail:Password` | Authenticated SMTP relay credential from the deployment secret store |
+
+> **Known limitation - SQL authentication, not managed identity:** `QualityContext`/`PeopleContext`
+> are EF6 Code-First contexts whose provider (`DAL/QualityDbConfiguration.cs`) is hard-wired to the
+> classic `System.Data.SqlClient` ADO.NET provider. Microsoft never shipped a stable EF6 provider for
+> `Microsoft.Data.SqlClient` (`EntityFramework.MicrosoftSqlServer` reached only an unlisted release
+> candidate), so passwordless Microsoft Entra ID / managed-identity SQL authentication is **not
+> available for these two contexts** until the data layer is migrated to EF Core - track this as a
+> follow-up, not a blocker for the initial Azure Container Apps deployment. Use SQL authentication
+> over an encrypted connection (`Encrypt=True`) in the meantime. The `IDTSecurityConnection` usages in
+> `AccessService.cs`/`IdtRoleClaimsTransformation.cs` are plain ADO.NET (`Microsoft.Data.SqlClient`)
+> and do not have this constraint.
 
 All seven role values must be nonempty, distinct Entra token values (not legacy
 display names with spaces). There are **no default or guessed role mappings**.
@@ -83,7 +142,9 @@ endpoint. Missing/invalid configuration fails startup; missing roles deny access
 
 Enable anonymous access in IIS and disable Windows Authentication for this app.
 Provide trusted HTTPS termination/forwarded-header configuration where applicable,
-and shared persistent ASP.NET Core Data Protection keys for multi-instance hosting.
+and shared persistent ASP.NET Core Data Protection keys for multi-instance hosting
+(see `DataProtection:BlobUri`/`DataProtection:KeyVaultKeyUri` above - set both before
+running more than one replica).
 Keep Quality/People SQL access and email configuration available to the hosting
 identity. Role assignment changes take effect on a fresh authentication ticket;
 existing cookies may remain valid until expiry. Plan operational session

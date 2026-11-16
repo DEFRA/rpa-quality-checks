@@ -10,11 +10,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.5.2" />
+    <PackageReference Include="Azure.Extensions.AspNetCore.DataProtection.Blobs" Version="1.5.5" />
+    <PackageReference Include="Azure.Extensions.AspNetCore.DataProtection.Keys" Version="1.6.5" />
+    <PackageReference Include="Azure.Identity" Version="1.21.0" />
     <PackageReference Include="EntityFramework" Version="6.5.2" />
     <PackageReference Include="EPPlus" Version="4.5.3.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Microsoft.Identity.Web" Version="4.16.1" />
+    <!-- Pinned above the vulnerable version EF6/System.Data.SqlClient would otherwise pull in transitively (AppCAT Security.0103) -->
     <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
+    <!-- Replaces direct System.Data.SqlClient usage in AccessService/IdtRoleClaimsTransformation (AppCAT Database.0003) -->
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="7.1.2" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="10.6.0" />
   </ItemGroup>
 

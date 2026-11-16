@@ -1,0 +1,1151 @@
+{
+  "settings": {
+    "components": {
+      "code": true,
+      "binaries": false
+    },
+    "targetId": "ACA",
+    "targetDisplayName": "Azure Container Apps"
+  },
+  "analysisStartTime": "2026-11-13T12:39:26.11641Z",
+  "analysisEndTime": "2026-11-13T12:39:51.5902624Z",
+  "privacyMode": "Restricted",
+  "privacyModeHelpUrl": "https://go.microsoft.com/fwlink/?linkid=2271074",
+  "stats": {
+    "summary": {
+      "projects": 2,
+      "issues": 11,
+      "incidents": 70,
+      "effort": 192
+    },
+    "charts": {
+      "severity": {
+        "Mandatory": 3,
+        "Optional": 17,
+        "Potential": 50,
+        "Information": 0
+      },
+      "category": {
+        "Scale": 1,
+        "Connection": 5,
+        "Local": 10,
+        "SMTP": 33,
+        "Database": 14,
+        "Cache": 1,
+        "Security": 3,
+        "HTTP": 1,
+        "Identity": 2
+      }
+    }
+  },
+  "projects": [
+    {
+      "path": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+      "startingProject": true,
+      "issues": 7,
+      "storyPoints": 145,
+      "properties": {
+        "appName": "RPA.QualityPortal",
+        "frameworks": [
+          "net10.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ]
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "c8707512-58c4-40a3-9f9e-725e0a471575",
+          "ruleId": "Scale.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\RPA.QualityPortal.csproj"
+          }
+        },
+        {
+          "incidentId": "c337681f-f2ef-4c9c-b039-b7f5f0dcad9c",
+          "ruleId": "Connection.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\appsettings.json"
+          }
+        },
+        {
+          "incidentId": "3122c39f-247a-45ff-be1e-26ab44f98492",
+          "ruleId": "Connection.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\appsettings.json"
+          }
+        },
+        {
+          "incidentId": "7db421a2-1aa4-4f05-9138-5c6bf5804218",
+          "ruleId": "Local.0002",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\appsettings.json"
+          }
+        },
+        {
+          "incidentId": "dd939be5-d4e5-4c4b-97ac-0c9073b790f2",
+          "ruleId": "Connection.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\appsettings.Production.json"
+          }
+        },
+        {
+          "incidentId": "dad18e62-aee4-40ec-9e77-d03e9d944c43",
+          "ruleId": "Connection.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\appsettings.SIT.json"
+          }
+        },
+        {
+          "incidentId": "fb1a1794-7187-4fea-8749-044c0dba61ca",
+          "ruleId": "Connection.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\appsettings.UAT.json"
+          }
+        },
+        {
+          "incidentId": "94b2d129-f9fd-4bac-ac98-5f297d8d6f84",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Controllers\\AdminController.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 226,
+            "column": 24
+          }
+        },
+        {
+          "incidentId": "57673ba6-15f9-4383-abc7-1fa4b53ed5d1",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Controllers\\AdminController.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 157,
+            "column": 24
+          }
+        },
+        {
+          "incidentId": "7d75d849-5866-4ceb-8f22-334c02c4d815",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Controllers\\AdminController.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 129,
+            "column": 24
+          }
+        },
+        {
+          "incidentId": "e025c707-5cba-493c-a093-380485321a04",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Controllers\\AdminController.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 199,
+            "column": 24
+          }
+        },
+        {
+          "incidentId": "6cd5d2ce-cc81-4a6f-bba2-f13a7f5751d7",
+          "ruleId": "Database.0003",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Infrastructure\\IdtRoleClaimsTransformation.cs",
+            "label": "System.Data.SqlClient.SqlCommand",
+            "line": 68,
+            "column": 24
+          }
+        },
+        {
+          "incidentId": "551516c7-9b96-4bc4-89c7-e13539b1a037",
+          "ruleId": "Database.0003",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Infrastructure\\IdtRoleClaimsTransformation.cs",
+            "label": "System.Data.SqlClient.SqlCommand",
+            "line": 68,
+            "column": 42
+          }
+        },
+        {
+          "incidentId": "ed8960b0-a1f8-44c2-9a7d-2aee0aca7d48",
+          "ruleId": "Database.0003",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Infrastructure\\IdtRoleClaimsTransformation.cs",
+            "label": "System.Data.SqlClient.SqlConnection",
+            "line": 67,
+            "column": 24
+          }
+        },
+        {
+          "incidentId": "3fbc8e4f-10b0-40fd-9054-7dd52f2cff5f",
+          "ruleId": "Database.0003",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Infrastructure\\IdtRoleClaimsTransformation.cs",
+            "label": "System.Data.SqlClient.SqlConnection",
+            "line": 67,
+            "column": 45
+          }
+        },
+        {
+          "incidentId": "18dae81a-fd5b-4416-9b18-99ae7afc414c",
+          "ruleId": "Database.0003",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Infrastructure\\IdtRoleClaimsTransformation.cs",
+            "label": "System.Data.SqlClient.SqlDataReader",
+            "line": 78,
+            "column": 24
+          }
+        },
+        {
+          "incidentId": "0d2a4fc0-32e9-4a45-9ddf-1817c5ed174c",
+          "ruleId": "Database.0003",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\AccessService.cs",
+            "label": "System.Data.SqlClient.SqlDataReader",
+            "line": 82,
+            "column": 20
+          }
+        },
+        {
+          "incidentId": "a1d53ba9-5aa6-4a1a-8f36-520e94bdbedd",
+          "ruleId": "Database.0003",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\AccessService.cs",
+            "label": "System.Data.SqlClient.SqlCommand",
+            "line": 52,
+            "column": 27
+          }
+        },
+        {
+          "incidentId": "50cee6de-ac87-426c-bde3-21b8d1239679",
+          "ruleId": "Database.0003",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\AccessService.cs",
+            "label": "System.Data.SqlClient.SqlCommand",
+            "line": 52,
+            "column": 48
+          }
+        },
+        {
+          "incidentId": "578c678d-d67b-4033-a860-2f19bf82caa3",
+          "ruleId": "Database.0003",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\AccessService.cs",
+            "label": "System.Data.SqlClient.SqlCommand",
+            "line": 76,
+            "column": 23
+          }
+        },
+        {
+          "incidentId": "00f22ea8-d022-47ca-83e8-603f6405274c",
+          "ruleId": "Database.0003",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\AccessService.cs",
+            "label": "System.Data.SqlClient.SqlCommand",
+            "line": 76,
+            "column": 44
+          }
+        },
+        {
+          "incidentId": "cd0aa45a-b1bb-4888-ade2-17223f9a7cb8",
+          "ruleId": "Database.0003",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\AccessService.cs",
+            "label": "System.Data.SqlClient.SqlConnection",
+            "line": 50,
+            "column": 23
+          }
+        },
+        {
+          "incidentId": "386dfad1-a763-4f37-bd7e-bcfcc036ed37",
+          "ruleId": "Database.0003",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\AccessService.cs",
+            "label": "System.Data.SqlClient.SqlConnection",
+            "line": 50,
+            "column": 47
+          }
+        },
+        {
+          "incidentId": "89ac4fde-873e-42bd-9b84-a3b5f82225d4",
+          "ruleId": "Database.0003",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\AccessService.cs",
+            "label": "System.Data.SqlClient.SqlConnection",
+            "line": 74,
+            "column": 19
+          }
+        },
+        {
+          "incidentId": "3952095b-441f-41e4-ad0f-aaad3f9cffcc",
+          "ruleId": "Database.0003",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\AccessService.cs",
+            "label": "System.Data.SqlClient.SqlConnection",
+            "line": 74,
+            "column": 43
+          }
+        },
+        {
+          "incidentId": "39cabc37-5001-42b2-a6af-059ac47b492c",
+          "ruleId": "Cache.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\ApplicationServices.cs",
+            "label": "Microsoft.Extensions.DependencyInjection.MemoryCacheServiceCollectionExtensions.AddMemoryCache",
+            "line": 100,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "9dd24c06-ec0b-4346-8677-d6d8c7787d5e",
+          "ruleId": "Security.0003",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\ApplicationServices.cs",
+            "label": "secret",
+            "line": 22,
+            "column": 32
+          }
+        },
+        {
+          "incidentId": "87331d63-ede4-48b6-bb44-8799f0faa193",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\EmailService.cs",
+            "label": "System.Net.Mail.MailAddress",
+            "line": 260,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "60888457-41c6-43ef-a94a-4fbd10cce537",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\EmailService.cs",
+            "label": "System.Net.Mail.MailAddress",
+            "line": 260,
+            "column": 49
+          }
+        },
+        {
+          "incidentId": "da399a9e-d8ca-4e44-97f1-7cc80b26b4a7",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\EmailService.cs",
+            "label": "System.Net.Mail.MailAddress",
+            "line": 603,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "9f497184-97e3-4cff-babe-5f1ca149288e",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\EmailService.cs",
+            "label": "System.Net.Mail.MailAddress",
+            "line": 603,
+            "column": 49
+          }
+        },
+        {
+          "incidentId": "6d36e831-15ee-4241-8218-584b6f2ca618",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\EmailService.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 264,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "d008edf1-dc8c-4e8d-bf02-0d70b85acbbb",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\EmailService.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 264,
+            "column": 35
+          }
+        },
+        {
+          "incidentId": "77b09378-01f4-4389-a0e0-e403c5501c1c",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\EmailService.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 605,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "574f8dde-4b00-4b0e-8c16-cf740f97a6eb",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\EmailService.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 605,
+            "column": 35
+          }
+        },
+        {
+          "incidentId": "d28514e8-7f2f-46d1-a875-a3fb0aa828e7",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\EmailService.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 23,
+            "column": 15
+          }
+        },
+        {
+          "incidentId": "159b1409-4f59-4eac-9966-cdb19548ab10",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\EmailService.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 284,
+            "column": 15
+          }
+        },
+        {
+          "incidentId": "077a6486-c9d3-4450-a9ff-4df2ea583fb0",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\IMessageService.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 10,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "acb3abc1-26ae-4d66-91e4-09521816c17c",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\IMessageService.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 12,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "cae6613c-9faf-44cf-9f68-fa892c8128c1",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\ISendService.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 6,
+            "column": 23
+          }
+        },
+        {
+          "incidentId": "fcf2f719-c6b8-4e49-b273-3482284cc145",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\SendService.cs",
+            "label": "System.Net.Mail.SmtpDeliveryMethod",
+            "line": 23,
+            "column": 44
+          }
+        },
+        {
+          "incidentId": "3ae2e698-42d3-44c3-a90f-bd9dd97a1711",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\SendService.cs",
+            "label": "System.Net.Mail.SmtpDeliveryMethod",
+            "line": 29,
+            "column": 44
+          }
+        },
+        {
+          "incidentId": "38a798ed-0c41-4f42-91e4-3852086b0064",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\SendService.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 15,
+            "column": 30
+          }
+        },
+        {
+          "incidentId": "68d16008-95a3-48b0-aeea-b9535b6b2a03",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\SendService.cs",
+            "label": "System.Net.Mail.SmtpClient",
+            "line": 17,
+            "column": 19
+          }
+        },
+        {
+          "incidentId": "3519703a-daef-4176-8757-2b488d97129e",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Services\\SendService.cs",
+            "label": "System.Net.Mail.SmtpClient",
+            "line": 17,
+            "column": 43
+          }
+        },
+        {
+          "incidentId": "5ab5b862-17f2-44e6-975b-08ca59fac6ee",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Controllers\\BankAccount\\BankAccountController.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 312,
+            "column": 24
+          }
+        },
+        {
+          "incidentId": "dcafa90b-e4b6-4f1a-b819-99614e94faf1",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Controllers\\BankAccount\\BankAccountReCheckController.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 188,
+            "column": 24
+          }
+        },
+        {
+          "incidentId": "e51691cb-0bae-44b1-9d3c-b2acbb548330",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Controllers\\OutboundCorrespondence\\OutboundCorrespondenceController.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 346,
+            "column": 24
+          }
+        },
+        {
+          "incidentId": "0d1facca-c193-4338-9827-3301d54ead88",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal\\RPA.QualityPortal.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal\\Controllers\\OutboundCorrespondence\\OutboundCorrespondenceReCheckController.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 197,
+            "column": 24
+          }
+        }
+      ]
+    },
+    {
+      "path": "RPA.QualityPortal.Tests\\RPA.QualityPortal.Tests.csproj",
+      "startingProject": true,
+      "issues": 6,
+      "storyPoints": 47,
+      "properties": {
+        "appName": "RPA.QualityPortal.Tests",
+        "frameworks": [
+          "net10.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ]
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "63ebcbcf-b559-47d4-82c1-a475f7e3a8a3",
+          "ruleId": "Security.0103",
+          "projectPath": "RPA.QualityPortal.Tests\\RPA.QualityPortal.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal.Tests\\RPA.QualityPortal.Tests.csproj"
+          }
+        },
+        {
+          "incidentId": "0c7f1e5f-476b-4846-ba08-8e13b14d7245",
+          "ruleId": "HTTP.0001",
+          "projectPath": "RPA.QualityPortal.Tests\\RPA.QualityPortal.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal.Tests\\Authentication\\AuthenticationHttpTests.cs",
+            "label": "System.Net.Http.HttpClient",
+            "line": 25,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "e8428367-e202-4e0d-8efd-906ad147f188",
+          "ruleId": "Local.0006",
+          "projectPath": "RPA.QualityPortal.Tests\\RPA.QualityPortal.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal.Tests\\Authentication\\AuthenticationHttpTests.cs",
+            "label": "https://",
+            "line": 33,
+            "column": 34
+          }
+        },
+        {
+          "incidentId": "4b30e95f-0b58-4a21-a53e-f463e4149f76",
+          "ruleId": "Local.0006",
+          "projectPath": "RPA.QualityPortal.Tests\\RPA.QualityPortal.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal.Tests\\Authentication\\AuthenticationHttpTests.cs",
+            "label": "https://",
+            "line": 138,
+            "column": 48
+          }
+        },
+        {
+          "incidentId": "955149c1-9d5f-4bae-a7fa-0408b8d86499",
+          "ruleId": "Local.0006",
+          "projectPath": "RPA.QualityPortal.Tests\\RPA.QualityPortal.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal.Tests\\Authentication\\AuthenticationHttpTests.cs",
+            "label": "https://",
+            "line": 139,
+            "column": 40
+          }
+        },
+        {
+          "incidentId": "3217d011-0123-4acc-90fa-e9525b6f7063",
+          "ruleId": "Local.0006",
+          "projectPath": "RPA.QualityPortal.Tests\\RPA.QualityPortal.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal.Tests\\Authentication\\AuthenticationHttpTests.cs",
+            "label": "https://",
+            "line": 140,
+            "column": 33
+          }
+        },
+        {
+          "incidentId": "40b1decb-28d0-4a3e-af56-e9cc3bd30da8",
+          "ruleId": "Local.0006",
+          "projectPath": "RPA.QualityPortal.Tests\\RPA.QualityPortal.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal.Tests\\Authentication\\AuthenticationHttpTests.cs",
+            "label": "https://",
+            "line": 51,
+            "column": 32
+          }
+        },
+        {
+          "incidentId": "d40205dc-0247-4f43-a02e-ef26470ce939",
+          "ruleId": "Identity.0002",
+          "projectPath": "RPA.QualityPortal.Tests\\RPA.QualityPortal.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal.Tests\\Authentication\\AuthenticationTests.cs",
+            "label": "Integrated Security=true",
+            "line": 30,
+            "column": 51
+          }
+        },
+        {
+          "incidentId": "f50d36aa-0a3a-49be-9bee-e0fcfc9b8e2d",
+          "ruleId": "Identity.0002",
+          "projectPath": "RPA.QualityPortal.Tests\\RPA.QualityPortal.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal.Tests\\Authentication\\AuthenticationTests.cs",
+            "label": "Integrated Security=true",
+            "line": 31,
+            "column": 50
+          }
+        },
+        {
+          "incidentId": "9949076d-bdaf-4cc2-8a6b-5559dcba63fc",
+          "ruleId": "Local.0006",
+          "projectPath": "RPA.QualityPortal.Tests\\RPA.QualityPortal.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal.Tests\\Authentication\\AuthenticationTests.cs",
+            "label": "http://",
+            "line": 54,
+            "column": 34
+          }
+        },
+        {
+          "incidentId": "2e536fd3-a8fd-4eaa-bf5b-3b7e28c24234",
+          "ruleId": "Local.0006",
+          "projectPath": "RPA.QualityPortal.Tests\\RPA.QualityPortal.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal.Tests\\Authentication\\AuthenticationTests.cs",
+            "label": "https://",
+            "line": 56,
+            "column": 34
+          }
+        },
+        {
+          "incidentId": "719f9372-61b6-493f-8db8-7ca7ca0a71e8",
+          "ruleId": "Local.0006",
+          "projectPath": "RPA.QualityPortal.Tests\\RPA.QualityPortal.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal.Tests\\Authentication\\AuthenticationTests.cs",
+            "label": "https://",
+            "line": 55,
+            "column": 34
+          }
+        },
+        {
+          "incidentId": "102ae132-74c4-4f92-8ea0-7b6f3ff6031f",
+          "ruleId": "Local.0006",
+          "projectPath": "RPA.QualityPortal.Tests\\RPA.QualityPortal.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal.Tests\\Authentication\\AuthenticationTests.cs",
+            "label": "https://",
+            "line": 27,
+            "column": 35
+          }
+        },
+        {
+          "incidentId": "40baedaa-af63-4ddc-973a-445c2bff081e",
+          "ruleId": "Security.0003",
+          "projectPath": "RPA.QualityPortal.Tests\\RPA.QualityPortal.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal.Tests\\Authentication\\AuthenticationTests.cs",
+            "label": "secret",
+            "line": 28,
+            "column": 13
+          }
+        },
+        {
+          "incidentId": "dbe37878-9500-4d6a-87dc-96ec13ab9a3b",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal.Tests\\RPA.QualityPortal.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal.Tests\\Services\\EmailServiceTest.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 213,
+            "column": 13
+          }
+        },
+        {
+          "incidentId": "25e04b83-1f44-4cce-8612-bd4e745d4bf7",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal.Tests\\RPA.QualityPortal.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal.Tests\\Services\\EmailServiceTest.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 249,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "2f252cf1-7385-4e53-89d2-2f5327aa3067",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal.Tests\\RPA.QualityPortal.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal.Tests\\Services\\EmailServiceTest.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 285,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "5a603348-d7f4-4e99-8828-1e2728f25344",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal.Tests\\RPA.QualityPortal.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal.Tests\\Services\\EmailServiceTest.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 321,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "055c29ab-e0e7-43d7-bbc5-d13e003706c0",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal.Tests\\RPA.QualityPortal.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal.Tests\\Services\\EmailServiceTest.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 130,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "fe96df59-1682-44e9-ae33-e78df4e4eab8",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal.Tests\\RPA.QualityPortal.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal.Tests\\Services\\EmailServiceTest.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 177,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "2140bc56-a45e-4bcc-87e9-b480a6e4b942",
+          "ruleId": "SMTP.0001",
+          "projectPath": "RPA.QualityPortal.Tests\\RPA.QualityPortal.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "RPA.QualityPortal.Tests\\Services\\EmailServiceTest.cs",
+            "label": "System.Net.Mail.MailMessage",
+            "line": 82,
+            "column": 12
+          }
+        }
+      ]
+    }
+  ],
+  "rules": {
+    "Scale.0001": {
+      "id": "Scale.0001",
+      "description": "Static content detected.\n\nYour current approach of serving static content directly might lead to increased costs, performance issues, maintenance challenges (requiring application redeployment for content changes), and security risks.\n\nConsider moving static content to Azure Blob Storage and adding Azure CDN.",
+      "label": "Static content detected",
+      "severity": "Optional",
+      "effort": 3,
+      "links": [
+        {
+          "title": "Azure Blob Storage",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2250574"
+        },
+        {
+          "title": "Azure CDN",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2250392"
+        }
+      ]
+    },
+    "Connection.0001": {
+      "id": "Connection.0001",
+      "description": "Connection string detected. It may not be available when your app is migrated to Azure.\n\nReview and ensure it works from Azure. If you are connecting to a database, you might need to migrate the database to Azure. There are multiple ways to do it:\n    1. Migrate to Azure SQL Database for additional benefits (see the link below).\n    2. Consider Azure SQL Managed Instance if you need features that are not available in Azure SQL Database and you don\u2019t want to use a VM.\n    3. Migrate your database servers directly to SQL Server on Azure VMs.\n\nTo assess database migration effort, you can use Azure Migrate tool, see the link below.",
+      "label": "Connection string is detected",
+      "severity": "Potential",
+      "effort": 3,
+      "links": [
+        {
+          "title": "Migrate SQL Server database to Azure",
+          "url": "https://go.microsoft.com/fwlink/?LinkID=2251731"
+        },
+        {
+          "title": "Azure SQL Managed Instance",
+          "url": "https://go.microsoft.com/fwlink/?LinkID=2251613"
+        },
+        {
+          "title": "Azure Migrate",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2252410"
+        }
+      ]
+    },
+    "Local.0002": {
+      "id": "Local.0002",
+      "description": "Your application has hardcoded local or network paths that might not be available on Azure.\n\nReview and ensure that you are attempting to access paths that would be available when your application lives in Azure.\n\n Application should use paths relative to application root folder or store them in Azure Storage or Azure CDN.",
+      "label": "Hardcoded local or network paths detected",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "title": "Azure Storage",
+          "url": "https://go.microsoft.com/fwlink/?LinkID=2243159"
+        },
+        {
+          "title": "Azure CDN",
+          "url": "https://go.microsoft.com/fwlink/?LinkID=2251637"
+        },
+        {
+          "title": "Design to scale out",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2251007"
+        }
+      ]
+    },
+    "SMTP.0001": {
+      "id": "SMTP.0001",
+      "description": "If you are targeting Managed Instance on Azure App Service, use an authenticated SMTP relay (e.g., SendGrid/Exchange Online). Store credentials in Key Vault; validate outbound restrictions for your subscription.\n\nWhile if targeting other Azure compute services, SMTP connections in your code might not work on Azure. Outbound email messages that are sent directly to external domains are made available only to certain subscription types. We recommend using authenticated SMTP relay services instead.",
+      "label": "SMTP connections detected",
+      "severity": "Potential",
+      "effort": 3,
+      "links": [
+        {
+          "title": "Troubleshoot SMTP problems",
+          "url": "https://go.microsoft.com/fwlink/?LinkID=2243158"
+        },
+        {
+          "title": "Set up emails with Microsoft 365 or Office 365",
+          "url": "https://go.microsoft.com/fwlink/?LinkID=2249851"
+        }
+      ]
+    },
+    "Database.0003": {
+      "id": "Database.0003",
+      "description": "System.Data.SqlClient dependency is detected.\n\nWhile System.Data.SqlClient will work in Azure, the newer Microsoft.Data.SqlClient package is the primary .NET SQL client moving forward and receiving the latest features. For example, Microsoft.Data.SqlClient easily allows use of Azure Managed Identity from a connection string.",
+      "label": "System.Data.SqlClient dependency detected",
+      "severity": "Optional",
+      "effort": 3,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?LinkID=2242668"
+        }
+      ]
+    },
+    "Cache.0001": {
+      "id": "Cache.0001",
+      "description": "Your application is using a data cache.\n\nSome caching solutions will only work on the local machine or within an on-premises network. Make sure that the cache your app is working with is available from Azure.\n\nUse the link below to learn how caching solutions could be implemented in Azure.",
+      "label": "Data caching is detected",
+      "severity": "Potential",
+      "effort": 3,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?LinkID=2242978"
+        }
+      ]
+    },
+    "Security.0003": {
+      "id": "Security.0003",
+      "description": "Hardcoded sensitive data detected.\n\nIf you are targeting Managed Instance on Azure App Service, externalize secrets to Key Vault/App Configuration; use managed identity instead of passwords or embedded connection strings.\n\nWhile if targeting other Azure compute services:\n\nAvoid placing sensitive data such as passwords, ids, tokens etc., directly in config files and code since it compromises the security of your application.\n\nUse Azure App Configuration or Azure KeyVault to store secrets.",
+      "label": "Hardcoded sensitive data detected",
+      "severity": "Optional",
+      "effort": 3,
+      "links": [
+        {
+          "title": "Centralized app configuration and security",
+          "url": "https://go.microsoft.com/fwlink/?LinkID=2250733"
+        }
+      ]
+    },
+    "Security.0103": {
+      "id": "Security.0103",
+      "description": "Certificate management packages or configurations detected. This may indicate the application is using local or custom certificate handling, which could require adjustments when migrating to Azure. Consider using Azure Key Vault Certificates for secure storage, lifecycle management, and integration with Azure services.",
+      "label": "Certificate management dependency detected",
+      "severity": "Potential",
+      "effort": 5,
+      "links": [
+        {
+          "title": "About Azure Key Vault certificates",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2335741"
+        }
+      ]
+    },
+    "HTTP.0001": {
+      "id": "HTTP.0001",
+      "description": "Your application is trying to reach external resources via HTTP protocol.\n\nFor Managed Instance on App Service, secure connectivity to internal/on-prem HTTP services is managed via plan-level VNet integration and private endpoints. Keep inbound traffic restricted to 80/443; capture any required HTTP config in install scripts. Use Bastion JIT RDP only for diagnostics\u2014persist all changes via install scripts. Outbound traffic does not impose similar restrictions.\n\nWhile if targeting other Azure compute services, ensure the resources it is trying to reach are accessible from the Azure environment. If those HTTP requests are sent to internal services or services hosted on-prem, you probably will need to migrate those services to Azure as well.\n\nAlso, keep in mind that Azure App Service supports port 80 for HTTP and port 443 for HTTPS traffic. If you are using any other ports, you need to update them before moving to Azure.",
+      "label": "Access to external resources via HTTP is detected",
+      "severity": "Potential",
+      "effort": 3,
+      "links": [
+        {
+          "title": "[Managed Instance] Bastion JIT RDP",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2346953"
+        },
+        {
+          "title": "[Managed Instance] Install scripts",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2347059"
+        },
+        {
+          "title": "Azure App Service networking features",
+          "url": "https://go.microsoft.com/fwlink/?LinkID=2243264"
+        }
+      ]
+    },
+    "Local.0006": {
+      "id": "Local.0006",
+      "description": "Your application has hardcoded URLs that might correspond to services that are not accessible on Azure.\n\nReview and ensure that the application is attempting to access URLs that would be available from Azure. You might need to migrate those services to Azure too, this way you will get the benefit of lower latency in the cloud.\n\nIf your application needs to depend on services that run on-premises, you can connect your Azure and local networks with ExpressRoute, Hybrid Connections, or VPN solutions.",
+      "label": "Hardcoded URLs detected",
+      "severity": "Potential",
+      "effort": 1,
+      "links": [
+        {
+          "title": "ExpressRoute",
+          "url": "https://go.microsoft.com/fwlink/?LinkID=2250577"
+        },
+        {
+          "title": "Hybrid Connections",
+          "url": "https://go.microsoft.com/fwlink/?LinkID=2242588"
+        },
+        {
+          "title": "Connect an on-prem network",
+          "url": "https://go.microsoft.com/fwlink/?LinkID=2242591"
+        }
+      ]
+    },
+    "Identity.0002": {
+      "id": "Identity.0002",
+      "description": "Your app is using windows authentication which is not supported on Azure App Service, Azure Container Apps and Azure Kubernetes Service.\n\nAzure App Service provides built-in authentication and authorization capabilities, so you can sign in users and access data by writing minimal or no code in your web app.\n\nFollow the link below for more information.\u0022",
+      "label": "Windows authentication detected",
+      "severity": "Mandatory",
+      "effort": 3,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?LinkID=2242883"
+        }
+      ]
+    }
+  }
+}
