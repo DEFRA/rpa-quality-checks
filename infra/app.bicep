@@ -15,6 +15,12 @@ param tags object
 
 @minLength(1)
 @maxLength(128)
+// Intentionally unused in this file's resources: validated and cross-checked against the
+// foundation's databaseName (see Test-Templates.ps1 and infra/README.md "Required application
+// inputs") purely so an operator cannot accidentally point this app's parameters at a different
+// environment's database. QualityContext/PeopleContext connection strings are supplied as full,
+// owner-populated Key Vault secrets instead (see qualityConnectionStringSecretName below).
+#disable-next-line no-unused-params
 param databaseName string
 
 @description('Repository inside the foundation ACR, without a registry hostname or tag.')
