@@ -168,3 +168,19 @@ authentication cookies and offline OIDC metadata. They do not contact Entra or
 production databases. Real tenant sign-in, emitted staff claim, enterprise-app
 assignments, public HTTPS callbacks, People lookup and domain audit persistence
 remain deployment acceptance checks.
+
+## Container
+
+The multi-stage [Dockerfile](./Dockerfile) follows the Defra .NET container
+standard ([defra-docker-dotnetcore](https://github.com/DEFRA/defra-docker-dotnetcore)):
+a `development` stage (`defradigital/dotnetcore-development`) restores, tests
+and publishes the app; a `production` stage (`defradigital/dotnetcore`) runs
+it as the non-root `dotnet` user with write permissions removed.
+`DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false` keeps ICU enabled for `en-GB`,
+and it listens on HTTP 8080.
+
+```powershell
+docker build --target production -t quality-checks:local .
+# Optional non-secret package source, replacing configured restore sources:
+docker build --target production --build-arg NUGET_SOURCE="https://your-feed/v3/index.json" -t quality-checks:local .
+```
