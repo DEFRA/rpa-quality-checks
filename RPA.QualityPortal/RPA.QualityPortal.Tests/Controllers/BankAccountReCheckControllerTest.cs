@@ -207,6 +207,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             //Bank Account
             BankAccountReCheck bankAccountReCheck = new BankAccountReCheck
             {
+                ReCheckCompletedBy = "Gordon, Lee George",
                 CheckId = 100,
                 PersonName = "Gordon, Lee George",
                 BankAccountId = 55,
@@ -232,6 +233,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             //Bank Account
             BankAccountReCheck bankAccountReCheck = new BankAccountReCheck
             {
+                ReCheckCompletedBy = "Gordon, Lee George",
                 CheckId = 100,
                 PersonName = "Gordon, Lee George",
                 BankAccountId = 54,
@@ -291,6 +293,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             //Bank Account
             BankAccountReCheck bankAccountReCheck = new BankAccountReCheck
             {
+                ReCheckCompletedBy = "Gordon, Lee George",
                 CheckId = 100,
                 PersonName = "Gordon, Lee George",
                 BankAccountId = 53,
@@ -351,6 +354,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             //Bank Account ReCheck
             BankAccountReCheck bankAccountReCheck = new BankAccountReCheck
             {
+                ReCheckCompletedBy = "Gordon, Lee George",
                 CheckId = 100,
                 PersonName = "Gordon, Lee George",
                 BankAccountId = 56,
@@ -823,7 +827,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             //Bank Account Recheck
             BankAccountReCheck bankAccountReCheck = new BankAccountReCheck
             {
-                CheckId = 56,
+                CheckId = 58,
                 PersonName = "Gordon, Lee George",
                 QCCompletedByName = "Gordon, Lee George",
                 ReCheckCompletedBy = "Gordon, Lee George",

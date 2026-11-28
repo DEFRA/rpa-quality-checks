@@ -2,25 +2,16 @@ using RPA.QualityPortal.Models;
 using RPA.QualityPortal.Models.CheckTypes;
 using RPA.QualityPortal.Models.BankAccountDropDowns;
 using RPA.QualityPortal.Models.OutboundCorrespondenceDropDowns;
-using System.Data.Entity;
-using System.Data.Entity.ModelConfiguration.Conventions;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
 
 namespace RPA.QualityPortal.DAL
 {
     [ExcludeFromCodeCoverage]
-    [DbConfigurationType(typeof(QualityDbConfiguration))]
     public class QualityContext : DbContext, IQualityContext
     {
-        // Required by DbMigrator, which creates the context itself; the migration configuration supplies the real connection.
-        public QualityContext() : base("QualityContext")
+        public QualityContext(DbContextOptions<QualityContext> options) : base(options)
         {
-            Database.CommandTimeout = 1000;
-        }
-
-        public QualityContext(string nameOrConnectionString) : base(nameOrConnectionString)
-        {
-            Database.CommandTimeout = 1000;
         }
 
         //Generic QC Items
@@ -58,14 +49,34 @@ namespace RPA.QualityPortal.DAL
         //Worker Service
         public virtual DbSet<WorkerServiceLog> WorkerServiceLog { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
-            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            // EF6 mapped DateTime to the legacy "datetime" type; the live columns still use it.
+            configurationBuilder.Properties<DateTime>().HaveColumnType("datetime");
+        }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // EF6 pluralisation was disabled, so every table carries the singular entity name.
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes().Where(t => t.BaseType == null).ToList())
+            {
+                modelBuilder.Entity(entityType.ClrType).ToTable(entityType.ClrType.Name);
+            }
+
+            // Check hierarchy is table-per-type (EF Core defaults to table-per-hierarchy).
+            modelBuilder.Entity<Check>().UseTptMappingStrategy();
             modelBuilder.Entity<OutboundCorrespondence>().ToTable("OutboundCorrespondence");
             modelBuilder.Entity<OutboundCorrespondenceReCheck>().ToTable("OutboundCorrespondenceReCheck");
             modelBuilder.Entity<BankAccountCheck>().ToTable("BankAccount");
             modelBuilder.Entity<BankAccountReCheck>().ToTable("BankAccountReCheck");
+
+            modelBuilder.Entity<CheckQuestion>().HasKey(x => new { x.CheckTypeId, x.QuestionId });
+
+            // Audit has no FK property; EF6 named the shadow FK column Navigation_KeyName.
+            modelBuilder.Entity<Audit>()
+                .HasOne(x => x.AmendmentReason)
+                .WithMany()
+                .HasForeignKey("AmendmentReason_AmendmentReasonId");
         }
 
         //Add this to the DAL context class

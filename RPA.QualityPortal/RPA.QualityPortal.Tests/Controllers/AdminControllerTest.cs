@@ -299,6 +299,7 @@ namespace RPA.QualityPortal.Tests.Controllers
                 {
                     BankAccountReCheck = new BankAccountReCheck
                     {
+                        ReCheckCompletedBy = "Gordon, Lee George",
                         CheckId = 60,
                         PersonName = "Gordon, Lee George",
                         QCCompletedByName = "Gordon, Lee George",

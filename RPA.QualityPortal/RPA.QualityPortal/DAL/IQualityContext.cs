@@ -1,4 +1,4 @@
-﻿using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using RPA.QualityPortal.Models;
 using RPA.QualityPortal.Models.CheckTypes;
 using RPA.QualityPortal.Models.BankAccountDropDowns;

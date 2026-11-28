@@ -11,10 +11,8 @@ namespace RPA.QualityPortal.Models
 
     public class CheckQuestion
     {
-        [Key, Column(Order = 0)]
         public int CheckTypeId { get; set; }
 
-        [Key, Column(Order = 1)]
         public int QuestionId { get; set; }
 
         public int Order { get; set; }

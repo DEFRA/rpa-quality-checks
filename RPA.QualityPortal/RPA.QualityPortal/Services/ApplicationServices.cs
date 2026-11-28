@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using RPA.QualityPortal.DAL;
 using RPA.QualityPortal.Helpers;
@@ -108,8 +109,14 @@ public static class ApplicationServices
             .AddTypeActivatedCheck<SqlReadinessHealthCheck>("quality-sql", failureStatus: null, tags: ["ready"], args: ["QualityContext"])
             .AddTypeActivatedCheck<SqlReadinessHealthCheck>("people-sql", failureStatus: null, tags: ["ready"], args: ["PeopleContext"]);
         services.AddScoped<ISessionStore, SessionStore>();
-        services.AddScoped<IQualityContext>(_ => new QualityContext(qualityConnection));
-        services.AddScoped<IPeopleContext>(_ => new PeopleContext(peopleConnection));
+        services.AddDbContext<QualityContext>(options => options.UseSqlServer(qualityConnection, sql =>
+        {
+            sql.CommandTimeout(1000);
+            sql.EnableRetryOnFailure();
+        }));
+        services.AddScoped<IQualityContext>(sp => sp.GetRequiredService<QualityContext>());
+        services.AddDbContext<PeopleContext>(options => options.UseSqlServer(peopleConnection, sql => sql.EnableRetryOnFailure()));
+        services.AddScoped<IPeopleContext>(sp => sp.GetRequiredService<PeopleContext>());
         services.AddScoped<IUserHelper, UserHelper>();
         services.AddScoped<IRoleManager, RoleManager>();
         services.AddScoped<ISendService, SendService>();
@@ -123,7 +130,8 @@ public static class ApplicationServices
         services.AddScoped<IMIService, MIService>();
         services.AddScoped<IOutboundCorrespondenceService, OutboundCorrespondenceService>();
         services.AddScoped<IPeopleService, PeopleService>();
-        services.AddControllersWithViews();
+        // Global anti-forgery validation so every unsafe-method action is protected, including handlers lacking the attribute.
+            services.AddControllersWithViews(options => options.Filters.Add(new Microsoft.AspNetCore.Mvc.AutoValidateAntiforgeryTokenAttribute()));
         return services;
     }
 

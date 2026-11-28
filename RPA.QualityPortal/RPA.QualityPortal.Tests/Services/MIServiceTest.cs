@@ -12,7 +12,7 @@ using RPA.QualityPortal.Tests.Factory;
 using RPA.QualityPortal.ViewModels.OutboundCorrespondenceVM.MI;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -222,7 +222,7 @@ namespace RPA.QualityPortal.Tests.Services
 
             //Assert
 
-            Assert.AreEqual(result.OutboundCorrespondenceList.Count, 3);
+            Assert.AreEqual(result.OutboundCorrespondenceList.Count, 4);
         }
 
         [Test]

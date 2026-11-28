@@ -187,6 +187,7 @@ public class AuthenticationTests
         var people = new MockPeopleContext();
         var person = people.MockPeople.Object.Single(person => person.StaffNumber == "M600300");
         person.StaffNumber = "m600300";
+        people.Db.SaveChanges();
         var context = new HttpContextAccessor { HttpContext = new DefaultHttpContext { User = Principal("EARTH\\M0600300") } };
         var helper = new UserHelper(people.MockContext.Object, context);
         Assert.AreEqual(person.Name, helper.CurrentUser());

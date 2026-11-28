@@ -685,6 +685,8 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             controller.Session["EditBankGeneral"] = bankAccount;
 
+            db.EnsureAnswers(54, 3);
+
             var result = controller.EditQuestions() as ViewResult;
 
             Assert.IsNotNull(result);
@@ -806,6 +808,8 @@ namespace RPA.QualityPortal.Tests.Controllers
             controller.Session["EditBankGeneral"] = bankAccount;
 
             //Act
+
+            db.EnsureAnswers(54, 3);
 
             var result = controller.EditQuestions() as ViewResult;
 
@@ -1376,6 +1380,8 @@ namespace RPA.QualityPortal.Tests.Controllers
         [Test]
         public void Test_ChallengeQuestions_returns_ChallengeQuestions()
         {
+            db.EnsureAnswers(53, 3);
+
             //Act
             var result = controller.ChallengeQuestions(53) as ViewResult;
 

@@ -16,7 +16,7 @@ using RPA.QualityPortal.Tests.Factory;
 using RPA.QualityPortal.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace RPA.QualityPortal.Tests.Controllers
@@ -106,6 +106,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             OutboundCorrespondenceReCheck outboundCorrespondenceReCheck = new OutboundCorrespondenceReCheck
             {
+                ReCheckCompletedBy = "Gordon, Lee George",
                 CheckId = 2,
                 PersonName = "Gordon, Lee George",
                 QCCompletedByName = "Gordon, Lee George",
@@ -382,6 +383,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             OutboundCorrespondenceReCheck outboundCorrespondenceReCheck = new OutboundCorrespondenceReCheck
             {
+                ReCheckCompletedBy = "Gordon, Lee George",
                 CheckId = 1,
                 PersonName = "Gordon, Lee George",
                 QCCompletedByName = "Gordon, Lee George",
@@ -447,6 +449,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             OutboundCorrespondenceReCheck outboundCorrespondenceReCheck = new OutboundCorrespondenceReCheck
             {
+                ReCheckCompletedBy = "Gordon, Lee George",
                 CheckId = 2,
                 PersonName = "Gordon, Lee George",
                 OutboundCorrespondenceId = 1,
@@ -512,6 +515,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             OutboundCorrespondenceReCheck outboundCorrespondenceReCheck = new OutboundCorrespondenceReCheck
             {
+                ReCheckCompletedBy = "Gordon, Lee George",
                 CheckId = 1,
                 PersonName = "Gordon, Lee George",
                 QCCompletedByName = "Gordon, Lee George",
@@ -628,7 +632,7 @@ namespace RPA.QualityPortal.Tests.Controllers
             QuestionAnswer QA = new QuestionAnswer
             {
                 CheckQuestion = CQ,
-                Answer = "No"
+                Answer = "Yes"
             };
 
             qaList.QuestionAnswers.Add(QA);
@@ -637,7 +641,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             //Act
 
-            var result = controller.EditReCheckQuestions(1, qaList) as RedirectToActionResult;
+            var result = controller.EditReCheckQuestions(8, qaList) as RedirectToActionResult;
 
             //Assert
 
@@ -823,6 +827,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             OutboundCorrespondenceReCheck outboundCorrespondenceReCheck = new OutboundCorrespondenceReCheck
             {
+                ReCheckCompletedBy = "Gordon, Lee George",
                 CheckId = 3,
                 PersonName = "Gordon, Lee George",
                 QCCompletedByName = "Gordon, Lee George",
@@ -888,6 +893,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             OutboundCorrespondenceReCheck outboundCorrespondenceReCheck = new OutboundCorrespondenceReCheck
             {
+                ReCheckCompletedBy = "Gordon, Lee George",
                 CheckId = 3,
                 PersonName = "Gordon, Lee George",
                 QCCompletedByName = "Gordon, Lee George",
@@ -952,6 +958,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             OutboundCorrespondenceReCheck outboundCorrespondenceReCheck = new OutboundCorrespondenceReCheck
             {
+                ReCheckCompletedBy = "Gordon, Lee George",
                 CheckId = 3,
                 PersonName = "Gordon, Lee George",
                 QCCompletedByName = "Gordon, Lee George",
@@ -1030,6 +1037,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             OutboundCorrespondenceReCheck outboundCorrespondenceReCheck = new OutboundCorrespondenceReCheck
             {
+                ReCheckCompletedBy = "Gordon, Lee George",
                 CheckId = 3,
                 PersonName = "Gordon, Lee George",
                 QCCompletedByName = "Gordon, Lee George",

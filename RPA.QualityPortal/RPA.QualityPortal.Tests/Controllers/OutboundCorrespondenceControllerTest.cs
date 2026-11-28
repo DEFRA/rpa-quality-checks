@@ -640,7 +640,7 @@ namespace RPA.QualityPortal.Tests.Controllers
 
             OutboundCorrespondence outboundCorrespondenceExisting = new OutboundCorrespondence
             {
-                CheckId = 1,
+                CheckId = 0,
                 PersonName = "Gordon, Lee George",
                 QCCompletedByName = "Gordon, Lee George",
                 DateQCCompleted = DateTime.Now,

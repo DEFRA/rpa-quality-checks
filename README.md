@@ -77,16 +77,13 @@ for local development and a confirmed single-replica deployment.
 | `Mail:EnableSsl` | Defaults to `true`; do not disable in production |
 | `Mail:Username` / `Mail:Password` | Authenticated SMTP relay credential from the deployment secret store |
 
-> **Known limitation - SQL authentication, not managed identity:** `QualityContext`/`PeopleContext`
-> are EF6 Code-First contexts whose provider (`DAL/QualityDbConfiguration.cs`) is hard-wired to the
-> classic `System.Data.SqlClient` ADO.NET provider. Microsoft never shipped a stable EF6 provider for
-> `Microsoft.Data.SqlClient` (`EntityFramework.MicrosoftSqlServer` reached only an unlisted release
-> candidate), so passwordless Microsoft Entra ID / managed-identity SQL authentication is **not
-> available for these two contexts** until the data layer is migrated to EF Core - track this as a
-> follow-up, not a blocker for the initial Azure Container Apps deployment. Use SQL authentication
-> over an encrypted connection (`Encrypt=True`) in the meantime. The `IDTSecurityConnection` usages in
-> `AccessService.cs`/`IdtRoleClaimsTransformation.cs` are plain ADO.NET (`Microsoft.Data.SqlClient`)
-> and do not have this constraint.
+> **Data layer - EF Core 10:** `QualityContext`/`PeopleContext` now run on Entity Framework Core 10 with
+> `Microsoft.Data.SqlClient`, so the EF6 provider limitation no longer applies and Microsoft Entra ID /
+> managed-identity SQL authentication is possible at the connection-string level (the Entra-only infra
+> change is still to be done). The schema is managed by EF Core migrations (`Migrations/`, applied on startup
+> when the migrate flag is set). **Existing databases** must first run `Database/002_EfCoreBaseline.sql`, which
+> records `InitialCreate` in `__EFMigrationsHistory` so EF Core does not try to recreate the schema. The
+> `IDTSecurityConnection` usages in `AccessService.cs`/`IdtRoleClaimsTransformation.cs` are plain ADO.NET.
 
 All seven role values must be nonempty, distinct Entra token values (not legacy
 display names with spaces). There are **no default or guessed role mappings**.

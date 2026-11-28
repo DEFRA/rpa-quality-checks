@@ -1,10 +1,10 @@
-﻿using Moq;
+using Moq;
 using NUnit.Framework;
 using RPA.QualityPortal.Services;
 using RPA.QualityPortal.Tests.DAL.Mock;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;

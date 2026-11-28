@@ -52,7 +52,12 @@ namespace RPA.QualityPortal.Services
         {
             string lockedBy = userHelper.CurrentUser();
 
-            db.LockCheck.Remove(db.LockCheck.Where(x => x.CheckId == checkId && x.CheckLockedBy == lockedBy).FirstOrDefault());
+            LockCheck lockCheck = db.LockCheck.Where(x => x.CheckId == checkId && x.CheckLockedBy == lockedBy).FirstOrDefault();
+
+            if (lockCheck != null)
+            {
+                db.LockCheck.Remove(lockCheck);
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using RPA.QualityPortal.DAL;
+using RPA.QualityPortal.DAL;
 using RPA.QualityPortal.Helpers;
 using RPA.QualityPortal.Models;
 using RPA.QualityPortal.Models.CheckTypes;
@@ -281,15 +281,19 @@ namespace RPA.QualityPortal.Services
 
         public IQueryable<OutboundCorrespondenceOverview> RetrieveOutboundCorrespondenceChecks(IQueryable<OutboundCorrespondence> outboundCorrespondenceChecks)
         {
-            IQueryable<OutboundCorrespondenceOverview> outboundCorrespondenceOverviews = outboundCorrespondenceChecks
-                .GroupJoin(db.OutboundCorrespondenceReCheck, check => check.CheckId, recheck => recheck.OutboundCorrespondenceId, (check, recheck) => new { Check = check, Recheck = recheck.DefaultIfEmpty().FirstOrDefault() })
-                .Select(oc => new OutboundCorrespondenceOverview
+            // The first recheck is picked by id and joined back, so the query stays a plain LEFT JOIN (no APPLY).
+            IQueryable<OutboundCorrespondenceOverview> outboundCorrespondenceOverviews =
+                from check in outboundCorrespondenceChecks
+                let firstReCheckId = db.OutboundCorrespondenceReCheck.Where(r => r.OutboundCorrespondenceId == check.CheckId).OrderBy(r => r.CheckId).Select(r => (int?)r.CheckId).FirstOrDefault()
+                join reCheck in db.OutboundCorrespondenceReCheck on firstReCheckId equals (int?)reCheck.CheckId into reChecks
+                from recheck in reChecks.DefaultIfEmpty()
+                select new OutboundCorrespondenceOverview
                 {
-                    OutboundCorrespondence = oc.Check,
-                    QCResult = oc.Check != null ? db.CheckResults.Where(x => x.CheckId == oc.Check.CheckId).Select(p => p.Result.Text).FirstOrDefault() : null,
-                    OutboundCorrespondenceReCheck = oc.Recheck,
-                    ReCheckQCResult = oc.Recheck != null ? db.CheckResults.Where(x => x.CheckId == oc.Recheck.CheckId).Select(p => p.Result.Text).FirstOrDefault() : null
-                });
+                    OutboundCorrespondence = check,
+                    QCResult = db.CheckResults.Where(x => x.CheckId == check.CheckId).Select(p => p.Result.Text).FirstOrDefault(),
+                    OutboundCorrespondenceReCheck = recheck,
+                    ReCheckQCResult = recheck != null ? db.CheckResults.Where(x => x.CheckId == recheck.CheckId).Select(p => p.Result.Text).FirstOrDefault() : null
+                };
 
             return outboundCorrespondenceOverviews.OrderByDescending(x => x.OutboundCorrespondence.DateQCCompleted);
         }
@@ -326,10 +330,10 @@ namespace RPA.QualityPortal.Services
             }
             if (db.CheckAmendmentReason.Any(x => x.CheckId == CheckId))
             {
-                db.CheckAmendmentReason.Remove(db.CheckAmendmentReason.Where(x => x.CheckId == CheckId).FirstOrDefault());
+                db.CheckAmendmentReason.RemoveRange(db.CheckAmendmentReason.Where(x => x.CheckId == CheckId));
             }
 
-            db.CheckResults.Remove(db.CheckResults.Where(x => x.CheckId == outboundCorrespondence.CheckId).FirstOrDefault());
+            db.CheckResults.RemoveRange(db.CheckResults.Where(x => x.CheckId == outboundCorrespondence.CheckId));
 
             if (outboundCorrespondenceReChecks.Count > 0)
             {
@@ -340,7 +344,7 @@ namespace RPA.QualityPortal.Services
             }
 
             db.OutboundCorrespondence.Remove(outboundCorrespondence);
-            db.Checks.Remove(db.Checks.Where(x => x.CheckId == CheckId).FirstOrDefault());
+            db.Checks.RemoveRange(db.Checks.Where(x => x.CheckId == CheckId));
 
             db.SaveChanges();
         }
@@ -356,11 +360,11 @@ namespace RPA.QualityPortal.Services
             }
             if (db.CheckAmendmentReason.Any(x => x.CheckId == reCheck.CheckId))
             {
-                db.CheckAmendmentReason.Remove(db.CheckAmendmentReason.Where(x => x.CheckId == reCheck.CheckId).FirstOrDefault());
+                db.CheckAmendmentReason.RemoveRange(db.CheckAmendmentReason.Where(x => x.CheckId == reCheck.CheckId));
             }
-            db.CheckResults.Remove(db.CheckResults.Where(x => x.CheckId == reCheck.CheckId).FirstOrDefault());
+            db.CheckResults.RemoveRange(db.CheckResults.Where(x => x.CheckId == reCheck.CheckId));
             db.OutboundCorrespondenceReCheck.Remove(reCheck);
-            db.Checks.Remove(db.Checks.Where(x => x.CheckId == reCheck.CheckId).FirstOrDefault());
+            db.Checks.RemoveRange(db.Checks.Where(x => x.CheckId == reCheck.CheckId));
 
             List<OutboundCorrespondenceReCheck> outboundCorrespondenceReChecks = db.OutboundCorrespondenceReCheck.Where(x => x.OutboundCorrespondenceId == CheckId).OrderBy(c => c.CheckId).ToList();
             OutboundCorrespondence outboundCorrespondence = db.OutboundCorrespondence.Where(x => x.CheckId == CheckId).FirstOrDefault();

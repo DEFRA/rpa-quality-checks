@@ -9,7 +9,7 @@ using RPA.QualityPortal.ViewModels;
 using RPA.QualityPortal.ViewModels.BankAccount;
 using RPA.QualityPortal.ViewModels.OutboundCorrespondenceVM;
 using RPA.QualityPortal.ViewModels.OutboundCorrespondenceVM.MI;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using X.PagedList;
 
 namespace RPA.QualityPortal.ViewComponents

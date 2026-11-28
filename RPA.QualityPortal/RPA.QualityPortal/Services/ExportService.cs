@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using RPA.QualityPortal.Models.CheckTypes;
 using RPA.QualityPortal.Models;
 using System;
@@ -19,15 +20,31 @@ namespace RPA.QualityPortal.Services
             this.db = context;
         }
 
+        // Lazy loading is gone: navigations read while building the export are loaded explicitly.
+        private static IEnumerable<T> WithIncludes<T>(IEnumerable<T> source, params System.Linq.Expressions.Expression<Func<T, object>>[] navigations) where T : class
+        {
+            if (source is not IQueryable<T> query)
+            {
+                return source;
+            }
+
+            foreach (var navigation in navigations)
+            {
+                query = query.Include(navigation);
+            }
+
+            return query;
+        }
+
         public string Build(IEnumerable<OutboundCorrespondence> outboundCorrespondences, IEnumerable<OutboundCorrespondenceReCheck> outboundCorrespondenceReChecks)
         {
-            List<OutboundCorrespondence> outboundCorrespondencesList = outboundCorrespondences.OrderByDescending(z => z.DateQCCompleted).ToList();
+            List<OutboundCorrespondence> outboundCorrespondencesList = WithIncludes(outboundCorrespondences, x => x.UniqueIdentifierPrefix, x => x.CRMRefPrefix, x => x.Scheme, x => x.BusinessArea, x => x.CorrespondenceType, x => x.FailReason).OrderByDescending(z => z.DateQCCompleted).ToList();
             List<OutboundCorrespondenceReCheck> outboundCorrespondenceReChecksList = outboundCorrespondenceReChecks.ToList();
-            List<CheckQuestion> Questions = db.CheckQuestions.AsNoTracking().ToList();
+            List<CheckQuestion> Questions = db.CheckQuestions.AsNoTracking().Include(x => x.CheckType).ToList();
             List<Answer> answers = db.Answers.AsNoTracking().ToList();
-            List<CheckResult> checkResults = db.CheckResults.AsNoTracking().ToList();
-            List<CheckAmendmentReason> checkAmendmentReasons = db.CheckAmendmentReason.AsNoTracking().ToList();
-            List<Challenge> challenges = db.Challenge.AsNoTracking().ToList();
+            List<CheckResult> checkResults = db.CheckResults.AsNoTracking().Include(x => x.Result).ToList();
+            List<CheckAmendmentReason> checkAmendmentReasons = db.CheckAmendmentReason.AsNoTracking().Include(x => x.AmendmentReason).ToList();
+            List<Challenge> challenges = db.Challenge.AsNoTracking().Include(x => x.ChallengeOutcome).ToList();
 
 
             StringBuilder builder = new StringBuilder();
@@ -200,7 +217,7 @@ namespace RPA.QualityPortal.Services
 
                 if (outboundCorrespondenceResult == "Not Approved")
                 {
-                    outboundCorrespondenceFailReason = outboundCorrespondence.FailReason.Text;
+                    outboundCorrespondenceFailReason = outboundCorrespondence.FailReason?.Text;
                 }
 
                 string excludeQCResultYesNo = "No";
@@ -524,13 +541,13 @@ namespace RPA.QualityPortal.Services
 
         public string BuildBank(IEnumerable<BankAccountCheck> bankAccountList, IEnumerable<BankAccountReCheck> bankAccountReCheckList)
         {
-            List<BankAccountCheck> bankAccounts = bankAccountList.OrderByDescending(z => z.DateQCCompleted).ToList();
-            List<BankAccountReCheck> bankAccountReChecks = bankAccountReCheckList.ToList();
-            List<CheckQuestion> Questions = db.CheckQuestions.AsNoTracking().ToList();
+            List<BankAccountCheck> bankAccounts = WithIncludes(bankAccountList, x => x.BACheckType, x => x.FailReason).OrderByDescending(z => z.DateQCCompleted).ToList();
+            List<BankAccountReCheck> bankAccountReChecks = WithIncludes(bankAccountReCheckList, x => x.FailReason).ToList();
+            List<CheckQuestion> Questions = db.CheckQuestions.AsNoTracking().Include(x => x.CheckType).ToList();
             List<Answer> answers = db.Answers.AsNoTracking().ToList();
-            List<CheckResult> checkResults = db.CheckResults.AsNoTracking().ToList();
-            List<CheckAmendmentReason> checkAmendmentReasons = db.CheckAmendmentReason.AsNoTracking().ToList();
-            List<Challenge> challenges = db.Challenge.AsNoTracking().ToList();
+            List<CheckResult> checkResults = db.CheckResults.AsNoTracking().Include(x => x.Result).ToList();
+            List<CheckAmendmentReason> checkAmendmentReasons = db.CheckAmendmentReason.AsNoTracking().Include(x => x.AmendmentReason).ToList();
+            List<Challenge> challenges = db.Challenge.AsNoTracking().Include(x => x.ChallengeOutcome).ToList();
 
             StringBuilder builder = new StringBuilder();
             builder.AppendLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\",\"{8}\",\"{9}\",\"{10}\",\"{11}\",\"{12}\",\"{13}\",\"{14}\",\"{15}\",\"{16}\",\"{17}\",\"{18}\",\"{19}\",\"{20}\",\"{21}\",\"{22}\",\"{23}\",\"{24}\",\"{25}\",\"{26}\",\"{27}\",\"{28}\",\"{29}\",\"{30}\",\"{31}\",\"{32}\",\"{33}\",\"{34}\",\"{35}\",\"{36}\",\"{37}\",\"{38}\",\"{39}\",\"{40}\",\"{41}\",\"{42}\",\"{43}\",\"{44}\",\"{45}\",\"{46}\",\"{47}\",\"{48}\",\"{49}\",\"{50}\",\"{51}\",\"{52}\",\"{53}\",\"{54}\",\"{55}\",\"{56}\",\"{57}\",\"{58}\",\"{59}\",\"{60}\",\"{61}\",\"{62}\",\"{63}\",\"{64}\",\"{65}\",\"{66}\",\"{67}\",\"{68}\",\"{69}\",\"{70}\",\"{71}\",\"{72}\",\"{73}\",\"{74}\",\"{75}\",\"{76}\",\"{77}\",\"{78}\",\"{79}\",\"{80}\",\"{81}\",\"{82}\",\"{83}\",\"{84}\",\"{85}\",\"{86}\"",
@@ -694,7 +711,7 @@ namespace RPA.QualityPortal.Services
 
                 if (bankAccountResult == "Not Approved")
                 {
-                    bankAccountFailReason = bankAccount.FailReason.Text;
+                    bankAccountFailReason = bankAccount.FailReason?.Text;
                 }
 
                 string reCheckRequiredYesNo = "No";
@@ -788,7 +805,7 @@ namespace RPA.QualityPortal.Services
 
                     if (firstBankAccountReCheckResult == "Not Approved")
                     {
-                        firstBankAccountReCheckFailReason = firstBankAccountReCheck.FailReason.Text;
+                        firstBankAccountReCheckFailReason = firstBankAccountReCheck.FailReason?.Text;
                     }
                 }
 
@@ -850,7 +867,7 @@ namespace RPA.QualityPortal.Services
 
                     if (secondBankAccountReCheckResult == "Not Approved")
                     {
-                        secondBankAccountReCheckFailReason = secondBankAccountReCheck.FailReason.Text;
+                        secondBankAccountReCheckFailReason = secondBankAccountReCheck.FailReason?.Text;
                     }
                 }
 

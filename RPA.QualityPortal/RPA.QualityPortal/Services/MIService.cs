@@ -102,7 +102,7 @@ namespace RPA.QualityPortal.Services
                 case "Scheme":
 
                     string schemeText = db.Schemes.Where(x => x.SchemeId == SchemeId).Select(p => p.Text).FirstOrDefault();
-                    outboundCorrespondenceMI.OutboundCorrespondenceList = outboundCorrespondenceMI.OutboundCorrespondenceList.Where(x => x.Scheme.Text == schemeText && x.ExcludeQCResult == false).ToList();
+                    outboundCorrespondenceMI.OutboundCorrespondenceList = outboundCorrespondenceMI.OutboundCorrespondenceList.Where(x => x.SchemeId == SchemeId && x.ExcludeQCResult == false).ToList();
                     outboundCorrespondenceMI.SearchType = searchString;
                     outboundCorrespondenceMI.ResultHeader = searchOption + " : " + schemeText;
 
@@ -111,7 +111,7 @@ namespace RPA.QualityPortal.Services
                 case "BusinessArea":
 
                     string businessText = db.BusinessAreas.Where(x => x.BusinessAreaId == BusinessAreaId).Select(p => p.Text).FirstOrDefault();
-                    outboundCorrespondenceMI.OutboundCorrespondenceList = outboundCorrespondenceMI.OutboundCorrespondenceList.Where(x => x.BusinessArea.Text == businessText && x.ExcludeQCResult == false).ToList();
+                    outboundCorrespondenceMI.OutboundCorrespondenceList = outboundCorrespondenceMI.OutboundCorrespondenceList.Where(x => x.BusinessAreaId == BusinessAreaId && x.ExcludeQCResult == false).ToList();
                     outboundCorrespondenceMI.SearchType = searchString;
                     outboundCorrespondenceMI.ResultHeader = searchOption + " Area : " + businessText;
 
@@ -120,7 +120,7 @@ namespace RPA.QualityPortal.Services
                 case "CorrespondenceType":
 
                     string correspondenceText = db.CorrespondenceTypes.Where(x => x.CorrespondenceTypeId == CorrespondenceTypeId).Select(p => p.Text).FirstOrDefault();
-                    outboundCorrespondenceMI.OutboundCorrespondenceList = outboundCorrespondenceMI.OutboundCorrespondenceList.Where(x => x.CorrespondenceType.Text == correspondenceText && x.ExcludeQCResult == false).ToList();
+                    outboundCorrespondenceMI.OutboundCorrespondenceList = outboundCorrespondenceMI.OutboundCorrespondenceList.Where(x => x.CorrespondenceTypeId == CorrespondenceTypeId && x.ExcludeQCResult == false).ToList();
                     outboundCorrespondenceMI.SearchType = searchString;
                     outboundCorrespondenceMI.ResultHeader = searchOption + " Type : " + correspondenceText;
 

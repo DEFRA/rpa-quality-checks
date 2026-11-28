@@ -1,25 +1,31 @@
-﻿using Moq;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using RPA.QualityPortal.DAL;
 using RPA.QualityPortal.Tests.Data.Mock;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RPA.QualityPortal.Tests.DAL.Mock
 {
-    public class MockPeopleContext
+    public class MockPeopleContext : IDisposable
     {
-        public Mock<IPeopleContext> MockContext { get; set; }
+        private readonly SqliteConnection connection;
+        private readonly PeopleContext db;
 
-        public virtual Mock<DbSet<Location>> MockLocations { get; set; }
-        public virtual Mock<DbSet<Manager>> MockManagers { get; set; }
-        public virtual Mock<DbSet<Person>> MockPeople { get; set; }
+        public ContextHandle<IPeopleContext> MockContext { get; }
 
+        public PeopleContext Db => db;
+
+        public DbSetHandle<Person> MockPeople { get; private set; }
 
         public MockPeopleContext(bool setMocks = true)
         {
+            connection = TestDb.OpenConnection();
+            TestDb.AttachSchema(connection, "OLA");
+            var options = new DbContextOptionsBuilder<PeopleContext>().UseSqlite(connection).Options;
+            db = new PeopleContext(options);
+            db.Database.EnsureCreated();
+            MockContext = new ContextHandle<IPeopleContext>(db, () => 0);
+            MockPeople = new DbSetHandle<Person>(db.People);
+
             if (setMocks)
             {
                 SetMocks();
@@ -28,33 +34,24 @@ namespace RPA.QualityPortal.Tests.DAL.Mock
 
         public void SetMocks()
         {
-            SetMockContext();
-            SetMockLocation();
-            SetMockManager();
-            SetMockPeople();
+            TestDb.Seed(db, LocationData.Data());
+            TestDb.Seed(db, ManagerData.Data());
+            TestDb.Seed(db, PeopleData.Data());
+            db.SaveChanges();
+            db.ChangeTracker.Clear();
         }
 
-        public void SetMockLocation()
+        public void Dispose()
         {
-            MockLocations = new Mock<DbSet<Location>>().SetupData(LocationData.Data());
-            MockContext.Setup(x => x.Locations).Returns(MockLocations.Object);
+            db.Dispose();
+            connection.Dispose();
         }
+    }
 
-        public void SetMockManager()
-        {
-            MockManagers = new Mock<DbSet<Manager>>().SetupData(ManagerData.Data());
-            MockContext.Setup(x => x.Managers).Returns(MockManagers.Object);
-        }
+    public class DbSetHandle<T> where T : class
+    {
+        public DbSetHandle(DbSet<T> set) { Object = set; }
 
-        public void SetMockPeople()
-        {
-            MockPeople = new Mock<DbSet<Person>>().SetupData(PeopleData.Data());
-            MockContext.Setup(x => x.People).Returns(MockPeople.Object);
-        }
-
-        public void SetMockContext()
-        {
-            MockContext = new Mock<IPeopleContext>();
-        }
+        public DbSet<T> Object { get; }
     }
 }

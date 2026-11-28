@@ -1,4 +1,4 @@
-﻿using RPA.QualityPortal.DAL;
+using RPA.QualityPortal.DAL;
 using RPA.QualityPortal.Models;
 using RPA.QualityPortal.Models.CheckTypes;
 using RPA.QualityPortal.ViewModels;
@@ -121,15 +121,19 @@ namespace RPA.QualityPortal.Services
 
         public IQueryable<BankAccountOverview> RetrieveBankAccountChecks(IQueryable<BankAccountCheck> bankAccounts)
         {
-            IQueryable<BankAccountOverview> bankAccountOverviews = bankAccounts
-                .GroupJoin(db.BankAccountReChecks, check => check.CheckId, recheck => recheck.BankAccountId,(check, recheck) => new { Check = check, Recheck = recheck.DefaultIfEmpty().FirstOrDefault() })
-                .Select(ba => new BankAccountOverview
+            // The first recheck is picked by id and joined back, so the query stays a plain LEFT JOIN (no APPLY).
+            IQueryable<BankAccountOverview> bankAccountOverviews =
+                from check in bankAccounts
+                let firstReCheckId = db.BankAccountReChecks.Where(r => r.BankAccountId == check.CheckId).OrderBy(r => r.CheckId).Select(r => (int?)r.CheckId).FirstOrDefault()
+                join reCheck in db.BankAccountReChecks on firstReCheckId equals (int?)reCheck.CheckId into reChecks
+                from recheck in reChecks.DefaultIfEmpty()
+                select new BankAccountOverview
                 {
-                    BankAccount = ba.Check,
-                    QCResult = ba.Check != null ? db.CheckResults.Where(x => x.CheckId == ba.Check.CheckId).Select(p => p.Result.Text).FirstOrDefault() : null,
-                    BankAccountReCheck = ba.Recheck,
-                    ReCheckQCResult = ba.Recheck != null ? db.CheckResults.Where(x => x.CheckId == ba.Recheck.CheckId).Select(p => p.Result.Text).FirstOrDefault() : null
-                });
+                    BankAccount = check,
+                    QCResult = db.CheckResults.Where(x => x.CheckId == check.CheckId).Select(p => p.Result.Text).FirstOrDefault(),
+                    BankAccountReCheck = recheck,
+                    ReCheckQCResult = recheck != null ? db.CheckResults.Where(x => x.CheckId == recheck.CheckId).Select(p => p.Result.Text).FirstOrDefault() : null
+                };
 
             return bankAccountOverviews.OrderBy(x => x.BankAccount.DateQCCreated);
         }

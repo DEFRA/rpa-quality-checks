@@ -1,13 +1,11 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Localization;
-using RPA.QualityPortal.Migrations;
+using Microsoft.EntityFrameworkCore;
+using RPA.QualityPortal.DAL;
 using RPA.QualityPortal.Services;
-using System.Data.Entity.Migrations;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var qualityConnectionString = builder.Configuration.GetConnectionString("QualityContext")
-    ?? throw new InvalidOperationException("Connection string 'QualityContext' is not configured.");
 builder.Services.AddQualityPortalApplication(builder.Configuration);
 
 var app = builder.Build();
@@ -17,7 +15,8 @@ app.UseForwardedHeaders();
 // "migrate on start-up" behaviour available for environments that still need it.
 if (builder.Configuration.GetValue<bool>("ApplyMigrationsOnStartup"))
 {
-    new DbMigrator(new Configuration(qualityConnectionString)).Update();
+    using var scope = app.Services.CreateScope();
+    scope.ServiceProvider.GetRequiredService<QualityContext>().Database.Migrate();
 }
 
 if (app.Environment.IsDevelopment())

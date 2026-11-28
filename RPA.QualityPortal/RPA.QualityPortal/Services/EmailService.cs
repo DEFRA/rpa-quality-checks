@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using RPA.QualityPortal.DAL;
 using RPA.QualityPortal.Models.CheckTypes;
 using RPA.QualityPortal.ViewModels;

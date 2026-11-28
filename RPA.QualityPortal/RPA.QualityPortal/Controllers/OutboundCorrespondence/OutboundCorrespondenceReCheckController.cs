@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
 using RPA.QualityPortal.DAL;
@@ -87,7 +88,9 @@ namespace RPA.QualityPortal.Controllers
                 qaList.QuestionAnswers.Add(qa);
             }
 
-            if (outboundCorrespondence.CorrespondenceType.Text == "Letter - Template" || outboundCorrespondence.CorrespondenceType.Text == "Letter - Bespoke")
+            string correspondenceType = db.CorrespondenceTypes.Where(x => x.CorrespondenceTypeId == outboundCorrespondence.CorrespondenceTypeId).Select(x => x.Text).FirstOrDefault();
+
+            if (correspondenceType == "Letter - Template" || correspondenceType == "Letter - Bespoke")
             {
 
                 qaList.QuestionAnswers.Where(x => x.CheckQuestion.Order == 2).FirstOrDefault().Answer = "N/A";
